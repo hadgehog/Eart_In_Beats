@@ -1,0 +1,41 @@
+﻿<?Infragistics.Models format="xaml" version="26"?>
+<Page xmlns="http://prototypes.infragistics.com/"
+                                                          Id="35d2c3de-f0be-4a81-bf72-90c51d5e0018">
+    <Page.Content>
+        <Content Width="320" Height="480" Id="13fa17ab-46bd-423c-bb8c-1024b3dcf4ef">
+            <Content.Layers>
+                <Layer Id="6d08a547-a66a-4b76-a349-05981c62be04" Panel.Layout="Stretch" />
+                <AnnotationsLayer Id="af856215-e049-4e3f-ad5e-742278bf8dbf" Panel.Layout="Stretch" />
+            </Content.Layers>
+            <Content.Viewbox>
+                <Viewbox Size="320,480" Id="2cb0ece7-d3ad-453a-9107-08ba9f1526a1" />
+            </Content.Viewbox>
+            <Content.GuidesInfo>
+                <GuidesInfo Id="b51d3be8-d8ad-4137-b647-bd2ac38fdd6f" />
+            </Content.GuidesInfo>
+        </Content>
+    </Page.Content>
+    <Page.Device>
+        <DeviceInfo Id="GenericPhone" Orientation="Portrait" />
+    </Page.Device>
+    <Page.Scenes>
+        <Scene Title="Start" Created="11/27/2014 11:06:10" Id="a5197476-5767-4289-8f1e-bdbb6a9d66ae">
+            <Scene.KeyFrames>
+                <KeyFrame Id="6c3822b9-7ef8-44db-ae8a-fdfcef160039">
+                    <KeyFrame.Operations>
+                        <Add Property="Panel.Children" Target="6d08a547-a66a-4b76-a349-05981c62be04">
+                            <Add.Item>
+                                <Ellipse Id="4b449d4e-f808-4c16-b5d1-45db68b8254f" Name="Earth" Panel.Bounds="16,86,287{5,2147483647},287{5,2147483647}" />
+                            </Add.Item>
+                        </Add>
+                        <Add Property="Panel.Children" Target="6d08a547-a66a-4b76-a349-05981c62be04">
+                            <Add.Item>
+                                <Ellipse Id="41ae5dff-4320-4099-8401-b0cb6e88bfa8" Panel.Bounds="16,421,52{5,2147483647},51{5,2147483647}" />
+                            </Add.Item>
+                        </Add>
+                    </KeyFrame.Operations>
+                </KeyFrame>
+            </Scene.KeyFrames>
+        </Scene>
+    </Page.Scenes>
+</Page>

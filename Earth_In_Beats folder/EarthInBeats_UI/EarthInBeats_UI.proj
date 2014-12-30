@@ -1,0 +1,11 @@
+﻿<?Infragistics.Models format="xaml" version="3"?>
+<Project xmlns="http://prototypes.infragistics.com/"
+                                                            StartScreens="/Phone/EarthInBeats.screen" IndigoVersion="4">
+    <Project.Defaults>
+        <ProjectDefaults Viewport="320,480">
+            <ProjectDefaults.Device>
+                <DeviceInfo Id="GenericPhone" Orientation="Portrait" />
+            </ProjectDefaults.Device>
+        </ProjectDefaults>
+    </Project.Defaults>
+</Project>

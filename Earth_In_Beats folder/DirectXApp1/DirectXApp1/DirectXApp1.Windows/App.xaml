@@ -1,0 +1,13 @@
+﻿<Application
+    x:Class="DirectXApp1.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DirectXApp1"
+    xmlns:localData="using:Shared">
+
+    <Application.Resources>
+
+      <x:String x:Key="AppName">DirectXApp1</x:String>
+
+    </Application.Resources>
+</Application>

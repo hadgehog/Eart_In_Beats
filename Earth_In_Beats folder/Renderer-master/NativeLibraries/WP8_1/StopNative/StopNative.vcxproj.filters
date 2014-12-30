@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resources">
+      <UniqueIdentifier>5fe87c98-f049-41c8-a01c-acc6bade72d4</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Class1.cpp" />
+    <ClCompile Include="D3DView.cpp" />
+    <ClCompile Include="Helpers\H.cpp" />
+    <ClCompile Include="Helpers\HTask.cpp" />
+    <ClCompile Include="GraphicsSystem\Renderer\D3D\DisplayParameters\D3DSwapChainPanelDisplayParams.cpp" />
+    <ClCompile Include="GraphicsSystem\Renderer\D3D\InitParams\D3DSwapChainPanelInitParams.cpp" />
+    <ClCompile Include="GraphicsSystem\Renderer\D3D\RendererD3D.cpp" />
+    <ClCompile Include="GraphicsSystem\Renderer\Renderer.cpp" />
+    <ClCompile Include="GraphicsSystem\Renderer\RendererProxy.cpp" />
+    <ClCompile Include="GraphicsSystem\Renderer\D3D\RendererD3DServiceData.cpp" />
+    <ClCompile Include="GraphicsSystem\Renderer\D3D\Operations\D3DOpInitializeBase.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Class1.h" />
+    <ClInclude Include="D3DView.h" />
+    <ClInclude Include="Helpers\H.h" />
+    <ClInclude Include="Helpers\HTask.h" />
+    <ClInclude Include="Threading\ServiceOperation.h" />
+    <ClInclude Include="Threading\ServiceDataPolicy.h" />
+    <ClInclude Include="Threading\Service.h" />
+    <ClInclude Include="Threading\ServiceSimplePolicy.h" />
+    <ClInclude Include="Threading\ServicePolicyHelpers.h" />
+    <ClInclude Include="Threading\ServiceStdThreadPolicy.h" />
+    <ClInclude Include="GraphicsSystem\Renderer\D3D\DisplayParameters\D3DSwapChainPanelDisplayParams.h" />
+    <ClInclude Include="GraphicsSystem\Renderer\D3D\InitParams\D3DSwapChainPanelInitParams.h" />
+    <ClInclude Include="GraphicsSystem\Renderer\D3D\RendererD3D.h" />
+    <ClInclude Include="GraphicsSystem\Renderer\Renderer.h" />
+    <ClInclude Include="GraphicsSystem\Renderer\RendererProxy.h" />
+    <ClInclude Include="Threading\ServiceOperationReturnPolicy.h" />
+    <ClInclude Include="Threading\ServiceOperationRBase.h" />
+    <ClInclude Include="Threading\ServiceOperationRBaseGeneric.h" />
+    <ClInclude Include="GraphicsSystem\Renderer\D3D\RendererD3DServiceDef.h" />
+    <ClInclude Include="GraphicsSystem\Renderer\D3D\RendererD3DServiceData.h" />
+    <ClInclude Include="GraphicsSystem\Renderer\D3D\Operations\D3DOpInitializeBase.h" />
+    <ClInclude Include="GraphicsSystem\Renderer\D3D\Operations\D3DOperations.h" />
+    <ClInclude Include="Threading2\ServiceDataPolicyBase.h" />
+    <ClInclude Include="Threading2\ServiceDataPolicyImpl.h" />
+    <ClInclude Include="Threading2\ServiceOperationBase.h" />
+    <ClInclude Include="Threading2\ServiceOperationStdReturnPolicy.h" />
+    <ClInclude Include="Threading2\ServiceOperationReturnPolicyBase.h" />
+    <ClInclude Include="Threading2\ServicePolicyBase.h" />
+    <ClInclude Include="Threading2\ServicePolicyHelpersImpl.h" />
+    <ClInclude Include="Threading2\ServiceSimplePolicy.h" />
+    <ClInclude Include="Threading2\ServiceUnhandledExceptionHandler.h" />
+    <ClInclude Include="Threading2\Service.h" />
+    <ClInclude Include="Threading2\ServiceStdThreadPolicy.h" />
+  </ItemGroup>
+</Project>

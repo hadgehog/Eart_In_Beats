@@ -1,0 +1,30 @@
+        using WindowsPreview.Media.Ocr;
+		
+		private async void Extract_Click(object sender, RoutedEventArgs e)
+        {
+            var file = await Package.Current.InstalledLocation.GetFileAsync("Assets\\sample.png");
+            var stream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
+            var decoder = await BitmapDecoder.CreateAsync(stream);
+            //ImageProperties imgProp = await file.Properties.GetImagePropertiesAsync();
+            
+            width = decoder.PixelWidth;
+            height = decoder.PixelHeight;
+
+            var pixels = await decoder.GetPixelDataAsync(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight,
+                        new BitmapTransform(), ExifOrientationMode.RespectExifOrientation, ColorManagementMode.ColorManageToSRgb);
+
+            OcrResult or = await ocrEngine.RecognizeAsync(height, width, pixels.DetachPixelData());
+
+            if (or.Lines != null)
+            {
+                string recognizedText = "";
+                foreach (var line in or.Lines)
+                {
+                    foreach (var word in line.Words)
+                        recognizedText += word.Text + " ";
+                    recognizedText += Environment.NewLine;
+                }
+
+                OcrText.Text = recognizedText;
+            }
+        }

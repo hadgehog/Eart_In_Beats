@@ -1,0 +1,20 @@
+﻿<Page
+    x:Class="AudioMixApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:AudioMixApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <StackPanel>
+            <Button Content="Play" HorizontalAlignment="Center" Margin="0 24" Click="OpenButtonClick"/>
+            <Button Content="Stop" HorizontalAlignment="Center"  Margin="0 2" Click="Button_Click"/>
+            <Slider HorizontalAlignment="Center" Margin="98,40,92,40" Width="210" Name="sliderVolume" ValueChanged="Slider1_ValueChanged" />
+            <Button Content="Exit" HorizontalAlignment="Center" Margin="0 50" Click="Button_Click_1"/>
+            <Slider Margin="10 -30" Name="sliderProgress" Tapped="sliderProgress_Tapped" ValueChanged="Slider2_ValueChanged"/>
+        </StackPanel>
+    </Grid>
+</Page>

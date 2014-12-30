@@ -1,0 +1,14 @@
+		StorageItemContentProperties^ contentProperties = storageFile->Properties;
+        task<MusicProperties^> getMusicPropertiesTask = create_task(contentProperties->GetMusicPropertiesAsync());
+        getMusicPropertiesTask.then([this](MusicProperties^ musicProperties)
+        {
+            artistText->Text = musicProperties->Artist;
+            albumText->Text = musicProperties->Album;
+            trackText->Text = musicProperties->Title;
+
+            int durationInSeconds = int(musicProperties->Duration.Duration / 10000000);
+            wchar_t str[16];
+            swprintf(str, 16, L"%i:%02i", durationInSeconds / 60, 
+                                          durationInSeconds % 60);
+            durationText->Text = ref new String(str);
+        });
