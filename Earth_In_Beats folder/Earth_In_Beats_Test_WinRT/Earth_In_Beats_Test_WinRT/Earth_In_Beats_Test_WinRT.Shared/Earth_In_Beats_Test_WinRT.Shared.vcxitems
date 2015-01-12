@@ -19,13 +19,34 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)App.xaml.cpp">
       <DependentUpon>$(MSBuildThisFileDirectory)App.xaml</DependentUpon>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioReader\AudioReader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioReader\MFAudioReader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioSample\AudioSample.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioSample\MFAudioSample.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Events\AudioEvents.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Events\MFAudioEvents.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Helpers\Auto.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Helpers\InitMasterVoice.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Helpers\VoiceCallBack.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Helpers\XAudio2Player.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Wrapper\Reader.cpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)App.xaml.h">
       <DependentUpon>$(MSBuildThisFileDirectory)App.xaml</DependentUpon>
     </ClInclude>
     <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />                   
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioReader\AudioReader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioReader\MFAudioReader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioSample\AudioSample.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioSample\MFAudioSample.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Events\AudioEvents.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Events\MFAudioEvents.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Helpers\Auto.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Helpers\InitMasterVoice.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Helpers\XAudio2Player.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Wrapper\Reader.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectCapability Include="SourceItemsFromImports" />

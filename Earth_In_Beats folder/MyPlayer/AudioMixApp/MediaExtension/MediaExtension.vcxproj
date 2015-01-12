@@ -170,7 +170,6 @@
     <ClCompile Include="XAudio2Player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="OcrResources\MsOcrRes.orp" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
