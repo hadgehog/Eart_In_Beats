@@ -139,47 +139,42 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AudioEvents.h" />
+    <ClInclude Include="AudioReader.h" />
     <ClInclude Include="AudioSample.h" />
     <ClInclude Include="Auto.h" />
     <ClInclude Include="InitMasterVoice.h" />
     <ClInclude Include="MFAudioEvents.h" />
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="MFAudioSample.h" />
     <ClInclude Include="MFAudioReader.h" />
-    <ClInclude Include="AudioReader.h" />
+    <ClInclude Include="MFAudioSample.h" />
+    <ClInclude Include="pch.h" />
     <ClInclude Include="Reader.h" />
     <ClInclude Include="XAudio2Player.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioEvents.cpp" />
+    <ClCompile Include="AudioReader.cpp" />
     <ClCompile Include="AudioSample.cpp" />
     <ClCompile Include="Auto.cpp" />
     <ClCompile Include="InitMasterVoice.cpp" />
     <ClCompile Include="MFAudioEvents.cpp" />
+    <ClCompile Include="MFAudioReader.cpp" />
+    <ClCompile Include="MFAudioSample.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MFAudioSample.cpp" />
-    <ClCompile Include="MFAudioReader.cpp" />
-    <ClCompile Include="AudioReader.cpp" />
     <ClCompile Include="Reader.cpp" />
     <ClCompile Include="VoiceCallBack.cpp" />
     <ClCompile Include="XAudio2Player.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\Microsoft.Windows.Ocr.1.0.0\build\native\Microsoft.Windows.Ocr.targets" Condition="Exists('..\packages\Microsoft.Windows.Ocr.1.0.0\build\native\Microsoft.Windows.Ocr.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Windows.Ocr.1.0.0\build\native\Microsoft.Windows.Ocr.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.Ocr.1.0.0\build\native\Microsoft.Windows.Ocr.targets'))" />
   </Target>
 </Project>

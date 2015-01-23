@@ -109,6 +109,15 @@ void XAudio2Player::SetAudioData(AudioReader *reader, Microsoft::WRL::ComPtr<IXA
 	hr = this->sourceVoice->Start();
 }
 
+void XAudio2Player::Play()
+{
+	HRESULT hr = S_OK;
+
+	this->stopped = false;
+	this->SubmitBuffer();
+	hr = this->sourceVoice->Start();
+}
+
 void XAudio2Player::Stop()
 {
 	HRESULT hr = S_OK;

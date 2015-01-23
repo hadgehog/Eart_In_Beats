@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resources">
+      <UniqueIdentifier>5432da01-2441-4261-912e-667b74d70477</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="AudioEvents.cpp" />
+    <ClCompile Include="AudioReader.cpp" />
+    <ClCompile Include="AudioSample.cpp" />
+    <ClCompile Include="Auto.cpp" />
+    <ClCompile Include="InitMasterVoice.cpp" />
+    <ClCompile Include="MFAudioEvents.cpp" />
+    <ClCompile Include="MFAudioReader.cpp" />
+    <ClCompile Include="MFAudioSample.cpp" />
+    <ClCompile Include="Reader.cpp" />
+    <ClCompile Include="VoiceCallBack.cpp" />
+    <ClCompile Include="XAudio2Player.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="AudioEvents.h" />
+    <ClInclude Include="AudioReader.h" />
+    <ClInclude Include="AudioSample.h" />
+    <ClInclude Include="Auto.h" />
+    <ClInclude Include="InitMasterVoice.h" />
+    <ClInclude Include="MFAudioEvents.h" />
+    <ClInclude Include="MFAudioReader.h" />
+    <ClInclude Include="MFAudioSample.h" />
+    <ClInclude Include="Reader.h" />
+    <ClInclude Include="XAudio2Player.h" />
+  </ItemGroup>
+</Project>

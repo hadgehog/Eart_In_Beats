@@ -33,6 +33,7 @@ namespace MediaExtension
 		void SetVolume(float volume);
 		void SetPosition(Rational ratio, double setPosition);
 		void SetAudioData(AudioReader *reader, Microsoft::WRL::ComPtr<IXAudio2> xAudio2);
+		void Play();
 		void Stop();
 		void Initialize(AudioReader *reader, Microsoft::WRL::ComPtr<IXAudio2> xAudio2, std::shared_ptr<AudioEvents> e);
 		void GoToNextSong();
