@@ -45,7 +45,8 @@ namespace MediaExtension
 
 	public:
 		Reader();
-		void Play(IPlayList ^playList);
+		void InitPlayer(IPlayList ^playList);
+		void Play(int num);
 		void Rewinding(double setPosition);
 		property Windows::Foundation::TimeSpan Duration	{ Windows::Foundation::TimeSpan get(); }
 		void Volume(float setVolume);

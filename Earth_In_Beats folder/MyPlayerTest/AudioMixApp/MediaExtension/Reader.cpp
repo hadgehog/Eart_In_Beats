@@ -23,39 +23,52 @@ Reader::Reader()
 	this->player = std::shared_ptr<XAudio2Player>(new XAudio2Player());
 }
 
-void Reader::Play(IPlayList ^playList)
+void Reader::InitPlayer(IPlayList ^playList)
 {
-	InitMasterVoice::GetInstance();
 	Windows::Storage::Streams::IRandomAccessStream ^stream;
-	MFAudioReader *reader = new MFAudioReader();
 	this->currentPlayList = playList;
 
 	this->currentPlayList->SortPlaylist();
-	this->FindGlobalDuration();
+	this->FindGlobalDuration();	
 
+	for (size_t i = 0; i < currentPlayList->GetPlayListLength(); i++)
 	{
-		MFAudioEvents *tmppEvents = new MFAudioEvents();
-		tmppEvents->InitEvent(this);
-		this->events = std::shared_ptr<AudioEvents>(tmppEvents);
-	}	
+		InitMasterVoice::GetInstance();
+		MFAudioReader *reader = new MFAudioReader();
+		this->xAudio2 = InitMasterVoice::GetInstance().GetXAudio();
 
-	stream = this->currentPlayList->GetStream(0);
+		{
+			MFAudioEvents *tmppEvents = new MFAudioEvents();
+			tmppEvents->InitEvent(this);
+			this->events = std::shared_ptr<AudioEvents>(tmppEvents);
+		}
 
-	this->tracksInfo.push_back(this->currentPlayList->GetInfoAboutTrack(0));
+		stream = this->currentPlayList->GetStream(i);
 
-	this->xAudio2 = InitMasterVoice::GetInstance().GetXAudio();
+		this->tracksInfo.push_back(this->currentPlayList->GetInfoAboutTrack(i));
 
-	reader->Initialize(stream);
+		reader->Initialize(stream);
 
-	this->player->Initialize(reader, this->xAudio2, this->events);	//create new player and play
+		this->player->Initialize(reader, this->xAudio2, this->events);	//create new player
 
-	std::lock_guard<std::mutex> lock(this->lockPlayList);
-	this->playersList.push_back(this->player);
+		std::lock_guard<std::mutex> lock(this->lockPlayList);
+		this->playersList.push_back(this->player);
+	}
+}
+
+void Reader::Play(int num)
+{
+	if (this->playersList[num])
+	{
+		this->playersList[num]->Stop();
+		//if needed always play from 0 position
+		//this->playersList[i]->SetPosition(Rational::SEC, 0);
+		this->playersList[num]->Play();
+	}
 }
 
 void Reader::Rewinding(double setPosition)
-{
-	
+{	
 	for (int i = 0; i < this->playersList.size(); i++)
 	{
 		this->playersList[i]->SetPosition(Rational::SEC, setPosition);
@@ -87,6 +100,7 @@ void Reader::Stop()
 	for (int i = 0; i < this->playersList.size(); i++)
 	{
 		this->playersList[i]->Stop();
+		this->playersList[i]->SetPosition(Rational::SEC, 0);
 	}
 	//this->playersList.clear();
 }

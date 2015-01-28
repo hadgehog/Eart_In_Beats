@@ -29,6 +29,7 @@ namespace AudioMixApp
         private long trackLength = 0;
         bool tapped = false;
         private List<Reader> playersList;
+        int songNum = 0;
 
         public MainPage()
         {
@@ -43,7 +44,7 @@ namespace AudioMixApp
             trackLength = duration;
 
             #if WINDOWS_PHONE_APP
-                        var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
+              var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
             #else
               var dispatcher = CoreApplication.MainView.Dispatcher;
             #endif
@@ -60,20 +61,17 @@ namespace AudioMixApp
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-                       
+            
         }
 
         private void OpenButtonClick(Object sender, RoutedEventArgs e)
         {
-            if (playList == null)
+            // play
+            if (player != null)
             {
-                playList = new CreatingPlaylist();
-                playList.CreatePlayList();
+                player.Play(3);
             }
 
-            // play
-
-            player = new Reader();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -81,6 +79,10 @@ namespace AudioMixApp
                 sliderProgress.Value = 0;
                 newPosition = 0;
                 //Stop
+                if (player != null)
+                {
+                    player.Stop();
+                }
         }
 
         private void Slider1_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
@@ -121,6 +123,14 @@ namespace AudioMixApp
         {
             //create playlist
             //init players list
+            if (playList == null)
+            {
+                playList = new CreatingPlaylist();
+                playList.CreatePlayList();
+            }
+
+            player = new Reader();
+            player.InitPlayer(playList);
         }
     }
 }
