@@ -23,7 +23,7 @@ Reader::Reader()
 	this->player = std::shared_ptr<XAudio2Player>(new XAudio2Player());
 }
 
-void Reader::Play(IPlayList ^playList)
+void Reader::Initialize(IPlayList ^playList)
 {
 	InitMasterVoice::GetInstance();
 	Windows::Storage::Streams::IRandomAccessStream ^stream;
@@ -51,6 +51,11 @@ void Reader::Play(IPlayList ^playList)
 
 	std::lock_guard<std::mutex> lock(this->lockPlayList);
 	this->playersList.push_back(this->player);
+}
+
+void Reader::Play(int numPlayer)
+{
+	int stop = 123;
 }
 
 void Reader::Rewinding(double setPosition)

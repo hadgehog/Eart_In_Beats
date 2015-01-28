@@ -48,7 +48,7 @@ namespace BackgroundAudio
 
         private void CurrentOnMediaOpened(MediaPlayer sender, object args)
         {
-            player.Play(playList);
+            player.Initialize(playList);
             currPos = player.CurrPos();
             trackLength = player.Duration.Ticks;
             FakePause();
@@ -165,7 +165,7 @@ namespace BackgroundAudio
                 case SystemMediaTransportControlsButton.Play:
                     BackgroundMediaPlayer.Current.Play();
                     FakePause();
-                    player.Play(playList);
+                    player.Initialize(playList);
                     break;
                 case SystemMediaTransportControlsButton.Pause:
                     BackgroundMediaPlayer.Current.Pause();

@@ -15,6 +15,7 @@
             <Slider HorizontalAlignment="Center" Margin="98,40,92,40" Width="210" Name="sliderVolume" ValueChanged="Slider1_ValueChanged" />
             <Button Content="Exit" HorizontalAlignment="Center" Margin="0 50" Click="Button_Click_1"/>
             <Slider Margin="10 -30" Name="sliderProgress" Tapped="sliderProgress_Tapped" ValueChanged="Slider2_ValueChanged"/>
+            <Button Content="Create Playlist" Click="Create_Playlist_Button_Click"  HorizontalAlignment="Stretch"  Margin="0,50"/>
         </StackPanel>
     </Grid>
 </Page>

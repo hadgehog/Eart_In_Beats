@@ -81,10 +81,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <ProjectReference Include="..\BackgroundAudio\BackgroundAudio.csproj">
-      <Project>{32bda8a0-e585-4b97-b20e-4e2a1f4ea524}</Project>
-      <Name>BackgroundAudio</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MediaData\MediaData.csproj">
       <Project>{09d2591c-46a7-4b01-b44a-13efd3e98db4}</Project>
       <Name>MediaData</Name>
@@ -118,6 +114,8 @@
     <Content Include="Assets\1 Caroline Duris - Barrage%28original mix%29.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\9d64d647715f9e.mp3" />
+    <Content Include="Assets\a9d220db4fcf.mp3" />
     <Content Include="Assets\Logo.scale-240.png" />
     <Content Include="Assets\master.png" />
     <Content Include="Assets\photo.png" />

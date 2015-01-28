@@ -64,7 +64,7 @@ void XAudio2Player::SetPosition(Rational ratio, double position)
 			this->events->EndOfRewinding();
 	}
 
-		this->SubmitBuffer();
+		this->SubmitBuffer();	//
 }
 
 void XAudio2Player::FlushSourceVoice()

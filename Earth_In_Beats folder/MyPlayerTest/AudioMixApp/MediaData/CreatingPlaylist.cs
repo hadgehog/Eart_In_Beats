@@ -12,22 +12,13 @@ using System.Text;
 
 namespace MediaData
 {
-
-    [ProtoContract]
     public class CreatingPlaylist : IPlayList
     {
         private List<Track> trackList;
         private string infoAboutTracks = "";
 
-        [ProtoMember(1)]
-        public List<Track> Tracklist { get { return this.trackList; } set { this.trackList = value; } }
-
-        [ProtoMember(2)]
-        public string InfoAboutTracks { get { return this.infoAboutTracks; } set { this.infoAboutTracks = value; } }
-
         public CreatingPlaylist()
         {
-            
         }
 
         public CreatingPlaylist(List<Track> trackList)
@@ -40,9 +31,11 @@ namespace MediaData
         {
             trackList = new List<Track>();
 
-            AddTrackInPlayList(3, "Assets\\02 Quutamo.mp3");
-            AddTrackInPlayList(2, "Assets\\02 - Master of Puppets.mp3");
-            AddTrackInPlayList(1, "Assets\\02 Quutamo.mp3");
+            AddTrackInPlayList(2, "Assets\\02 Quutamo.mp3");
+            AddTrackInPlayList(3, "Assets\\02 - Master of Puppets.mp3");
+            AddTrackInPlayList(1, "Assets\\1 Caroline Duris - Barrage(original mix).mp3");
+            AddTrackInPlayList(5, "Assets\\9d64d647715f9e.mp3");
+            AddTrackInPlayList(4, "Assets\\a9d220db4fcf.mp3");
         }
 
         public virtual IRandomAccessStream GetStream(int trackNumber)
@@ -102,20 +95,6 @@ namespace MediaData
         public void SortPlaylist()
         {
             this.trackList.Sort((x, y) => x.Position - y.Position);
-        }
-
-        public byte[] Serialize(MemoryStream stream)
-        {
-            byte[] serialized;
-            Serializer.Serialize(stream, this.Tracklist);
-            serialized = stream.ToArray();
-            return serialized;
-        }
-
-        public static CreatingPlaylist DeSerialize(MemoryStream stream)
-        {
-            var playlist = Serializer.Deserialize<CreatingPlaylist>(stream);
-            return playlist;
         }
     }
 }

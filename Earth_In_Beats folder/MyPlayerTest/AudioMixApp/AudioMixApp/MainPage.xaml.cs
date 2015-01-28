@@ -16,6 +16,7 @@ using MediaExtension;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
+using System.Collections.Generic;
 
 namespace AudioMixApp
 {
@@ -25,9 +26,9 @@ namespace AudioMixApp
         Reader player;
         CreatingPlaylist playList;
         double newPosition = 0;
-        private MediaPlayer mediaPlayer;
         private long trackLength = 0;
         bool tapped = false;
+        private List<Reader> playersList;
 
         public MainPage()
         {
@@ -35,23 +36,6 @@ namespace AudioMixApp
             this.NavigationCacheMode = NavigationCacheMode.Required;
             sliderVolume.Value = 100;
             sliderProgress.Value = 0;
-        }
-
-        private void MessageReceivedFromBackground(object sender, MediaPlayerDataReceivedEventArgs e)
-        {
-            ValueSet valueSet = e.Data;
-            foreach (string key in valueSet.Keys)
-            {
-                switch (key)
-                {
-                    case "ExistTrue":
-                        CheckPlayList((byte[])valueSet[key]);
-                        break;
-                    case "Duration":
-                        SetTrackDuration((long)valueSet[key]);                   
-                        break;
-                }
-            }
         }
 
         private async void SetTrackDuration(long duration)
@@ -74,47 +58,20 @@ namespace AudioMixApp
             }
         }
 
-        private void CheckPlayList(byte[] serialized) 
-        {
-            using (var ms = new MemoryStream(serialized))
-            {
-                CreatingPlaylist tmp = CreatingPlaylist.DeSerialize(ms);
-
-                if (tmp.Tracklist != null)
-                {
-                    if (tmp.Tracklist.Count != 0)
-                    {
-                        playList = CreatingPlaylist.DeSerialize(ms);
-                    }
-                }
-            }
-        }
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            mediaPlayer = BackgroundMediaPlayer.Current;
-            var messageToBackground = new ValueSet { { "Background", "Is background existing" } };
-            BackgroundMediaPlayer.SendMessageToBackground(messageToBackground);
-            BackgroundMediaPlayer.MessageReceivedFromBackground += MessageReceivedFromBackground;
+                       
         }
 
         private void OpenButtonClick(Object sender, RoutedEventArgs e)
         {
-            byte[] serialized;
-
             if (playList == null)
             {
                 playList = new CreatingPlaylist();
                 playList.CreatePlayList();
             }
 
-            using (var ms = new MemoryStream())
-            {
-                serialized = playList.Serialize(ms);
-            }
-
-            var messageToBackground = new ValueSet { { "Play", serialized } };
-            BackgroundMediaPlayer.SendMessageToBackground(messageToBackground);
+            // play
 
             player = new Reader();
         }
@@ -123,16 +80,14 @@ namespace AudioMixApp
         {
                 sliderProgress.Value = 0;
                 newPosition = 0;
-                var messageToBackground = new ValueSet { { "Stop", 0 } };
-                BackgroundMediaPlayer.SendMessageToBackground(messageToBackground);
+                //Stop
         }
 
         private void Slider1_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             if (player != null)
             {
-                var messageToBackground = new ValueSet {{"Volume", (float) e.NewValue / 100}};
-                BackgroundMediaPlayer.SendMessageToBackground(messageToBackground);
+                //Change volume (float) e.NewValue / 100
             }
         }
 
@@ -152,8 +107,7 @@ namespace AudioMixApp
             if (player != null && tapped)
             {
                 newPosition = e.NewValue;
-                var messageToBackground = new ValueSet { { "Rewind", e.NewValue } };
-                BackgroundMediaPlayer.SendMessageToBackground(messageToBackground);
+                //Rewind e.NewValue
                 tapped = false;
             }
         }
@@ -161,6 +115,12 @@ namespace AudioMixApp
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Application.Current.Exit();
+        }
+
+        private void Create_Playlist_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //create playlist
+            //init players list
         }
     }
 }

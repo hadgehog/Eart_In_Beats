@@ -64,7 +64,7 @@ void XAudio2Player::SetPosition(Rational ratio, double position)
 			this->events->EndOfRewinding();
 	}
 
-		this->SubmitBuffer();
+		this->SubmitBuffer();	//
 }
 
 void XAudio2Player::FlushSourceVoice()
@@ -103,6 +103,15 @@ void XAudio2Player::SetAudioData(AudioReader *reader, Microsoft::WRL::ComPtr<IXA
 	this->sourceVoice = std::shared_ptr<IXAudio2SourceVoice>(tmpVoice, SourceVoiceDeleter());
 
 	CoTaskMemFree(wF);
+
+	this->stopped = false;
+	//this->SubmitBuffer();
+	//hr = this->sourceVoice->Start();
+}
+
+void XAudio2Player::Play()
+{
+	HRESULT hr = S_OK;
 
 	this->stopped = false;
 	this->SubmitBuffer();
