@@ -23,9 +23,9 @@ Reader::Reader()
 	this->player = std::shared_ptr<XAudio2Player>(new XAudio2Player());
 }
 
+///////////Init only last player!!! Need always recreate player in loop !!
 void Reader::InitPlayer(IPlayList ^playList)
 {
-	Windows::Storage::Streams::IRandomAccessStream ^stream;
 	this->currentPlayList = playList;
 
 	this->currentPlayList->SortPlaylist();
@@ -33,6 +33,8 @@ void Reader::InitPlayer(IPlayList ^playList)
 
 	for (size_t i = 0; i < currentPlayList->GetPlayListLength(); i++)
 	{
+		this->player = std::shared_ptr<XAudio2Player>(new XAudio2Player());
+		Windows::Storage::Streams::IRandomAccessStream ^stream;
 		InitMasterVoice::GetInstance();
 		MFAudioReader *reader = new MFAudioReader();
 		this->xAudio2 = InitMasterVoice::GetInstance().GetXAudio();
@@ -42,6 +44,10 @@ void Reader::InitPlayer(IPlayList ^playList)
 			tmppEvents->InitEvent(this);
 			this->events = std::shared_ptr<AudioEvents>(tmppEvents);
 		}
+
+		auto a = this->currentPlayList->GetTrack(i);
+		auto n = a->GetName();
+		auto p = a->GetPosition();
 
 		stream = this->currentPlayList->GetStream(i);
 
@@ -58,12 +64,12 @@ void Reader::InitPlayer(IPlayList ^playList)
 
 void Reader::Play(int num)
 {
-	if (this->playersList[num])
+	if (this->playersList[num - 1])
 	{
-		this->playersList[num]->Stop();
+		this->playersList[num - 1]->Stop();
 		//if needed always play from 0 position
 		//this->playersList[i]->SetPosition(Rational::SEC, 0);
-		this->playersList[num]->Play();
+		this->playersList[num - 1]->Play();
 	}
 }
 
@@ -78,7 +84,7 @@ void Reader::Rewinding(double setPosition)
 Windows::Foundation::TimeSpan Reader::Duration::get()
 {
 	Windows::Foundation::TimeSpan duration;
-	duration.Duration = this->player->GetDuration();
+	duration.Duration = this->playersList[0]->GetDuration();	//tmp
 	return duration;
 }
 
@@ -92,7 +98,7 @@ void Reader::Volume(float setVolume)
 
 LONGLONG Reader::CurrPos()
 {
-	return this->player->GetCurrentPosition();
+	return this->playersList[0]->GetCurrentPosition();	//tmp
 }
 
 void Reader::Stop()
@@ -134,7 +140,7 @@ void Reader::EndOfPlayingTrack(int c)	//begin playing new track in same player
 			this->tracksInfo.push_back(this->currentPlayList->GetInfoAboutTrack(c));
 
 			reader->Initialize(stream);
-			this->player->SetAudioData(reader, this->xAudio2);
+			//this->player->SetAudioData(reader, this->xAudio2);	//tmp
 		}
 }
 

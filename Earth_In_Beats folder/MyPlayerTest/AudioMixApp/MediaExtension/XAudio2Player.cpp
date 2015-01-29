@@ -158,9 +158,6 @@ void XAudio2Player::SubmitBuffer()
 			
 			this->currentPosition = sample->GetSampleTime();
 			this->samples.push(std::move(sample));
-
-			int64_t tmp = GetCurrentPosition();	/////
-
 		}
 		else
 		{

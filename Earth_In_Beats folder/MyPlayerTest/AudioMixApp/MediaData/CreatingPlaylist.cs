@@ -86,7 +86,6 @@ namespace MediaData
             trackList.Add(track);
         }
 
-
         public ITrack GetTrack(int index)
         {
             return this.trackList[index];
@@ -95,6 +94,7 @@ namespace MediaData
         public void SortPlaylist()
         {
             this.trackList.Sort((x, y) => x.Position - y.Position);
+            int st = 23;
         }
     }
 }

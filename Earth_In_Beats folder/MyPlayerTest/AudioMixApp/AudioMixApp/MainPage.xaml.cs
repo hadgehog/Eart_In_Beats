@@ -69,7 +69,7 @@ namespace AudioMixApp
             // play
             if (player != null)
             {
-                player.Play(3);
+                player.Play(1);
             }
 
         }
@@ -122,13 +122,10 @@ namespace AudioMixApp
         private void Create_Playlist_Button_Click(object sender, RoutedEventArgs e)
         {
             //create playlist
-            //init players list
-            if (playList == null)
-            {
-                playList = new CreatingPlaylist();
-                playList.CreatePlayList();
-            }
+            playList = new CreatingPlaylist();
+            playList.CreatePlayList();
 
+            //init players list
             player = new Reader();
             player.InitPlayer(playList);
         }
