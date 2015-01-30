@@ -46,7 +46,7 @@ namespace MediaExtension
 	public:
 		Reader();
 		void InitPlayer(IPlayList ^playList);
-		void Play(int num);
+		void Play();
 		void Rewinding(double setPosition);
 		property Windows::Foundation::TimeSpan Duration	{ Windows::Foundation::TimeSpan get(); }
 		void Volume(float setVolume);
@@ -59,13 +59,14 @@ namespace MediaExtension
 		void EndOfPlayingTrack(int c);
 
 	private:
-		std::shared_ptr<XAudio2Player> player;
+		//std::shared_ptr<XAudio2Player> player;
 		Microsoft::WRL::ComPtr<IXAudio2> xAudio2;
 		IPlayList ^currentPlayList;
 		std::shared_ptr<AudioEvents> events;
 		std::vector<std::shared_ptr<XAudio2Player>> playersList;
 		int64_t globalDuration = 0;
 		std::mutex lockPlayList;
+		int currentPlayerNum = 0;
 
 		int64_t FindSongDurationFromPlayList(int numSong);
 		std::vector<Platform::String ^> tracksInfo;

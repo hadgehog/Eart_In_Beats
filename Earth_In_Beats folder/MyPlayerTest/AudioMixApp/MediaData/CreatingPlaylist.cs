@@ -31,10 +31,10 @@ namespace MediaData
         {
             trackList = new List<Track>();
 
-            AddTrackInPlayList(2, "Assets\\02 Quutamo.mp3");
+            AddTrackInPlayList(1, "Assets\\02 Quutamo.mp3");
             AddTrackInPlayList(3, "Assets\\02 - Master of Puppets.mp3");
-            AddTrackInPlayList(1, "Assets\\1 Caroline Duris - Barrage(original mix).mp3");
-            AddTrackInPlayList(5, "Assets\\9d64d647715f9e.mp3");
+            AddTrackInPlayList(5, "Assets\\1 Caroline Duris - Barrage(original mix).mp3");
+            AddTrackInPlayList(2, "Assets\\9d64d647715f9e.mp3");
             AddTrackInPlayList(4, "Assets\\a9d220db4fcf.mp3");
         }
 

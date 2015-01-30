@@ -28,8 +28,6 @@ namespace AudioMixApp
         double newPosition = 0;
         private long trackLength = 0;
         bool tapped = false;
-        private List<Reader> playersList;
-        int songNum = 0;
 
         public MainPage()
         {
@@ -69,7 +67,7 @@ namespace AudioMixApp
             // play
             if (player != null)
             {
-                player.Play(1);
+                player.Play();
             }
 
         }
@@ -90,6 +88,7 @@ namespace AudioMixApp
             if (player != null)
             {
                 //Change volume (float) e.NewValue / 100
+                player.Volume((float)e.NewValue / 100);
             }
         }
 
@@ -110,6 +109,7 @@ namespace AudioMixApp
             {
                 newPosition = e.NewValue;
                 //Rewind e.NewValue
+                player.Rewinding(e.NewValue*3);
                 tapped = false;
             }
         }
