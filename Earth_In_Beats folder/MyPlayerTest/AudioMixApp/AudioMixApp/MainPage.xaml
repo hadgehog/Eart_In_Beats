@@ -10,11 +10,11 @@
 
     <Grid>
         <StackPanel>
-            <Button Content="Play" HorizontalAlignment="Center" Margin="0 24" Click="OpenButtonClick"/>
-            <Button Content="Stop" HorizontalAlignment="Center"  Margin="0 2" Click="Button_Click"/>
-            <Slider HorizontalAlignment="Center" Margin="98,40,92,40" Width="210" Name="sliderVolume" ValueChanged="Slider1_ValueChanged" />
-            <Button Content="Exit" HorizontalAlignment="Center" Margin="0 50" Click="Button_Click_1"/>
-            <Slider Margin="10 -30" Name="sliderProgress" Tapped="sliderProgress_Tapped" ValueChanged="Slider2_ValueChanged"/>
+            <Button Content="Exit" HorizontalAlignment="Center" Margin="145,50,146,50" Click="Button_Click_1"/>
+            <Slider HorizontalAlignment="Center" Margin="98,40,92,40" Width="210" x:Name="sliderVolume" ValueChanged="Slider1_ValueChanged" />
+            <Button Content="Play" HorizontalAlignment="Center" Margin="145,20,146,5" Click="OpenButtonClick"/>
+            <Button Content="Stop" HorizontalAlignment="Center"  Margin="145,0,146,50" Click="Button_Click"/>
+            <Slider Margin="10 -30" x:Name="sliderProgress" Tapped="sliderProgress_Tapped" ValueChanged="Slider2_ValueChanged"/>
             <Button Content="Create Playlist" Click="Create_Playlist_Button_Click"  HorizontalAlignment="Stretch"  Margin="0,50"/>
         </StackPanel>
     </Grid>

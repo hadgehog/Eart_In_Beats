@@ -25,8 +25,9 @@ Reader::Reader()
 
 void Reader::InitPlayer(IPlayList ^playList)
 {
-	this->currentPlayList = playList;
+	this->playersList.clear();
 
+	this->currentPlayList = playList;
 	this->currentPlayList->SortPlaylist();
 	this->FindGlobalDuration();	
 
@@ -64,6 +65,24 @@ void Reader::Play()
 		this->playersList[this->currentPlayerNum]->Stop();
 		//if needed always play from 0 position
 		//this->playersList[i]->SetPosition(Rational::SEC, 0);
+		this->playersList[this->currentPlayerNum]->Play();
+	}
+}
+
+void Reader::Next(){
+	if (this->playersList[this->currentPlayerNum])
+	{
+		this->playersList[this->currentPlayerNum]->Stop();
+		this->currentPlayerNum++;
+		this->playersList[this->currentPlayerNum]->Play();
+	}
+}
+
+void Reader::Previous(){
+	if (this->playersList[this->currentPlayerNum - 1])
+	{
+		this->playersList[this->currentPlayerNum]->Stop();
+		this->currentPlayerNum--;
 		this->playersList[this->currentPlayerNum]->Play();
 	}
 }
@@ -109,7 +128,6 @@ void Reader::Stop()
 			this->playersList[i]->SetPosition(Rational::SEC, 0);
 		}
 	}
-	//this->playersList.clear();
 }
 
 void Reader::FindGlobalDuration()
@@ -129,23 +147,6 @@ void Reader::EndOfRewindingTrack()
 
 void Reader::EndOfPlayingTrack(int c)	//start new player incrementing currentPlayerNum
 {
-	//Windows::Storage::Streams::IRandomAccessStream ^stream;
-	//MFAudioReader *reader = new MFAudioReader();
-	//int playlistLength = this->currentPlayList->GetPlayListLength();
-
-	//if (c < playlistLength)
-	//{
-	//	if (this->currentPlayList->CheckNext(c - 1))
-	//	{
-	//		stream = this->currentPlayList->GetStream(c);
-
-	//		this->tracksInfo.push_back(this->currentPlayList->GetInfoAboutTrack(c));
-
-	//		reader->Initialize(stream);
-	//		//this->player->SetAudioData(reader, this->xAudio2);	//tmp
-	//	}
-	//}
-
 	this->playersList[this->currentPlayerNum]->Stop();
 	this->currentPlayerNum++;
 

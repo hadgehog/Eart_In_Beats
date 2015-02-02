@@ -37,9 +37,9 @@ namespace AudioMixApp
             sliderProgress.Value = 0;
         }
 
-        private async void SetTrackDuration(long duration)
+        private async void SetTrackDuration()
         {
-            trackLength = duration;
+            trackLength = player.Duration.Ticks;
 
             #if WINDOWS_PHONE_APP
               var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
@@ -47,7 +47,7 @@ namespace AudioMixApp
               var dispatcher = CoreApplication.MainView.Dispatcher;
             #endif
 
-            for (int i = 1; i < trackLength; i++)
+            for (int i = 0; i < trackLength; i++)
             {
                 await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
@@ -67,7 +67,9 @@ namespace AudioMixApp
             // play
             if (player != null)
             {
+                //sliderProgress.Value=
                 player.Play();
+                this.SetTrackDuration();
             }
 
         }
@@ -76,7 +78,6 @@ namespace AudioMixApp
         {
                 sliderProgress.Value = 0;
                 newPosition = 0;
-                //Stop
                 if (player != null)
                 {
                     player.Stop();
@@ -87,7 +88,6 @@ namespace AudioMixApp
         {
             if (player != null)
             {
-                //Change volume (float) e.NewValue / 100
                 player.Volume((float)e.NewValue / 100);
             }
         }
@@ -108,8 +108,8 @@ namespace AudioMixApp
             if (player != null && tapped)
             {
                 newPosition = e.NewValue;
-                //Rewind e.NewValue
-                player.Rewinding(e.NewValue*3);
+                var tmp = player.Duration.Ticks;
+                player.Rewinding(e.NewValue * (tmp / 100));
                 tapped = false;
             }
         }
