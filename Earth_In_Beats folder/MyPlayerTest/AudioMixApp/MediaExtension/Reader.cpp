@@ -73,6 +73,7 @@ void Reader::Next(){
 	if (this->playersList[this->currentPlayerNum])
 	{
 		this->playersList[this->currentPlayerNum]->Stop();
+		this->playersList[this->currentPlayerNum]->SetPosition(Rational::SEC, 0);
 		this->currentPlayerNum++;
 		this->playersList[this->currentPlayerNum]->Play();
 	}
@@ -82,6 +83,7 @@ void Reader::Previous(){
 	if (this->playersList[this->currentPlayerNum - 1])
 	{
 		this->playersList[this->currentPlayerNum]->Stop();
+		this->playersList[this->currentPlayerNum]->SetPosition(Rational::SEC, 0);
 		this->currentPlayerNum--;
 		this->playersList[this->currentPlayerNum]->Play();
 	}

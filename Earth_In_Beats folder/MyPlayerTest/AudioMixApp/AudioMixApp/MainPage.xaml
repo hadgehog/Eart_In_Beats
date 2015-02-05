@@ -9,13 +9,19 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <StackPanel>
-            <Button Content="Exit" HorizontalAlignment="Center" Margin="145,50,146,50" Click="Button_Click_1"/>
-            <Slider HorizontalAlignment="Center" Margin="98,40,92,40" Width="210" x:Name="sliderVolume" ValueChanged="Slider1_ValueChanged" />
-            <Button Content="Play" HorizontalAlignment="Center" Margin="145,20,146,5" Click="OpenButtonClick"/>
-            <Button Content="Stop" HorizontalAlignment="Center"  Margin="145,0,146,50" Click="Button_Click"/>
-            <Slider Margin="10 -30" x:Name="sliderProgress" Tapped="sliderProgress_Tapped" ValueChanged="Slider2_ValueChanged"/>
-            <Button Content="Create Playlist" Click="Create_Playlist_Button_Click"  HorizontalAlignment="Stretch"  Margin="0,50"/>
+        <StackPanel Orientation="Horizontal">
+            
+            <Button Content="Create Playlist" Click="Create_Playlist_Button_Click" Width="300" Margin="50, 0, 0, 550"/>
+            <Button Content="p" Click="Previous_Button_Click" Margin="-340,0,0,400"/>
+            <Button Content="Play" Click="OpenButtonClick" Width="140" Margin="-220,0, 0, 400"/>
+            <Button Content="n" Click="Next_Button_Click" Margin="-70, 0, 0, 400"/>
+            <Button Content="Stop" Click="Button_Click" Margin="-245, 0, 0, 300"/>
+
+            <Slider Width="210" x:Name="sliderVolume" HorizontalAlignment="Center" Margin="-375,460,0,130" ValueChanged="Slider1_ValueChanged"/>
+            <Slider Width="380" x:Name="sliderProgress" Tapped="sliderProgress_Tapped" ValueChanged="Slider2_ValueChanged" Margin="-380, 520, 0, 70"/>
+
+            <Button Content="Exit" Click="Button_Click_1" Margin="-110,580,0,0"/>
+            
         </StackPanel>
     </Grid>
 </Page>

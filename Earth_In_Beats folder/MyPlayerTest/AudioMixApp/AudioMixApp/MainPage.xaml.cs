@@ -69,7 +69,7 @@ namespace AudioMixApp
             {
                 //sliderProgress.Value=
                 player.Play();
-                this.SetTrackDuration();
+                //this.SetTrackDuration();
             }
 
         }
@@ -128,6 +128,22 @@ namespace AudioMixApp
             //init players list
             player = new Reader();
             player.InitPlayer(playList);
+        }
+
+        private void Previous_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (player != null)
+            {
+                player.Previous();
+            }
+        }
+
+        private void Next_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (player != null)
+            {
+                player.Next();
+            }
         }
     }
 }
