@@ -21,6 +21,8 @@ using namespace Platform;
 Reader::Reader()
 {
 	//this->player = std::shared_ptr<XAudio2Player>(new XAudio2Player());
+	this->currentPlayerNum = 0;
+	this->globalDuration = 0;
 }
 
 void Reader::InitPlayer(IPlayList ^playList)
@@ -51,7 +53,7 @@ void Reader::InitPlayer(IPlayList ^playList)
 
 		reader->Initialize(stream);
 
-		player->Initialize(reader, this->xAudio2, this->events);	//create new player
+		player->Initialize(reader, this->xAudio2, this->events);	//create new players
 
 		std::lock_guard<std::mutex> lock(this->lockPlayList);
 		this->playersList.push_back(player);
