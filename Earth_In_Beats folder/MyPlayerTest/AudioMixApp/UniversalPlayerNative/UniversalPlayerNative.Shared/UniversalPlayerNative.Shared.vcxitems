@@ -3,9 +3,9 @@
   <PropertyGroup Label="Globals">
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
-    <ItemsProjectGuid>{b89c9c7d-649d-4f50-9460-cdb062a03080}</ItemsProjectGuid>
-    <ItemsRootNamespace>Universal</ItemsRootNamespace>
-    <ItemsProjectName>Universal.Shared</ItemsProjectName>
+    <ItemsProjectGuid>{43891cb7-7c59-484a-9ba7-866efb7818ee}</ItemsProjectGuid>
+    <ItemsRootNamespace>UniversalPlayerNative</ItemsRootNamespace>
+    <ItemsProjectName>UniversalPlayerNative.Shared</ItemsProjectName>
     <CodeSharingProject>248F659F-DAC5-46E8-AC09-60EC9FC95053</CodeSharingProject>
   </PropertyGroup>
   <ItemDefinitionGroup>
@@ -14,9 +14,12 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)UniversalPlayerNative.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)targetver.h"/>
+    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h"/>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)UniversalPlayerNative.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

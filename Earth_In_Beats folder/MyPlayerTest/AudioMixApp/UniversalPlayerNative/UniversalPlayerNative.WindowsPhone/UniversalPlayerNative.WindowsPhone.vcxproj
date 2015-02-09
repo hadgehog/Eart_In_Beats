@@ -21,36 +21,36 @@
 	</ItemGroup>
 
 	<PropertyGroup Label="Globals">
-		<ProjectGuid>{259a33fb-3c52-4036-8ab5-50aae739bee6}</ProjectGuid>
-		<RootNamespace>Universal</RootNamespace>
+		<ProjectGuid>{269977d5-c097-4d07-bd4a-aaf61ec301df}</ProjectGuid>
+		<RootNamespace>UniversalPlayerNative</RootNamespace>
 		<DefaultLanguage>en-US</DefaultLanguage>
 		<MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
 		<AppContainerApplication>true</AppContainerApplication>
 		<ApplicationType>Windows Phone</ApplicationType>
 		<ApplicationTypeRevision>8.1</ApplicationTypeRevision>
-		<ConvergedProjectType>CodeSharingWindowsRuntimeComponent</ConvergedProjectType>
+		<ConvergedProjectType>CodeSharingStaticLibrary</ConvergedProjectType>
 	</PropertyGroup>
 
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-		<ConfigurationType>DynamicLibrary</ConfigurationType>
+		<ConfigurationType>StaticLibrary</ConfigurationType>
 		<UseDebugLibraries>true</UseDebugLibraries>
 		<PlatformToolset>v120_wp81</PlatformToolset>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
-		<ConfigurationType>DynamicLibrary</ConfigurationType>
+		<ConfigurationType>StaticLibrary</ConfigurationType>
 		<UseDebugLibraries>true</UseDebugLibraries>
 		<PlatformToolset>v120_wp81</PlatformToolset>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-		<ConfigurationType>DynamicLibrary</ConfigurationType>
+		<ConfigurationType>StaticLibrary</ConfigurationType>
 		<UseDebugLibraries>false</UseDebugLibraries>
 		<WholeProgramOptimization>true</WholeProgramOptimization>
 		<PlatformToolset>v120_wp81</PlatformToolset>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
-		<ConfigurationType>DynamicLibrary</ConfigurationType>
+		<ConfigurationType>StaticLibrary</ConfigurationType>
 		<UseDebugLibraries>false</UseDebugLibraries>
 		<WholeProgramOptimization>true</WholeProgramOptimization>
 		<PlatformToolset>v120_wp81</PlatformToolset>
@@ -58,7 +58,7 @@
 
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
 
-	<Import Project="..\Universal.Shared\Universal.Shared.vcxitems" Label="Shared" />
+	<Import Project="..\UniversalPlayerNative.Shared\UniversalPlayerNative.Shared.vcxitems" Label="Shared" />
 
 	<ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
 		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -76,75 +76,73 @@
 		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
 	</ImportGroup>
 
+	<PropertyGroup Label="UserMacros" />
+
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+		<GenerateManifest>false</GenerateManifest>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+		<GenerateManifest>false</GenerateManifest>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+		<GenerateManifest>false</GenerateManifest>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+		<GenerateManifest>false</GenerateManifest>
 	</PropertyGroup>
 
 	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
 		<ClCompile>
 			<PrecompiledHeader>Use</PrecompiledHeader>
-			<PreprocessorDefinitions>_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-			<PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-			<PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
-			<AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+			<CompileAsWinRT>false</CompileAsWinRT>
 			<SDLCheck>true</SDLCheck>
 		</ClCompile>
 		<Link>
 			<SubSystem>Console</SubSystem>
 			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+			<GenerateWindowsMetadata>false</GenerateWindowsMetadata>
 		</Link>
 	</ItemDefinitionGroup>
 
 	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
 		<ClCompile>
 			<PrecompiledHeader>Use</PrecompiledHeader>
-			<PreprocessorDefinitions>_WINRT_DLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-			<PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-			<PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
-			<AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+			<CompileAsWinRT>false</CompileAsWinRT>
 			<SDLCheck>true</SDLCheck>
 		</ClCompile>
 		<Link>
 			<SubSystem>Console</SubSystem>
 			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+			<GenerateWindowsMetadata>false</GenerateWindowsMetadata>
 		</Link>
 	</ItemDefinitionGroup>
 
-	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm'">
 		<ClCompile>
 			<PrecompiledHeader>Use</PrecompiledHeader>
-			<PreprocessorDefinitions>_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-			<PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-			<PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
-			<AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+			<CompileAsWinRT>false</CompileAsWinRT>
 			<SDLCheck>true</SDLCheck>
 		</ClCompile>
 		<Link>
 			<SubSystem>Console</SubSystem>
 			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+			<GenerateWindowsMetadata>false</GenerateWindowsMetadata>
 		</Link>
 	</ItemDefinitionGroup>
 
-	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm'">
 		<ClCompile>
 			<PrecompiledHeader>Use</PrecompiledHeader>
-			<PreprocessorDefinitions>_WINRT_DLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-			<PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-			<PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
-			<AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+			<CompileAsWinRT>false</CompileAsWinRT>
 			<SDLCheck>true</SDLCheck>
 		</ClCompile>
 		<Link>
 			<SubSystem>Console</SubSystem>
 			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+			<GenerateWindowsMetadata>false</GenerateWindowsMetadata>
 		</Link>
 	</ItemDefinitionGroup>
 
