@@ -45,6 +45,7 @@ namespace MediaExtension
 
 	public:
 		Reader();
+		virtual ~Reader();
 		void InitPlayer(IPlayList ^playList);
 		void Play();
 		void Next();

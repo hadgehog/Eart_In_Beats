@@ -25,6 +25,11 @@ Reader::Reader()
 	this->globalDuration = 0;
 }
 
+Reader::~Reader()
+{
+
+}
+
 void Reader::InitPlayer(IPlayList ^playList)
 {
 	this->playersList.clear();

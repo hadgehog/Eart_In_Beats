@@ -7,7 +7,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp" />
     <ClCompile Include="AudioEvents.cpp" />
     <ClCompile Include="AudioReader.cpp" />
     <ClCompile Include="AudioSample.cpp" />
@@ -16,12 +15,12 @@
     <ClCompile Include="MFAudioEvents.cpp" />
     <ClCompile Include="MFAudioReader.cpp" />
     <ClCompile Include="MFAudioSample.cpp" />
+    <ClCompile Include="pch.cpp" />
     <ClCompile Include="Reader.cpp" />
     <ClCompile Include="VoiceCallBack.cpp" />
     <ClCompile Include="XAudio2Player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h" />
     <ClInclude Include="AudioEvents.h" />
     <ClInclude Include="AudioReader.h" />
     <ClInclude Include="AudioSample.h" />
@@ -30,6 +29,7 @@
     <ClInclude Include="MFAudioEvents.h" />
     <ClInclude Include="MFAudioReader.h" />
     <ClInclude Include="MFAudioSample.h" />
+    <ClInclude Include="pch.h" />
     <ClInclude Include="Reader.h" />
     <ClInclude Include="XAudio2Player.h" />
   </ItemGroup>

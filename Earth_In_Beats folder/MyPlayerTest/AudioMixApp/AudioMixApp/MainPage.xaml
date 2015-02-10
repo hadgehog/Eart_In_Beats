@@ -21,7 +21,7 @@
             <Slider Width="380" x:Name="sliderProgress" Tapped="sliderProgress_Tapped" ValueChanged="Slider2_ValueChanged" Margin="-380, 520, 0, 70"/>
 
             <Button Content="Exit" Click="Button_Click_1" Margin="-110,580,0,0"/>
-            
+      
         </StackPanel>
     </Grid>
 </Page>

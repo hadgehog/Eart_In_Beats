@@ -18,6 +18,38 @@
       <Platform>ARM</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AudioEvents.cpp" />
+    <ClCompile Include="AudioReader.cpp" />
+    <ClCompile Include="AudioSample.cpp" />
+    <ClCompile Include="Auto.cpp" />
+    <ClCompile Include="InitMasterVoice.cpp" />
+    <ClCompile Include="MFAudioEvents.cpp" />
+    <ClCompile Include="MFAudioReader.cpp" />
+    <ClCompile Include="MFAudioSample.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Reader.cpp" />
+    <ClCompile Include="VoiceCallBack.cpp" />
+    <ClCompile Include="XAudio2Player.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AudioEvents.h" />
+    <ClInclude Include="AudioReader.h" />
+    <ClInclude Include="AudioSample.h" />
+    <ClInclude Include="Auto.h" />
+    <ClInclude Include="InitMasterVoice.h" />
+    <ClInclude Include="MFAudioEvents.h" />
+    <ClInclude Include="MFAudioReader.h" />
+    <ClInclude Include="MFAudioSample.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Reader.h" />
+    <ClInclude Include="XAudio2Player.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5cd51d8f-ea7a-4577-af9e-5556fe43fe9c}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -137,38 +169,6 @@
       <AdditionalDependencies>Mfplat.lib;Mfuuid.lib;Mfreadwrite.lib;Xaudio2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="AudioEvents.h" />
-    <ClInclude Include="AudioReader.h" />
-    <ClInclude Include="AudioSample.h" />
-    <ClInclude Include="Auto.h" />
-    <ClInclude Include="InitMasterVoice.h" />
-    <ClInclude Include="MFAudioEvents.h" />
-    <ClInclude Include="MFAudioReader.h" />
-    <ClInclude Include="MFAudioSample.h" />
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="Reader.h" />
-    <ClInclude Include="XAudio2Player.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="AudioEvents.cpp" />
-    <ClCompile Include="AudioReader.cpp" />
-    <ClCompile Include="AudioSample.cpp" />
-    <ClCompile Include="Auto.cpp" />
-    <ClCompile Include="InitMasterVoice.cpp" />
-    <ClCompile Include="MFAudioEvents.cpp" />
-    <ClCompile Include="MFAudioReader.cpp" />
-    <ClCompile Include="MFAudioSample.cpp" />
-    <ClCompile Include="pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Reader.cpp" />
-    <ClCompile Include="VoiceCallBack.cpp" />
-    <ClCompile Include="XAudio2Player.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

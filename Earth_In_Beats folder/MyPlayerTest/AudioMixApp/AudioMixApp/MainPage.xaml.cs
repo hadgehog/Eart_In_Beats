@@ -47,14 +47,18 @@ namespace AudioMixApp
               var dispatcher = CoreApplication.MainView.Dispatcher;
             #endif
 
-            for (int i = 0; i < trackLength; i++)
+            if (player != null)
             {
-                await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                while (player.CurrPos() <= player.Duration.Ticks)
                 {
-                    sliderProgress.Value += 100.0 / trackLength;
-                });
-                await Task.Delay(TimeSpan.FromSeconds(1));
+                    await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        sliderProgress.Value += 100.0 / trackLength;
+                    });
+                    await Task.Delay(TimeSpan.FromSeconds(1));
+                }
             }
+        
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -67,9 +71,9 @@ namespace AudioMixApp
             // play
             if (player != null)
             {
-                //sliderProgress.Value=
+                sliderProgress.Value = 0;
                 player.Play();
-                //this.SetTrackDuration();
+                this.SetTrackDuration();
             }
 
         }
@@ -92,12 +96,6 @@ namespace AudioMixApp
             }
         }
 
-        public void ResetProgress(long duration)
-        {
-            sliderProgress.Value = 0;
-            trackLength = duration;
-        }
-
         private void sliderProgress_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             tapped = true;
@@ -116,11 +114,21 @@ namespace AudioMixApp
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            player.Dispose();
+            GC.Collect();
+
             Application.Current.Exit();
         }
 
         private void Create_Playlist_Button_Click(object sender, RoutedEventArgs e)
         {
+            if (player != null)
+            {
+                player.Stop();
+                player.Dispose();
+                GC.Collect();
+            }
+
             //create playlist
             playList = new CreatingPlaylist();
             playList.CreatePlayList();
