@@ -104,6 +104,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <ProjectReference Include="..\..\EarthInBeatsNativeLibrary\EarthInBeatsNativeLibrary.Windows\EarthInBeatsNativeLibrary.Windows.vcxproj">
+      <Project>{bda6dc7a-6a2d-4938-8d88-e410c8c98ad7}</Project>
+      <Name>EarthInBeatsNativeLibrary.Windows</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainPage.xaml.cs">
@@ -115,7 +119,6 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="EarthInBeatsPlayer.Windows_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Logo.scale-100.png" />

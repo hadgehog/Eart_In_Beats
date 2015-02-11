@@ -21,36 +21,36 @@
 	</ItemGroup>
 
 	<PropertyGroup Label="Globals">
-		<ProjectGuid>{6b64a47e-1212-49ca-a0d6-0834822c5ebb}</ProjectGuid>
+		<ProjectGuid>{6cac3efb-2410-445d-a0b2-ee8a637a78e3}</ProjectGuid>
 		<RootNamespace>EarthInBeatsNativeLibrary</RootNamespace>
 		<DefaultLanguage>en-US</DefaultLanguage>
 		<MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
 		<AppContainerApplication>true</AppContainerApplication>
 		<ApplicationType>Windows Phone</ApplicationType>
 		<ApplicationTypeRevision>8.1</ApplicationTypeRevision>
-		<ConvergedProjectType>CodeSharingStaticLibrary</ConvergedProjectType>
+		<ConvergedProjectType>CodeSharingWindowsRuntimeComponent</ConvergedProjectType>
 	</PropertyGroup>
 
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-		<ConfigurationType>StaticLibrary</ConfigurationType>
+		<ConfigurationType>DynamicLibrary</ConfigurationType>
 		<UseDebugLibraries>true</UseDebugLibraries>
 		<PlatformToolset>v120_wp81</PlatformToolset>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
-		<ConfigurationType>StaticLibrary</ConfigurationType>
+		<ConfigurationType>DynamicLibrary</ConfigurationType>
 		<UseDebugLibraries>true</UseDebugLibraries>
 		<PlatformToolset>v120_wp81</PlatformToolset>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-		<ConfigurationType>StaticLibrary</ConfigurationType>
+		<ConfigurationType>DynamicLibrary</ConfigurationType>
 		<UseDebugLibraries>false</UseDebugLibraries>
 		<WholeProgramOptimization>true</WholeProgramOptimization>
 		<PlatformToolset>v120_wp81</PlatformToolset>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
-		<ConfigurationType>StaticLibrary</ConfigurationType>
+		<ConfigurationType>DynamicLibrary</ConfigurationType>
 		<UseDebugLibraries>false</UseDebugLibraries>
 		<WholeProgramOptimization>true</WholeProgramOptimization>
 		<PlatformToolset>v120_wp81</PlatformToolset>
@@ -76,73 +76,75 @@
 		<Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
 	</ImportGroup>
 
-	<PropertyGroup Label="UserMacros" />
-
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-		<GenerateManifest>false</GenerateManifest>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-		<GenerateManifest>false</GenerateManifest>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-		<GenerateManifest>false</GenerateManifest>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-		<GenerateManifest>false</GenerateManifest>
 	</PropertyGroup>
 
 	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
 		<ClCompile>
 			<PrecompiledHeader>Use</PrecompiledHeader>
-			<CompileAsWinRT>false</CompileAsWinRT>
+			<PreprocessorDefinitions>_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+			<PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
+			<AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
 			<SDLCheck>true</SDLCheck>
 		</ClCompile>
 		<Link>
 			<SubSystem>Console</SubSystem>
 			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-			<GenerateWindowsMetadata>false</GenerateWindowsMetadata>
 		</Link>
 	</ItemDefinitionGroup>
 
 	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
 		<ClCompile>
 			<PrecompiledHeader>Use</PrecompiledHeader>
-			<CompileAsWinRT>false</CompileAsWinRT>
+			<PreprocessorDefinitions>_WINRT_DLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+			<PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
+			<AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
 			<SDLCheck>true</SDLCheck>
 		</ClCompile>
 		<Link>
 			<SubSystem>Console</SubSystem>
 			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-			<GenerateWindowsMetadata>false</GenerateWindowsMetadata>
 		</Link>
 	</ItemDefinitionGroup>
 
-	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm'">
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
 		<ClCompile>
 			<PrecompiledHeader>Use</PrecompiledHeader>
-			<CompileAsWinRT>false</CompileAsWinRT>
+			<PreprocessorDefinitions>_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+			<PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
+			<AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
 			<SDLCheck>true</SDLCheck>
 		</ClCompile>
 		<Link>
 			<SubSystem>Console</SubSystem>
 			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-			<GenerateWindowsMetadata>false</GenerateWindowsMetadata>
 		</Link>
 	</ItemDefinitionGroup>
 
-	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm'">
+	<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
 		<ClCompile>
 			<PrecompiledHeader>Use</PrecompiledHeader>
-			<CompileAsWinRT>false</CompileAsWinRT>
+			<PreprocessorDefinitions>_WINRT_DLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+			<PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+			<PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
+			<AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
 			<SDLCheck>true</SDLCheck>
 		</ClCompile>
 		<Link>
 			<SubSystem>Console</SubSystem>
 			<IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-			<GenerateWindowsMetadata>false</GenerateWindowsMetadata>
 		</Link>
 	</ItemDefinitionGroup>
 
