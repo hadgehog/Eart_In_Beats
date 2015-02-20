@@ -14,16 +14,31 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Class1.h"/>
-    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h"/>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Class1.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp">
-      <PrecompiledHeader>Create</PrecompiledHeader>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioData\AudioReader\AudioReader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioData\AudioReader\MFAudioReader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioData\AudioSample\AudioSample.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioData\AudioSample\MFAudioSample.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioEngine\VoiceCallBack.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioEngine\XAudio2Player.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioEvents\AudioEvents.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioEvents\MFAudioEvents.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioHelpers\Auto.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioHelpers\InitMasterVoice.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioPlayer\Reader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioData\AudioReader\AudioReader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioData\AudioReader\MFAudioReader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioData\AudioSample\AudioSample.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioData\AudioSample\MFAudioSample.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioEngine\XAudio2Player.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioEvents\AudioEvents.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioEvents\MFAudioEvents.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioHelpers\Auto.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioHelpers\InitMasterVoice.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\Reader.h" />
   </ItemGroup>
 </Project>
