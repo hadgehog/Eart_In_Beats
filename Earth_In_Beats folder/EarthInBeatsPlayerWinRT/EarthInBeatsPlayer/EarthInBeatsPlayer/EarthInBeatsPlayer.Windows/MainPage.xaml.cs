@@ -23,5 +23,50 @@ namespace EarthInBeatsPlayer
         {
             this.InitializeComponent();
         }
+
+        private void Create_Playlist_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Previous_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OpenButtonClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Next_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Slider1_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void sliderProgress_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            
+        }
+
+        private void Slider2_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+
+        }
     }
 }
