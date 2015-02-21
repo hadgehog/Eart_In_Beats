@@ -1,4 +1,4 @@
-﻿using MediaExtension;
+﻿using EarthInBeatsNativeLibrary;
 using ProtoBuf;
 
 namespace MediaData

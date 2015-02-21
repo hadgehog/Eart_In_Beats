@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using Windows.ApplicationModel;
 using Windows.Storage;
 using Windows.Storage.Streams;
-using MediaExtension;
+using EarthInBeatsNativeLibrary;
 using ProtoBuf;
 using Windows.Storage.FileProperties;
 using System.Text;
