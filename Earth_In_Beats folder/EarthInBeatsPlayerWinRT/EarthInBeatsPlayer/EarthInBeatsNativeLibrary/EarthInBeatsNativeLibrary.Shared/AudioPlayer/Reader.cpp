@@ -76,22 +76,28 @@ void Reader::Play()
 }
 
 void Reader::Next(){
-	if (this->playersList[this->currentPlayerNum])
+	if (this->currentPlayerNum < playersList.size())
 	{
-		this->playersList[this->currentPlayerNum]->Stop();
-		this->playersList[this->currentPlayerNum]->SetPosition(Rational::SEC, 0);
-		this->currentPlayerNum++;
-		this->playersList[this->currentPlayerNum]->Play();
+		if (this->playersList[this->currentPlayerNum])
+		{
+			this->playersList[this->currentPlayerNum]->Stop();
+			this->playersList[this->currentPlayerNum]->SetPosition(Rational::SEC, 0);
+			this->currentPlayerNum++;
+			this->playersList[this->currentPlayerNum]->Play();
+		}
 	}
 }
 
 void Reader::Previous(){
-	if (this->playersList[this->currentPlayerNum - 1])
+	if (this->currentPlayerNum - 1 >= 0)
 	{
-		this->playersList[this->currentPlayerNum]->Stop();
-		this->playersList[this->currentPlayerNum]->SetPosition(Rational::SEC, 0);
-		this->currentPlayerNum--;
-		this->playersList[this->currentPlayerNum]->Play();
+		if (this->playersList[this->currentPlayerNum - 1])
+		{
+			this->playersList[this->currentPlayerNum]->Stop();
+			this->playersList[this->currentPlayerNum]->SetPosition(Rational::SEC, 0);
+			this->currentPlayerNum--;
+			this->playersList[this->currentPlayerNum]->Play();
+		}
 	}
 }
 

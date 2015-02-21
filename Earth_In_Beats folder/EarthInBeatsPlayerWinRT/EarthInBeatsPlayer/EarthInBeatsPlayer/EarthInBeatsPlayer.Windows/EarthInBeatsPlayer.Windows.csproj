@@ -108,6 +108,10 @@
       <Project>{bda6dc7a-6a2d-4938-8d88-e410c8c98ad7}</Project>
       <Name>EarthInBeatsNativeLibrary.Windows</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\MediaDataDesktop\MediaDataDesktop.csproj">
+      <Project>{88058923-7f5f-4ad8-80e0-36eedb158d71}</Project>
+      <Name>MediaDataDesktop</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainPage.xaml.cs">
@@ -121,7 +125,18 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\02 - Master of Puppets.mp3" />
+    <Content Include="Assets\02 Quutamo.mp3" />
+    <Content Include="Assets\1 Caroline Duris - Barrage%28original mix%29.mp3" />
+    <Content Include="Assets\9d64d647715f9e.mp3" />
+    <Content Include="Assets\a9d220db4fcf.mp3" />
+    <Content Include="Assets\AlbumArtSmall.jpg" />
+    <Content Include="Assets\AlbumArt_{0D5E074E-9562-49C9-97DB-C2F787991E56}_Large.jpg" />
+    <Content Include="Assets\AlbumArt_{0D5E074E-9562-49C9-97DB-C2F787991E56}_Small.jpg" />
+    <Content Include="Assets\Folder.jpg" />
+    <Content Include="Assets\kosmos_05.png" />
     <Content Include="Assets\Logo.scale-100.png" />
+    <Content Include="Assets\master.png" />
     <Content Include="Assets\SmallLogo.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\StoreLogo.scale-100.png" />
