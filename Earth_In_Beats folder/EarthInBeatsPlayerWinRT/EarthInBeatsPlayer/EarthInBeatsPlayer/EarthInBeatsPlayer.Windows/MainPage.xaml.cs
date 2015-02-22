@@ -34,6 +34,11 @@ namespace EarthInBeatsPlayer
             sliderProgress.Value = 0;
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            int stop = 234;
+        }
+
         private void Create_Playlist_Button_Click(object sender, RoutedEventArgs e)
         {
             if (player != null)
@@ -118,6 +123,16 @@ namespace EarthInBeatsPlayer
                 player.Rewinding(e.NewValue * (tmp / 100));
                 tapped = false;
             }
+        }
+
+        void IncreaseProgress()
+        {
+
+        }
+
+        void ResetProgress()
+        {
+
         }
     }
 }

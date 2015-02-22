@@ -76,7 +76,7 @@ void Reader::Play()
 }
 
 void Reader::Next(){
-	if (this->currentPlayerNum < playersList.size())
+	if (this->currentPlayerNum < playersList.size() - 1)
 	{
 		if (this->playersList[this->currentPlayerNum])
 		{
@@ -129,7 +129,14 @@ void Reader::Volume(float setVolume)
 
 LONGLONG Reader::CurrPos()
 {
-	return this->playersList[this->currentPlayerNum]->GetCurrentPosition();
+	if (this->playersList[this->currentPlayerNum])
+	{
+		return this->playersList[this->currentPlayerNum]->GetCurrentPosition();
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 void Reader::Stop()
