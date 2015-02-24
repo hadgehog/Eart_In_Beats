@@ -16,9 +16,9 @@
             <Button Content="n" Click="Next_Button_Click" Margin="-45, 0, 0, 600"/>
             <Button Content="Stop" Click="Button_Click" Margin="-180, 0, 0, 500"/>
 
-            <Button Content="Exit" Click="Button_Click_1" Margin="-180,0,0,0"/>
+            <Button Content="Exit" Click="Button_Click_1" Margin="-180,100,0,0"/>
 
-            <Slider Width="294" x:Name="sliderVolume" Margin="-295,180,0,540" ValueChanged="Slider1_ValueChanged"/>
+            <Slider Width="294" x:Name="sliderVolume" Margin="-295,260,0,457" ValueChanged="Slider1_ValueChanged"/>
             <Slider Width="1329" x:Name="sliderProgress" Tapped="sliderProgress_Tapped" ValueChanged="Slider2_ValueChanged" Margin="-295, 700, 0, 20"/>
 
         </StackPanel>
