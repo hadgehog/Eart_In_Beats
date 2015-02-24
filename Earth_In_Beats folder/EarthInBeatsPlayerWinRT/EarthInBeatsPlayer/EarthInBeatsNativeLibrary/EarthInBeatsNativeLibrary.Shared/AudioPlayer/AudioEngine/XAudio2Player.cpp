@@ -43,9 +43,10 @@ LONGLONG XAudio2Player::GetCurrentPosition()
 
 LONGLONG XAudio2Player::GetDuration()
 {
-	LONGLONG convertValue = 0;  //durationValue.Convert(Rational::HNS).value;
+	LONGLONG convertValue = 0;
 	Int64Rational durationValue = this->reader->GetAudioDuration();
 	Int64Rational pos(static_cast<Int64Rational::Type>(durationValue.Convert_cr(Int64Rational::Unit::SEC).value), Int64Rational::Unit::SEC);
+	convertValue = pos.value;
 
 	return convertValue;
 }

@@ -69,8 +69,7 @@ void Reader::Play()
 	if (this->playersList[this->currentPlayerNum])
 	{
 		this->playersList[this->currentPlayerNum]->Stop();
-		//if needed always play from 0 position
-		//this->playersList[i]->SetPosition(Rational::SEC, 0);
+		//if needed always play from 0 position to do SetPosition(0)
 		this->playersList[this->currentPlayerNum]->Play();
 	}
 }
@@ -81,7 +80,11 @@ void Reader::Next(){
 		if (this->playersList[this->currentPlayerNum])
 		{
 			this->playersList[this->currentPlayerNum]->Stop();
-			this->playersList[this->currentPlayerNum]->SetPosition(Rational::SEC, 0);
+
+			DoubleRational tmpPos(static_cast<double>(0.0), DoubleRational::Unit::SEC);
+			Int64Rational pos(static_cast<Int64Rational::Type>(tmpPos.Convert_cr(DoubleRational::Unit::HNS).value), Int64Rational::Unit::HNS);
+
+			this->playersList[this->currentPlayerNum]->SetPosition(pos);
 			this->currentPlayerNum++;
 			this->playersList[this->currentPlayerNum]->Play();
 		}
@@ -94,7 +97,11 @@ void Reader::Previous(){
 		if (this->playersList[this->currentPlayerNum - 1])
 		{
 			this->playersList[this->currentPlayerNum]->Stop();
-			this->playersList[this->currentPlayerNum]->SetPosition(Rational::SEC, 0);
+
+			DoubleRational tmpPos(static_cast<double>(0.0), DoubleRational::Unit::SEC);
+			Int64Rational pos(static_cast<Int64Rational::Type>(tmpPos.Convert_cr(DoubleRational::Unit::HNS).value), Int64Rational::Unit::HNS);
+
+			this->playersList[this->currentPlayerNum]->SetPosition(pos);
 			this->currentPlayerNum--;
 			this->playersList[this->currentPlayerNum]->Play();
 		}
@@ -105,7 +112,10 @@ void Reader::Rewinding(double setPosition)
 {	
 	if (this->playersList[this->currentPlayerNum])
 	{
-		this->playersList[this->currentPlayerNum]->SetPosition(Rational::SEC, setPosition);
+		DoubleRational tmpPos(static_cast<double>(setPosition), DoubleRational::Unit::SEC);
+		Int64Rational pos(static_cast<Int64Rational::Type>(tmpPos.Convert_cr(DoubleRational::Unit::HNS).value), Int64Rational::Unit::HNS);
+
+		this->playersList[this->currentPlayerNum]->SetPosition(pos);
 	}
 }
 
@@ -146,7 +156,11 @@ void Reader::Stop()
 		if (this->playersList[i])
 		{
 			this->playersList[i]->Stop();
-			this->playersList[i]->SetPosition(Rational::SEC, 0);
+
+			DoubleRational tmpPos(static_cast<double>(0.0), DoubleRational::Unit::SEC);
+			Int64Rational pos(static_cast<Int64Rational::Type>(tmpPos.Convert_cr(DoubleRational::Unit::HNS).value), Int64Rational::Unit::HNS);
+
+			this->playersList[i]->SetPosition(pos);
 		}
 	}
 }
@@ -188,7 +202,10 @@ int64_t Reader::FindSongDurationFromPlayList(int numSong)
 	stream = this->currentPlayList->GetStream(numSong);
 	reader->Initialize(stream);
 	Int64Rational songDuration = reader->GetAudioDuration();
-	int64_t convertSongDuration = songDuration.Convert(Rational::HNS).value;
+	int64_t convertSongDuration = 0;
+	Int64Rational pos(songDuration.Convert_cr(Int64Rational::Unit::SEC).value, Int64Rational::Unit::HNS);
+	convertSongDuration = pos.value;
+
 	return convertSongDuration;
 }
 
