@@ -30,7 +30,7 @@ public:
 	LONGLONG GetCurrentPosition();
 	LONGLONG GetDuration();
 	void SetVolume(float volume);
-	void SetPosition(Rational ratio, double setPosition);
+	void SetPosition(const Int64Rational &position);
 	void SetAudioData(AudioReader *reader, Microsoft::WRL::ComPtr<IXAudio2> xAudio2);
 	void Play();
 	void Stop();

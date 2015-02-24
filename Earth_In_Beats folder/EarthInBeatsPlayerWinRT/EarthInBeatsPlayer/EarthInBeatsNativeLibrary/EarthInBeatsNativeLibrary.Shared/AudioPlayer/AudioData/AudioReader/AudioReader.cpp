@@ -9,9 +9,6 @@
 
 using namespace Platform;
 
-const Rational Rational::HNS(1, 10000000);
-const Rational Rational::SEC(10000000, 1);
-
 AudioReader::AudioReader()
 {
 }

@@ -33,16 +33,20 @@ XAudio2Player::~XAudio2Player()
 
 LONGLONG XAudio2Player::GetCurrentPosition()
 {
-	Int64Rational currPos;
-	currPos.SetValue(this->currentPosition);
-	LONGLONG physCurrPos = currPos.Convert(Rational::HNS).value;
+	LONGLONG physCurrPos = 0;
+	Int64Rational tmpPos(this->currentPosition, Int64Rational::Unit::HNS);
+	Int64Rational pos(static_cast<Int64Rational::Type>(tmpPos.Convert_cr(Int64Rational::Unit::SEC).value), Int64Rational::Unit::SEC);
+	physCurrPos = pos.value;
+
 	return physCurrPos;
 }
 
 LONGLONG XAudio2Player::GetDuration()
 {
+	LONGLONG convertValue = 0;  //durationValue.Convert(Rational::HNS).value;
 	Int64Rational durationValue = this->reader->GetAudioDuration();
-	LONGLONG convertValue = durationValue.Convert(Rational::HNS).value;
+	Int64Rational pos(static_cast<Int64Rational::Type>(durationValue.Convert_cr(Int64Rational::Unit::SEC).value), Int64Rational::Unit::SEC);
+
 	return convertValue;
 }
 
@@ -52,11 +56,11 @@ void XAudio2Player::SetVolume(float volume)
 	hr = this->sourceVoice->SetVolume(volume);
 }
 
-void XAudio2Player::SetPosition(Rational ratio, double position)
+void XAudio2Player::SetPosition(const Int64Rational &position)
 {
 	{
 		this->FlushSourceVoice();
-		this->reader->SetPosition(ratio, position);
+		this->reader->SetPosition(position);
 
 		if (this->events)
 			this->events->EndOfRewinding();

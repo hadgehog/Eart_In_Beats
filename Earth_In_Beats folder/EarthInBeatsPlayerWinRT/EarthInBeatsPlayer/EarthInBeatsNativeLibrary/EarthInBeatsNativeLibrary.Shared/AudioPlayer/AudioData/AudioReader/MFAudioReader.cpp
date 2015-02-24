@@ -88,6 +88,7 @@ Int64Rational MFAudioReader::GetAudioDuration()
 	Int64Rational realDur;
 	LONGLONG realDuration = this->FindAudioDuration();
 	realDur.SetValue(realDuration);
+	realDur.SetRational(Int64Rational::Unit::HNS);
 	return realDur;
 }
 
@@ -206,19 +207,16 @@ LONGLONG MFAudioReader::FindAudioDuration()
 	return duration;
 }
 
-void MFAudioReader::SetPosition(Rational inputRational, double destination)
+void MFAudioReader::SetPosition(const Int64Rational &position)
 {
 	HRESULT hr = S_OK;
 	PROPVARIANT varPos;
 	ULONGLONG hnsPos;
-	Int64Rational position;
 
-	position.SetRational(inputRational);
-	position.SetValue(destination);
-	hnsPos = position.Convert(Rational::SEC).value;
+	hnsPos = position.Convert_cr(Int64Rational::Unit::HNS).value;
 
 	varPos.uhVal.QuadPart = hnsPos;
 	varPos.vt = VARENUM::VT_I8;
-	
+
 	hr = this->audioReader->SetCurrentPosition(GUID_NULL, varPos);
 }

@@ -24,5 +24,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioHelpers\Auto.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioHelpers\InitMasterVoice.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\Reader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioHelpers\Rational.h" />
   </ItemGroup>
 </Project>

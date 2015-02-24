@@ -28,7 +28,7 @@ public:
 	virtual Int64Rational GetAudioDuration() override;
 	void Initialize(Windows::Storage::Streams::IRandomAccessStream ^stream);
 	virtual AudioSample *ReadAudioSample() override;
-	virtual void SetPosition(Rational inputRational, double destination) override;
+	virtual void SetPosition(const Int64Rational &position) override;
 
 private:
 	Microsoft::WRL::ComPtr<IMFSourceReader> audioReader;
