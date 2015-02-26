@@ -14,6 +14,9 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using MediaData;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
+using System.Threading.Tasks;
 
 namespace EarthInBeatsPlayer
 {
@@ -22,9 +25,11 @@ namespace EarthInBeatsPlayer
 
         Reader player;
         CreatingPlaylist playList;
-        double newPosition = 0;
-        private long trackLength = 0;
+        private long dur = 0;
+        private double cur = 0;
+        private double curRewind = 0;
         bool tapped = false;
+        Windows.UI.Core.CoreDispatcher dispatcher;
 
         public MainPage()
         {
@@ -72,6 +77,8 @@ namespace EarthInBeatsPlayer
             {
                 sliderProgress.Value = 0;
                 player.Play();
+                this.ResetProgress();
+                this.IncreaseProgress();
             }
         }
 
@@ -86,10 +93,12 @@ namespace EarthInBeatsPlayer
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             sliderProgress.Value = 0;
-            newPosition = 0;
+            tapped = false;
+
             if (player != null)
             {
                 player.Stop();
+                this.ResetProgress();
             }
         }
 
@@ -118,21 +127,47 @@ namespace EarthInBeatsPlayer
         {
             if (player != null && tapped)
             {
-                newPosition = e.NewValue;
-                var tmp = player.Duration.Ticks;
-                player.Rewinding(e.NewValue * (tmp / 100));
+                curRewind = e.NewValue;
+                player.Rewinding((curRewind * dur) / 100);
                 tapped = false;
             }
         }
 
-        void IncreaseProgress()
+        private async void IncreaseProgress()
         {
+            this.dur = player.Duration.Ticks;
+
+            dispatcher = CoreApplication.MainView.Dispatcher;
+
+            while (player.CurrPos() <= this.dur)
+            {
+                await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    if (this.tapped)
+                    {
+                        if (this.curRewind != 0)
+                        {
+                            sliderProgress.Value = this.curRewind;
+                        }
+                    }
+                    else
+                    {
+                        cur = player.CurrPos();
+                        sliderProgress.Value = (cur * 100.0) / (double)this.dur;
+                    }
+
+                });
+                await Task.Delay(TimeSpan.FromSeconds(1));
+            }
 
         }
 
         void ResetProgress()
         {
-
+            if (this.dispatcher != null)
+            {
+                this.dispatcher.StopProcessEvents();
+            }
         }
     }
 }

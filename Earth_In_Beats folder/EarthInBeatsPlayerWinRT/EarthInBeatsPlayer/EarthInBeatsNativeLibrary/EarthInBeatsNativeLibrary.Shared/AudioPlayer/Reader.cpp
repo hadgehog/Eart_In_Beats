@@ -175,6 +175,11 @@ void Reader::FindGlobalDuration()
 	}
 }
 
+int Reader::GetGlobalDuration()
+{
+	return this->globalDuration;
+}
+
 void Reader::EndOfRewindingTrack()
 {
 
@@ -207,9 +212,4 @@ int64_t Reader::FindSongDurationFromPlayList(int numSong)
 	convertSongDuration = pos.value;
 
 	return convertSongDuration;
-}
-
-int Reader::GetGlobalDuration()
-{
-	return this->globalDuration;
 }

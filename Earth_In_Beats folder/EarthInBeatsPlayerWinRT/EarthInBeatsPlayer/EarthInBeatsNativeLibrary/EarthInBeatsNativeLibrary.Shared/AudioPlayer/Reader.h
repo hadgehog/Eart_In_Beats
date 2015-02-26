@@ -71,9 +71,9 @@ namespace EarthInBeatsNativeLibrary
 		int64_t globalDuration = 0;
 		std::mutex lockPlayList;
 		int currentPlayerNum = 0;
+		std::vector<Platform::String ^> tracksInfo;
 
 		int64_t FindSongDurationFromPlayList(int numSong);
-		std::vector<Platform::String ^> tracksInfo;
 	};
 }
 
