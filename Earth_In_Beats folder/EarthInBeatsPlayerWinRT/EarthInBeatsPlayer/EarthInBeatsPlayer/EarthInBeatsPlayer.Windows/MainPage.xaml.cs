@@ -26,10 +26,10 @@ namespace EarthInBeatsPlayer
         Reader player;
         CreatingPlaylist playList;
         private long dur = 0;
-        private double cur = 0;
         private double curRewind = 0;
         bool tapped = false;
         Windows.UI.Core.CoreDispatcher dispatcher;
+        bool updateProgress = true;
 
         public MainPage()
         {
@@ -37,6 +37,13 @@ namespace EarthInBeatsPlayer
             this.NavigationCacheMode = NavigationCacheMode.Required;
             sliderVolume.Value = 100;
             sliderProgress.Value = 0;
+
+            this.sliderProgress.PointerPressed += sliderProgress_PointerPressed;
+            this.sliderProgress.PointerReleased += sliderProgress_PointerReleased;
+
+            this.sliderProgress.AddHandler(PointerPressedEvent, new PointerEventHandler(sliderProgress_PointerPressed), true);
+            this.sliderProgress.AddHandler(PointerReleasedEvent, new PointerEventHandler(sliderProgress_PointerReleased), true);
+
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -75,6 +82,8 @@ namespace EarthInBeatsPlayer
             //play
             if (player != null)
             {
+                this.dur = player.Duration.Ticks;
+
                 sliderProgress.Value = 0;
                 player.Play();
                 this.ResetProgress();
@@ -120,46 +129,35 @@ namespace EarthInBeatsPlayer
 
         private void sliderProgress_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            tapped = true;
+            //tapped = true;
         }
 
         private void Slider2_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
-            if (player != null && tapped)
+            if(!this.updateProgress)
             {
                 curRewind = e.NewValue;
-                player.Rewinding((curRewind * dur) / 100);
-                tapped = false;
+                int s = 34;
             }
         }
 
         private async void IncreaseProgress()
         {
-            this.dur = player.Duration.Ticks;
-
             dispatcher = CoreApplication.MainView.Dispatcher;
 
             while (player.CurrPos() <= this.dur)
             {
                 await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    if (this.tapped)
+                    if (this.updateProgress && this.player != null)
                     {
-                        if (this.curRewind != 0)
-                        {
-                            sliderProgress.Value = this.curRewind;
-                        }
-                    }
-                    else
-                    {
-                        cur = player.CurrPos();
+                        var cur = player.CurrPos();
                         sliderProgress.Value = (cur * 100.0) / (double)this.dur;
                     }
 
                 });
                 await Task.Delay(TimeSpan.FromSeconds(1));
             }
-
         }
 
         void ResetProgress()
@@ -168,6 +166,21 @@ namespace EarthInBeatsPlayer
             {
                 this.dispatcher.StopProcessEvents();
             }
+        }
+
+        private void sliderProgress_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            this.updateProgress = false;
+        }
+
+        private void sliderProgress_PointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            if (player != null)
+            {
+                player.Rewinding((curRewind * dur) / 100);  //need get NEW curRewind, because this method call before valuechanged and curRewind==0
+            }
+
+            this.updateProgress = true;
         }
     }
 }
