@@ -26,9 +26,6 @@ namespace EarthInBeatsPlayer
 
         Reader player;
         CreatingPlaylist playList;
-        private long dur = 0;
-        private double curRewind = 0;
-        bool tapped = false;
         Windows.UI.Core.CoreDispatcher dispatcher;
         bool updateProgress = true;
 
@@ -83,8 +80,6 @@ namespace EarthInBeatsPlayer
             //play
             if (player != null)
             {
-                this.dur = player.Duration.Ticks;
-
                 sliderProgress.Value = 0;
                 player.Play();
                 this.ResetProgress();
@@ -103,7 +98,6 @@ namespace EarthInBeatsPlayer
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             sliderProgress.Value = 0;
-            tapped = false;
 
             if (player != null)
             {
@@ -128,32 +122,18 @@ namespace EarthInBeatsPlayer
             Application.Current.Exit();
         }
 
-        private void sliderProgress_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
-        {
-            //tapped = true;
-        }
-
-        private void Slider2_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
-        {
-            if(!this.updateProgress)
-            {
-                curRewind = e.NewValue;
-                int s = 34;
-            }
-        }
-
         private async void IncreaseProgress()
         {
             dispatcher = CoreApplication.MainView.Dispatcher;
 
-            while (player.CurrPos() <= this.dur)
+            while (this.player.CurrPos() <= this.player.Duration.Ticks)
             {
                 await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     if (this.updateProgress && this.player != null)
                     {
                         var cur = player.CurrPos();
-                        sliderProgress.Value = (cur * 100.0) / (double)this.dur;
+                        sliderProgress.Value = (cur * 100.0) / (double)this.player.Duration.Ticks;
                     }
 
                 });
@@ -178,17 +158,13 @@ namespace EarthInBeatsPlayer
         {
             var id = e.Pointer.PointerId;
             PointerPoint pt = e.GetCurrentPoint(this.sliderProgress);
-            var pos = pt.Position;
+            var pos = pt.Position.X;
 
-            var curX = (pos.X * 0.9729) / 100;
-            curX = (curX * dur) / 100;
-
-            int stop = 23;
+            var rewind = (pos / this.sliderProgress.Width) * this.player.Duration.Ticks;
 
             if (player != null)
             {
-                player.Rewinding(curX);  //need get NEW curRewind, because this method call before valuechanged and curRewind==0
-                //(curRewind * dur) / 100
+                player.Rewinding(rewind);
             }
 
             this.updateProgress = true;

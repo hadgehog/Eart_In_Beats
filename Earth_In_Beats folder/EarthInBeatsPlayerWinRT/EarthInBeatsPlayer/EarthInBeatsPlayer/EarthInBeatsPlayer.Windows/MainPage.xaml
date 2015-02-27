@@ -19,7 +19,7 @@
             <Button Content="Exit" Click="Button_Click_1" Margin="-180,100,0,0"/>
 
             <Slider Width="294" x:Name="sliderVolume" Margin="-295,260,0,457" ValueChanged="Slider1_ValueChanged"/>
-            <Slider Width="1329" x:Name="sliderProgress" PointerPressed="sliderProgress_PointerPressed" PointerReleased="sliderProgress_PointerReleased" Tapped="sliderProgress_Tapped" ValueChanged="Slider2_ValueChanged" Margin="-295, 700, 0, 20"/>
+            <Slider Width="1329" x:Name="sliderProgress" PointerPressed="sliderProgress_PointerPressed" PointerReleased="sliderProgress_PointerReleased" Margin="-295, 700, 0, 20"/>
 
         </StackPanel>
     </Grid>
