@@ -17,6 +17,7 @@ using MediaData;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using System.Threading.Tasks;
+using Windows.UI.Input;
 
 namespace EarthInBeatsPlayer
 {
@@ -175,9 +176,19 @@ namespace EarthInBeatsPlayer
 
         private void sliderProgress_PointerReleased(object sender, PointerRoutedEventArgs e)
         {
+            var id = e.Pointer.PointerId;
+            PointerPoint pt = e.GetCurrentPoint(this.sliderProgress);
+            var pos = pt.Position;
+
+            var curX = (pos.X * 0.9729) / 100;
+            curX = (curX * dur) / 100;
+
+            int stop = 23;
+
             if (player != null)
             {
-                player.Rewinding((curRewind * dur) / 100);  //need get NEW curRewind, because this method call before valuechanged and curRewind==0
+                player.Rewinding(curX);  //need get NEW curRewind, because this method call before valuechanged and curRewind==0
+                //(curRewind * dur) / 100
             }
 
             this.updateProgress = true;
