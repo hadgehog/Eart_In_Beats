@@ -18,6 +18,7 @@ using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using System.Threading.Tasks;
 using Windows.UI.Input;
+using Windows.Storage.Pickers;
 
 namespace EarthInBeatsPlayer
 {
@@ -168,6 +169,27 @@ namespace EarthInBeatsPlayer
             }
 
             this.updateProgress = true;
+        }
+
+        private async void Select_Files__Button_Click(object sender, RoutedEventArgs e)
+        {
+            FileOpenPicker filePicker = new FileOpenPicker();
+
+            filePicker.ViewMode = PickerViewMode.List;
+            filePicker.SuggestedStartLocation = PickerLocationId.ComputerFolder;
+            filePicker.FileTypeFilter.Add(".mp3");
+            filePicker.FileTypeFilter.Add(".wav");
+            filePicker.FileTypeFilter.Add(".wma");
+            filePicker.FileTypeFilter.Add(".aac");
+            filePicker.FileTypeFilter.Add(".flac");
+            filePicker.FileTypeFilter.Add(".mp4");
+
+            var pickedFile = await filePicker.PickSingleFileAsync();
+
+            if (pickedFile != null)
+            {
+                //create playlist
+            }
         }
     }
 }
