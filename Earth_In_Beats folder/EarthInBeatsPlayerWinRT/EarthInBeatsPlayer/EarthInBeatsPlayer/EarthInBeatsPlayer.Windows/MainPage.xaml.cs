@@ -19,6 +19,7 @@ using Windows.UI.Core;
 using System.Threading.Tasks;
 using Windows.UI.Input;
 using Windows.Storage.Pickers;
+using Windows.Storage.AccessCache;
 
 namespace EarthInBeatsPlayer
 {
@@ -29,6 +30,9 @@ namespace EarthInBeatsPlayer
         CreatingPlaylist playList;
         Windows.UI.Core.CoreDispatcher dispatcher;
         bool updateProgress = true;
+        List<string> songs;
+        string accessFolder;
+        FolderPicker fPiker;
 
         public MainPage()
         {
@@ -43,6 +47,8 @@ namespace EarthInBeatsPlayer
             this.sliderProgress.AddHandler(PointerPressedEvent, new PointerEventHandler(sliderProgress_PointerPressed), true);
             this.sliderProgress.AddHandler(PointerReleasedEvent, new PointerEventHandler(sliderProgress_PointerReleased), true);
 
+            
+
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -50,22 +56,56 @@ namespace EarthInBeatsPlayer
             int stop = 234;
         }
 
-        private void Create_Playlist_Button_Click(object sender, RoutedEventArgs e)
+        private async void Create_Playlist_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (player != null)
+            if (this.fPiker != null)
             {
-                player.Stop();
-                player.Dispose();
-                GC.Collect();
+                FileOpenPicker filePicker = new FileOpenPicker();
+
+                filePicker.ViewMode = PickerViewMode.List;
+                filePicker.SuggestedStartLocation = PickerLocationId.ComputerFolder;
+                filePicker.FileTypeFilter.Add(".mp3");
+                filePicker.FileTypeFilter.Add(".wav");
+                filePicker.FileTypeFilter.Add(".wma");
+                filePicker.FileTypeFilter.Add(".aac");
+                filePicker.FileTypeFilter.Add(".flac");
+                filePicker.FileTypeFilter.Add(".mp4");
+
+                var pickedFiles = await filePicker.PickMultipleFilesAsync();
+
+                if (pickedFiles != null)
+                {
+                    if (this.songs == null)
+                    {
+                        this.songs = new List<string>();
+                    }
+
+                    for (int i = 0; i < pickedFiles.Count; i++)
+                    {
+                        var file = pickedFiles[i];
+                        var path = file.Path;
+                        var name = file.Name;
+
+                        this.songs.Add(name);
+                    }
+
+                    if (player != null)
+                    {
+                        player.Stop();
+                        player.Dispose();
+                        GC.Collect();
+                    }
+
+                    //create playlist
+                    playList = new CreatingPlaylist();
+                    playList.CreatePlayList(this.songs, accessFolder);
+
+                    //init players list
+                    player = new Reader();
+                    player.InitPlayer(playList);
+
+                }
             }
-
-            //create playlist
-            playList = new CreatingPlaylist();
-            playList.CreatePlayList();
-
-            //init players list
-            player = new Reader();
-            player.InitPlayer(playList);
         }
 
         private void Previous_Button_Click(object sender, RoutedEventArgs e)
@@ -171,25 +211,13 @@ namespace EarthInBeatsPlayer
             this.updateProgress = true;
         }
 
-        private async void Select_Files__Button_Click(object sender, RoutedEventArgs e)
+        private async void Folder_Button_Click(object sender, RoutedEventArgs e)
         {
-            FileOpenPicker filePicker = new FileOpenPicker();
+            this.fPiker = new FolderPicker();
+            this.fPiker.FileTypeFilter.Add("*");
+            var folder = await this.fPiker.PickSingleFolderAsync();
 
-            filePicker.ViewMode = PickerViewMode.List;
-            filePicker.SuggestedStartLocation = PickerLocationId.ComputerFolder;
-            filePicker.FileTypeFilter.Add(".mp3");
-            filePicker.FileTypeFilter.Add(".wav");
-            filePicker.FileTypeFilter.Add(".wma");
-            filePicker.FileTypeFilter.Add(".aac");
-            filePicker.FileTypeFilter.Add(".flac");
-            filePicker.FileTypeFilter.Add(".mp4");
-
-            var pickedFile = await filePicker.PickSingleFileAsync();
-
-            if (pickedFile != null)
-            {
-                //create playlist
-            }
+            this.accessFolder = StorageApplicationPermissions.FutureAccessList.Add(folder);
         }
     }
 }
