@@ -57,7 +57,7 @@ namespace EarthInBeatsNativeLibrary
 		LONGLONG CurrPos();
 		void Stop();
 		void FindGlobalDuration();
-		int GetGlobalDuration();
+		int64_t GetGlobalDuration();
 
 		void EndOfRewindingTrack();
 		void EndOfPlayingTrack(int c);

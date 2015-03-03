@@ -11,14 +11,15 @@
     <Grid>
         <StackPanel Orientation="Horizontal">
 
-            <Button Content="Create Playlist" Click="Create_Playlist_Button_Click" Width="300" Margin="50, 0, 0, 550"/>
+            <Button Content="Create Playlist" Click="Create_Playlist_Button_Click" Width="150" Margin="30, 0, 0, 550"/>
+            <Button Content="Chose folder" Click="Folder_Button_Click" Width="150" Margin="20, 0, 0, 550"/>
             <Button Content="p" Click="Previous_Button_Click" Margin="-340,0,0,400"/>
             <Button Content="Play" Click="OpenButtonClick" Width="140" Margin="-220,0, 0, 400"/>
             <Button Content="n" Click="Next_Button_Click" Margin="-70, 0, 0, 400"/>
             <Button Content="Stop" Click="Button_Click" Margin="-245, 0, 0, 300"/>
 
             <Slider Width="210" x:Name="sliderVolume" HorizontalAlignment="Center" Margin="-375,460,0,130" ValueChanged="Slider1_ValueChanged"/>
-            <Slider Width="380" x:Name="sliderProgress" Tapped="sliderProgress_Tapped" ValueChanged="Slider2_ValueChanged" Margin="-380, 520, 0, 70"/>
+            <Slider Width="380" x:Name="sliderProgress" PointerPressed="sliderProgress_PointerPressed" PointerReleased="sliderProgress_PointerReleased" Margin="-380, 520, 0, 70"/>
 
             <Button Content="Exit" Click="Button_Click_1" Margin="-110,580,0,0"/>
 
