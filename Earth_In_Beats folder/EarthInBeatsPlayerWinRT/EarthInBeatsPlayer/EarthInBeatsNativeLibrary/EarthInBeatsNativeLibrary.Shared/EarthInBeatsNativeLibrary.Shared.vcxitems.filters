@@ -12,6 +12,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioHelpers\Auto.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioHelpers\InitMasterVoice.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AudioPlayer\Reader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\Earth\Renderers\EarthRendererNative.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\Earth\Renderers\EarthRenderableWinRT.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\Earth\INativeRenderable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioData\AudioReader\AudioReader.h" />
@@ -25,5 +28,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioHelpers\InitMasterVoice.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\Reader.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioHelpers\Rational.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\Earth\Renderers\EarthRendererNative.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\Earth\Renderers\EarthRenderableWinRT.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\Earth\INativeRenderable.h" />
   </ItemGroup>
 </Project>

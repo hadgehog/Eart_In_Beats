@@ -13,8 +13,8 @@ namespace MusicMaper.DAL
         {
             var players = new List<PlayerNode>
             {
-                new PlayerNode{ PhoneID = "1234567890", Latitude = 0, Longitude = 0, Artist = "Artist1", Title = "Title1" },
-                new PlayerNode{ PhoneID = "1234567890", Latitude = 0, Longitude = 0, Artist = "Artist2", Title = "Title2" },
+                new PlayerNode("1234567890", 0, 0, "Artist1", "Title1"),
+                new PlayerNode("1234567890", 0, 0, "Artist2", "Title2"),
             };
             players.ForEach(o => context.Players.Add(o));
         }

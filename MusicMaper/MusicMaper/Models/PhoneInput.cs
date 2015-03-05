@@ -13,6 +13,7 @@ namespace MusicMaper.Models
         Offline,
         Missing
     }
+
     public class PhoneInput
     {
         public PhoneStatus Status;
