@@ -37,7 +37,7 @@ void Reader::InitPlayer(IPlayList ^playList)
 	this->currentPlayList->SortPlaylist();
 	this->FindGlobalDuration();	
 
-	for (size_t i = 0; i < currentPlayList->GetPlayListLength(); i++)
+	for (uint16_t i = 0; i < currentPlayList->GetPlayListLength(); i++)
 	{
 		auto player = std::shared_ptr<XAudio2Player>(new XAudio2Player());
 		Windows::Storage::Streams::IRandomAccessStream ^stream;
@@ -128,7 +128,7 @@ Windows::Foundation::TimeSpan Reader::Duration::get()
 
 void Reader::Volume(float setVolume)
 {
-	for (int i = 0; i < this->playersList.size(); i++)
+	for (uint16_t i = 0; i < this->playersList.size(); i++)
 	{
 		if (this->playersList[i])
 		{
@@ -151,7 +151,7 @@ LONGLONG Reader::CurrPos()
 
 void Reader::Stop()
 {
-	for (int i = 0; i < this->playersList.size(); i++)
+	for (uint16_t i = 0; i < this->playersList.size(); i++)
 	{
 		if (this->playersList[i])
 		{
@@ -175,7 +175,7 @@ void Reader::FindGlobalDuration()
 	}
 }
 
-int Reader::GetGlobalDuration()
+int64_t Reader::GetGlobalDuration()
 {
 	return this->globalDuration;
 }

@@ -46,9 +46,6 @@ namespace EarthInBeatsPlayer
 
             this.sliderProgress.AddHandler(PointerPressedEvent, new PointerEventHandler(sliderProgress_PointerPressed), true);
             this.sliderProgress.AddHandler(PointerReleasedEvent, new PointerEventHandler(sliderProgress_PointerReleased), true);
-
-            
-
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -157,7 +154,11 @@ namespace EarthInBeatsPlayer
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            player.Dispose();
+            if (player != null)
+            {
+                player.Dispose();
+            }
+
             GC.Collect();
 
             Application.Current.Exit();
@@ -192,23 +193,29 @@ namespace EarthInBeatsPlayer
 
         private void sliderProgress_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            this.updateProgress = false;
+            if (player != null)
+            {
+                this.updateProgress = false;
+            }
         }
 
         private void sliderProgress_PointerReleased(object sender, PointerRoutedEventArgs e)
         {
-            var id = e.Pointer.PointerId;
-            PointerPoint pt = e.GetCurrentPoint(this.sliderProgress);
-            var pos = pt.Position.X;
-
-            var rewind = (pos / this.sliderProgress.Width) * this.player.Duration.Ticks;
-
             if (player != null)
             {
-                player.Rewinding(rewind);
-            }
+                var id = e.Pointer.PointerId;
+                PointerPoint pt = e.GetCurrentPoint(this.sliderProgress);
+                var pos = pt.Position.X;
 
-            this.updateProgress = true;
+                var rewind = (pos / this.sliderProgress.Width) * this.player.Duration.Ticks;
+
+                if (player != null)
+                {
+                    player.Rewinding(rewind);
+                }
+
+                this.updateProgress = true;
+            }
         }
 
         private async void Folder_Button_Click(object sender, RoutedEventArgs e)

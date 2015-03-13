@@ -17,7 +17,6 @@ namespace MediaData
     {
         private List<Track> trackList;
         private string infoAboutTracks = "";
-
         StorageFolder folder;
 
         public CreatingPlaylist()

@@ -14,6 +14,7 @@ namespace MusicMaper.Models
         Stop,
         Play
     }
+
     public class PhoneInput
     {
         public PhoneStatus Status;

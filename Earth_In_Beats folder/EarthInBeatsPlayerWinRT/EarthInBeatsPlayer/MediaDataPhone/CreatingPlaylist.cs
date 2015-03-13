@@ -9,6 +9,7 @@ using EarthInBeatsNativeLibrary;
 using ProtoBuf;
 using Windows.Storage.FileProperties;
 using System.Text;
+using Windows.Storage.AccessCache;
 
 namespace MediaData
 {
@@ -16,6 +17,7 @@ namespace MediaData
     {
         private List<Track> trackList;
         private string infoAboutTracks = "";
+        StorageFolder folder;
 
         public CreatingPlaylist()
         {
@@ -27,20 +29,21 @@ namespace MediaData
         }
 
         //global positions sets outside
-        public void CreatePlayList()
+        public async void CreatePlayList(List<string> songs, string accessFolder)
         {
+            folder = await StorageApplicationPermissions.FutureAccessList.GetFolderAsync(accessFolder);
+
             trackList = new List<Track>();
 
-            AddTrackInPlayList(1, "Assets\\02 Quutamo.mp3");
-            AddTrackInPlayList(3, "Assets\\02 - Master of Puppets.mp3");
-            AddTrackInPlayList(5, "Assets\\1 Caroline Duris - Barrage(original mix).mp3");
-            AddTrackInPlayList(2, "Assets\\9d64d647715f9e.mp3");
-            AddTrackInPlayList(4, "Assets\\a9d220db4fcf.mp3");
+            for (int i = 0; i < songs.Count; i++)
+            {
+                AddTrackInPlayList(i + 1, songs[i]);
+            }
         }
 
         public virtual IRandomAccessStream GetStream(int trackNumber)
         {
-            var t = Package.Current.InstalledLocation.GetFileAsync(trackList[trackNumber].GetName()).AsTask();
+            var t = this.folder.GetFileAsync(trackList[trackNumber].GetName()).AsTask();
             t.Wait();
             StorageFile file = t.Result;
 
@@ -53,7 +56,7 @@ namespace MediaData
         //return info about track
         public virtual string GetInfoAboutTrack(int trackNumber)
         {
-            var t = Package.Current.InstalledLocation.GetFileAsync(trackList[trackNumber].GetName()).AsTask();
+            var t = this.folder.GetFileAsync(trackList[trackNumber].GetName()).AsTask();
             t.Wait();
             StorageFile file = t.Result;
 

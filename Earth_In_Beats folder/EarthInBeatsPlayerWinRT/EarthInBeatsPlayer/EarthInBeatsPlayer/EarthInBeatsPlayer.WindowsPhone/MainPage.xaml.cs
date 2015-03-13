@@ -14,28 +14,37 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using EarthInBeatsNativeLibrary;
 using MediaData;
-
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
+using System.Threading.Tasks;
+using Windows.UI.Input;
+using Windows.Storage.Pickers;
+using Windows.Storage.AccessCache;
 
 namespace EarthInBeatsPlayer
-{
-   
+{ 
     public sealed partial class MainPage : Page
     {
         Reader player;
         CreatingPlaylist playList;
-        double newPosition = 0;
-        private long trackLength = 0;
-        bool tapped = false;
+        Windows.UI.Core.CoreDispatcher dispatcher;
+        bool updateProgress = true;
+        List<string> songs;
+        string accessFolder;
+        FolderPicker fPiker;
 
         public MainPage()
         {
             this.InitializeComponent();
-
             this.NavigationCacheMode = NavigationCacheMode.Required;
-
             sliderVolume.Value = 100;
             sliderProgress.Value = 0;
+
+            this.sliderProgress.PointerPressed += sliderProgress_PointerPressed;
+            this.sliderProgress.PointerReleased += sliderProgress_PointerReleased;
+
+            this.sliderProgress.AddHandler(PointerPressedEvent, new PointerEventHandler(sliderProgress_PointerPressed), true);
+            this.sliderProgress.AddHandler(PointerReleasedEvent, new PointerEventHandler(sliderProgress_PointerReleased), true);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -43,22 +52,56 @@ namespace EarthInBeatsPlayer
             
         }
 
-        private void Create_Playlist_Button_Click(object sender, RoutedEventArgs e)
+        private async void Create_Playlist_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (player != null)
+            if (this.fPiker != null)
             {
-                player.Stop();
-                player.Dispose();
-                GC.Collect();
+                FileOpenPicker filePicker = new FileOpenPicker();
+
+                filePicker.ViewMode = PickerViewMode.List;
+                filePicker.SuggestedStartLocation = PickerLocationId.ComputerFolder;
+                filePicker.FileTypeFilter.Add(".mp3");
+                filePicker.FileTypeFilter.Add(".wav");
+                filePicker.FileTypeFilter.Add(".wma");
+                filePicker.FileTypeFilter.Add(".aac");
+                filePicker.FileTypeFilter.Add(".flac");
+                filePicker.FileTypeFilter.Add(".mp4");
+
+                var pickedFiles = await filePicker.PickMultipleFilesAsync();
+
+                if (pickedFiles != null)
+                {
+                    if (this.songs == null)
+                    {
+                        this.songs = new List<string>();
+                    }
+
+                    for (int i = 0; i < pickedFiles.Count; i++)
+                    {
+                        var file = pickedFiles[i];
+                        var path = file.Path;
+                        var name = file.Name;
+
+                        this.songs.Add(name);
+                    }
+
+                    if (player != null)
+                    {
+                        player.Stop();
+                        player.Dispose();
+                        GC.Collect();
+                    }
+
+                    //create playlist
+                    playList = new CreatingPlaylist();
+                    playList.CreatePlayList(this.songs, accessFolder);
+
+                    //init players list
+                    player = new Reader();
+                    player.InitPlayer(playList);
+
+                }
             }
-
-            //create playlist
-            playList = new CreatingPlaylist();
-            playList.CreatePlayList();
-
-            //init players list
-            player = new Reader();
-            player.InitPlayer(playList);
         }
 
         private void OpenButtonClick(object sender, RoutedEventArgs e)
@@ -68,6 +111,8 @@ namespace EarthInBeatsPlayer
             {
                 sliderProgress.Value = 0;
                 player.Play();
+                this.ResetProgress();
+                this.IncreaseProgress();
             }
         }
 
@@ -90,10 +135,11 @@ namespace EarthInBeatsPlayer
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             sliderProgress.Value = 0;
-            newPosition = 0;
+
             if (player != null)
             {
                 player.Stop();
+                this.ResetProgress();
             }
         }
 
@@ -105,28 +151,79 @@ namespace EarthInBeatsPlayer
             }
         }
 
-        private void sliderProgress_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
-        {
-            tapped = true;
-        }
-
-        private void Slider2_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
-        {
-            if (player != null && tapped)
-            {
-                newPosition = e.NewValue;
-                var tmp = player.Duration.Ticks;
-                player.Rewinding(e.NewValue * (tmp / 100));
-                tapped = false;
-            }
-        }
-
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            player.Dispose();
+            if (player != null)
+            {
+                player.Dispose();
+            }
+
             GC.Collect();
 
             Application.Current.Exit();
+        }
+
+        private async void IncreaseProgress()
+        {
+            dispatcher = CoreApplication.MainView.Dispatcher;
+
+            while (this.player.CurrPos() <= this.player.Duration.Ticks)
+            {
+                await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    if (this.updateProgress && this.player != null)
+                    {
+                        var cur = player.CurrPos();
+                        sliderProgress.Value = (cur * 100.0) / (double)this.player.Duration.Ticks;
+                    }
+
+                });
+                await Task.Delay(TimeSpan.FromSeconds(1));
+            }
+        }
+
+        void ResetProgress()
+        {
+            if (this.dispatcher != null)
+            {
+                this.dispatcher.StopProcessEvents();
+            }
+        }
+
+        private void sliderProgress_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            if (player != null)
+            {
+                this.updateProgress = false;
+            }
+        }
+
+        private void sliderProgress_PointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            if (player != null)
+            {
+                var id = e.Pointer.PointerId;
+                PointerPoint pt = e.GetCurrentPoint(this.sliderProgress);
+                var pos = pt.Position.X;
+
+                var rewind = (pos / this.sliderProgress.Width) * this.player.Duration.Ticks;
+
+                if (player != null)
+                {
+                    player.Rewinding(rewind);
+                }
+
+                this.updateProgress = true;
+            }
+        }
+
+        private async void Folder_Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.fPiker = new FolderPicker();
+            this.fPiker.FileTypeFilter.Add("*");
+            var folder = await this.fPiker.PickSingleFolderAsync();
+
+            this.accessFolder = StorageApplicationPermissions.FutureAccessList.Add(folder);
         }
     }
 }
