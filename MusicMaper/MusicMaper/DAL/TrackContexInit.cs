@@ -17,6 +17,8 @@ namespace MusicMaper.DAL
                 new PlayerNode{ PhoneID = "1234567890", Latitude = 0, Longitude = 0, Artist = "Artist2", Title = "Title2" },
             };
             players.ForEach(o => context.Players.Add(o));
+
+            context.SaveChanges();
         }
     }
 }

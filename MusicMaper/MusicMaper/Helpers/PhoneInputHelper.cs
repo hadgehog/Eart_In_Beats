@@ -12,12 +12,14 @@ namespace MusicMaper.Helpers
         {
             switch (Input)
             {
-                case "ReadyToPlay":
-                    return PhoneStatus.ReadyToPlay;
-                case "Playing":
-                    return PhoneStatus.Playing;
-                case "Offline":
-                    return PhoneStatus.Offline;
+                case "Connect":
+                    return PhoneStatus.Connect;
+                case "Play":
+                    return PhoneStatus.Play;
+                case "Stop":
+                    return PhoneStatus.Stop;
+                case "Disconnect":
+                    return PhoneStatus.Disconnect;
                 default:
                     return PhoneStatus.Missing;
             }

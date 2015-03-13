@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Data.Entity;
+﻿using MusicMaper.DAL;
 using MusicMaper.Models;
-using MusicMaper.DAL;
+using System.Data.Entity;
 
 namespace MusicMaper.Logic
 {
@@ -16,13 +12,16 @@ namespace MusicMaper.Logic
         {
             switch (Phone.Status)
             {
-                case PhoneStatus.ReadyToPlay:
+                case PhoneStatus.Connect:
                     Add(Phone.Player);
                     break;
-                case PhoneStatus.Playing:
+                case PhoneStatus.Play:
                     Edit(Phone.Player);
                     break;
-                case PhoneStatus.Offline:
+                case PhoneStatus.Stop:
+                    Edit(Phone.Player);
+                    break;
+                case PhoneStatus.Disconnect:
                     Remove(Phone.Player);
                     break;
                 default:
@@ -32,17 +31,30 @@ namespace MusicMaper.Logic
 
         static void Add(PlayerNode Player)
         {
-            db.Players.Add(Player);
-            db.SaveChanges();
+            var player = db.Players.Find(Player.PhoneID);
+            if (player == null)
+            {
+                db.Players.Add(Player);
+                db.SaveChanges();
+            }
         }
         static void Edit(PlayerNode Player)
         {
-
+                var player = db.Players.Find(Player.PhoneID);
+                if (player != null)
+                {
+                    db.Entry(Player).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
         }
         static void Remove(PlayerNode Player)
         {
-            db.Players.Remove(Player);
-            db.SaveChanges();
+            var player = db.Players.Find(Player.PhoneID);
+            if (player != null)
+            {
+                db.Players.Remove(Player);
+                db.SaveChanges();
+            }
         }
     }
 }
