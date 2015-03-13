@@ -29,9 +29,9 @@ namespace MediaData
         }
 
         //send a vector with song names
-        public async void CreatePlayList(List<string> songs, string accessFolder)
+        public void CreatePlayList(List<string> songs)
         {
-            folder = await StorageApplicationPermissions.FutureAccessList.GetFolderAsync(accessFolder);
+            this.folder = FolderHelper.LatestFolder;
 
             trackList = new List<Track>();
 

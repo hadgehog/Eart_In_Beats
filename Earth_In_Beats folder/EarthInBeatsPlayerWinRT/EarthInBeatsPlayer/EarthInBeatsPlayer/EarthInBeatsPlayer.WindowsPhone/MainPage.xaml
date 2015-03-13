@@ -23,6 +23,8 @@
 
             <Button Content="Exit" Click="Button_Click_1" Margin="-110,580,0,0"/>
 
+            <RichTextBlock x:Name="DebugTextBlock"  TextWrapping="Wrap" Foreground="White" Margin="-250,218,-30,205" Width="228" />
+
         </StackPanel>
     </Grid>
 </Page>

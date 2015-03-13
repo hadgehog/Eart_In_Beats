@@ -20,6 +20,8 @@ using System.Threading.Tasks;
 using Windows.UI.Input;
 using Windows.Storage.Pickers;
 using Windows.Storage.AccessCache;
+using Windows.UI;
+using Windows.UI.Xaml.Documents;
 
 namespace EarthInBeatsPlayer
 {
@@ -31,8 +33,7 @@ namespace EarthInBeatsPlayer
         Windows.UI.Core.CoreDispatcher dispatcher;
         bool updateProgress = true;
         List<string> songs;
-        string accessFolder;
-        FolderPicker fPiker;
+        bool needInitFoulder = true;
 
         public MainPage()
         {
@@ -48,14 +49,25 @@ namespace EarthInBeatsPlayer
             this.sliderProgress.AddHandler(PointerReleasedEvent, new PointerEventHandler(sliderProgress_PointerReleased), true);
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            int stop = 234;
+            await FolderHelper.InitStorages();
+
+            this.needInitFoulder = FolderHelper.LatestFolder == null;
+
+            if (this.needInitFoulder)
+            {
+                WriteDebugMessage("Audio folder not found! Please select torrents folder.", Colors.Red);
+            }
+            else
+            {
+                WriteDebugMessage("Audio folder is: " + FolderHelper.LatestFolder.Path, Colors.Green);
+            }
         }
 
         private async void Create_Playlist_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (this.fPiker != null)
+            if (!this.needInitFoulder)
             {
                 FileOpenPicker filePicker = new FileOpenPicker();
 
@@ -86,40 +98,44 @@ namespace EarthInBeatsPlayer
                         this.songs.Add(name);
                     }
 
-                    if (player != null)
+                    if (this.player != null)
                     {
-                        player.Stop();
-                        player.Dispose();
+                        this.player.Stop();
+                        this.player.Dispose();
                         GC.Collect();
                     }
 
                     //create playlist
-                    playList = new CreatingPlaylist();
-                    playList.CreatePlayList(this.songs, accessFolder);
+                    this.playList = new CreatingPlaylist();
+                    this.playList.CreatePlayList(this.songs);
 
                     //init players list
-                    player = new Reader();
-                    player.InitPlayer(playList);
+                    this.player = new Reader();
+                    this.player.InitPlayer(this.playList);
 
                 }
+            }
+            else
+            {
+                WriteDebugMessage("Audio folder not found! Please select torrents folder.", Colors.Red);
             }
         }
 
         private void Previous_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (player != null)
+            if (this.player != null)
             {
-                player.Previous();
+                this.player.Previous();
             }
         }
 
         private void OpenButtonClick(object sender, RoutedEventArgs e)
         {
             //play
-            if (player != null)
+            if (this.player != null)
             {
                 sliderProgress.Value = 0;
-                player.Play();
+                this.player.Play();
                 this.ResetProgress();
                 this.IncreaseProgress();
             }
@@ -127,9 +143,9 @@ namespace EarthInBeatsPlayer
 
         private void Next_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (player != null)
+            if (this.player != null)
             {
-                player.Next();
+                this.player.Next();
             }
         }
 
@@ -137,26 +153,26 @@ namespace EarthInBeatsPlayer
         {
             sliderProgress.Value = 0;
 
-            if (player != null)
+            if (this.player != null)
             {
-                player.Stop();
+                this.player.Stop();
                 this.ResetProgress();
             }
         }
 
         private void Slider1_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
-            if (player != null)
+            if (this.player != null)
             {
-                player.Volume((float)e.NewValue / 100);
+                this.player.Volume((float)e.NewValue / 100);
             }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if (player != null)
+            if (this.player != null)
             {
-                player.Dispose();
+                this.player.Dispose();
             }
 
             GC.Collect();
@@ -174,7 +190,7 @@ namespace EarthInBeatsPlayer
                 {
                     if (this.updateProgress && this.player != null)
                     {
-                        var cur = player.CurrPos();
+                        var cur = this.player.CurrPos();
                         sliderProgress.Value = (cur * 100.0) / (double)this.player.Duration.Ticks;
                     }
 
@@ -193,7 +209,7 @@ namespace EarthInBeatsPlayer
 
         private void sliderProgress_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            if (player != null)
+            if (this.player != null)
             {
                 this.updateProgress = false;
             }
@@ -201,7 +217,7 @@ namespace EarthInBeatsPlayer
 
         private void sliderProgress_PointerReleased(object sender, PointerRoutedEventArgs e)
         {
-            if (player != null)
+            if (this.player != null)
             {
                 var id = e.Pointer.PointerId;
                 PointerPoint pt = e.GetCurrentPoint(this.sliderProgress);
@@ -209,9 +225,9 @@ namespace EarthInBeatsPlayer
 
                 var rewind = (pos / this.sliderProgress.Width) * this.player.Duration.Ticks;
 
-                if (player != null)
+                if (this.player != null)
                 {
-                    player.Rewinding(rewind);
+                    this.player.Rewinding(rewind);
                 }
 
                 this.updateProgress = true;
@@ -220,11 +236,44 @@ namespace EarthInBeatsPlayer
 
         private async void Folder_Button_Click(object sender, RoutedEventArgs e)
         {
-            this.fPiker = new FolderPicker();
-            this.fPiker.FileTypeFilter.Add("*");
-            var folder = await this.fPiker.PickSingleFolderAsync();
+            var fPiker = new FolderPicker();
+            fPiker.FileTypeFilter.Add("*");
+            var folder = await fPiker.PickSingleFolderAsync();
 
-            this.accessFolder = StorageApplicationPermissions.FutureAccessList.Add(folder);
+            if (folder != null)
+            {
+                FolderHelper.AddStorage(folder);
+
+                this.needInitFoulder = FolderHelper.LatestFolder == null;
+
+                if (this.needInitFoulder)
+                {
+                    WriteDebugMessage("Audio folder not found! Please select torrents folder.", Colors.Red);
+                }
+                else
+                {
+                    WriteDebugMessage("Audio folder is: " + FolderHelper.LatestFolder.Path, Colors.Green);
+                }
+            }
+        }
+
+        private void WriteDebugMessage(string msg)
+        {
+            WriteDebugMessage(msg, Colors.White);
+        }
+
+        private void WriteDebugMessage(string msg, Color color)
+        {
+            Run run = new Run();
+            Paragraph p = new Paragraph();
+
+            run.Text = "::::  " + msg;
+            run.FontSize = 16;
+            run.Foreground = new SolidColorBrush(color);
+
+            p.Inlines.Add(run);
+
+            this.DebugTextBlock.Blocks.Add(p);
         }
     }
 }
