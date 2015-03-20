@@ -182,11 +182,11 @@ namespace EarthInBeatsPlayer
 
         private async void IncreaseProgress()
         {
-            dispatcher = CoreApplication.MainView.Dispatcher;
+            this.dispatcher = CoreApplication.MainView.Dispatcher;
 
             while (this.player.CurrPos() <= this.player.Duration.Ticks)
             {
-                await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await this.dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     if (this.updateProgress && this.player != null)
                     {
