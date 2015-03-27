@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\INativeRenderable.h"
+#include "..\..\INativeRenderable.h"
 
 class EarthRendererNative{
 public:

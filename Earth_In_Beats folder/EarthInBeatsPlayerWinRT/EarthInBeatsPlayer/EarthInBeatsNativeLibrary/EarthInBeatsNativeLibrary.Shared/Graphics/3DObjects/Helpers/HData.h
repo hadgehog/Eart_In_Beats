@@ -1,4 +1,5 @@
 #pragma once
+#include "..\config.h"
 
 #ifdef HAVE_VISUAL_STUDIO
 #include <intrin.h>

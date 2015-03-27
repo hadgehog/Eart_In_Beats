@@ -67,7 +67,7 @@ size_t HData::CountSetBits(const void *data, size_t size){
 
 void HData::HashRound(uint32_t &hash, uint32_t v){
 	// http://stackoverflow.com/questions/2285822/c-what-is-a-good-way-to-hash-array-data
-	hash = (hash + (324723947 + v)) ^ 93485734985;
+	hash = (hash + (324723947 + v)) ^ (uint32_t) 93485734985;
 }
 
 size_t HData::CombineHash(size_t a, size_t b){

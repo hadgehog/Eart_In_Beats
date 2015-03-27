@@ -13,10 +13,10 @@ JsonArray ^HDataWinRT::SavePoint(float x, float y){
 
 void HDataWinRT::LoadPoint(JsonArray ^json, float *x, float *y){
 	if (x){
-		*x = json->GetNumberAt(0);
+		*x = static_cast<float>(json->GetNumberAt(0));
 	}
 
 	if (y){
-		*y = json->GetNumberAt(1);
+		*y = static_cast<float>(json->GetNumberAt(1));
 	}
 }

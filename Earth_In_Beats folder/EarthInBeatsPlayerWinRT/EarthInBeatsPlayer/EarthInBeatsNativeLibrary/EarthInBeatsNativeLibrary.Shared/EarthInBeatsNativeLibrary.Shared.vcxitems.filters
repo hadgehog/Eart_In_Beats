@@ -21,6 +21,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\Helpers\HTime.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\Helpers\WinRT\HDataWinRT.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\MainDraw.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\Renderer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\NativeRenderableContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioData\AudioReader\AudioReader.h" />
@@ -36,7 +38,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioHelpers\Rational.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\Earth\Renderers\EarthRendererNative.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\Earth\Renderers\EarthRenderableWinRT.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\Earth\INativeRenderable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\DirectXCommon\StepTimer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\DirectXCommon\DeviceResources.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\DirectXCommon\DirectXHelper.h" />
@@ -47,5 +48,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\Helpers\HTime.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\Helpers\WinRT\HDataWinRT.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\MainDraw.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\INativeRenderable.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\Renderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\NativeRenderableContainer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\3DObjects\config.h" />
   </ItemGroup>
 </Project>

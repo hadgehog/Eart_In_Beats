@@ -12,7 +12,7 @@ uint64_t HTime::GetTimeMsRelative(){
 #if defined(HAVE_VISUAL_STUDIO)
 	return GetTickCount64();
 #else
-	return 0;
+#error Add impl
 #endif
 }
 

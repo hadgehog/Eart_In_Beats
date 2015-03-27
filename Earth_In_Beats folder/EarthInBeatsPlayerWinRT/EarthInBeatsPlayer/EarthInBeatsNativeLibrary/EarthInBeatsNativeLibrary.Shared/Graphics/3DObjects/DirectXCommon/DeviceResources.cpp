@@ -3,7 +3,6 @@
 
 #include <algorithm>
 #include <windows.ui.xaml.media.dxinterop.h>
-#include "..\Helpers\H.h"
 
 using namespace D2D1;
 using namespace DirectX;
@@ -13,7 +12,6 @@ using namespace Windows::Graphics::Display;
 using namespace Windows::UI::Core;
 using namespace Windows::UI::Xaml::Controls;
 using namespace Platform;
-using namespace std;
 
 // Constants used to calculate screen rotations.
 namespace ScreenRotation
@@ -232,8 +230,8 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
 	m_outputSize.Height = DX::ConvertDipsToPixels(m_logicalSize.Height, this->m_dpi);
 	
 	// Prevent zero size DirectX content from being created.
-	m_outputSize.Width = max(m_outputSize.Width, 1.0f);
-	m_outputSize.Height = max(m_outputSize.Height, 1.0f);
+	m_outputSize.Width = std::max(m_outputSize.Width, 1.0f);
+	m_outputSize.Height = std::max(m_outputSize.Height, 1.0f);
 
 	// The width and height of the swap chain must be based on the window's
 	// natively-oriented width and height. If the window is not in the native

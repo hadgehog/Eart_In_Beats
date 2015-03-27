@@ -1,4 +1,5 @@
 #pragma once
+#include "HText.h"
 #include "HData.h"
 #include "HSystem.h"
 #include "HTime.h"
@@ -12,6 +13,7 @@
 
 class H{
 public:
+	typedef HText Text;
 	typedef HData Data;
 	typedef HSystem System;
 	typedef HTime Time;
