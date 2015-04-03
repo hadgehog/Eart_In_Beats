@@ -1,4 +1,5 @@
-﻿#include "DeviceResources.h"
+﻿#include "pch.h"
+#include "DeviceResources.h"
 #include "DirectXHelper.h"
 
 #include <algorithm>

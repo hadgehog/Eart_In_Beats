@@ -1,14 +1,13 @@
 #pragma once
-
 #include "DirectXCommon\DeviceResources.h"
 #include "INativeRenderable.h"
+#include "NativeRenderableContainer.h"
 
 #include <memory>
 #include <future>
 #include <array>
 
-class MainDraw : public DX::IDeviceNotify
-{
+class MainDraw : public DX::IDeviceNotify{
 public:
 	MainDraw();
 	virtual ~MainDraw();
@@ -18,7 +17,7 @@ public:
 	void SetClearColor(float r, float g, float b, float a);
 	void SetClearColor(float r, float g, float b);
 
-	void Initialize(Windows::UI::Xaml::Controls::SwapChainPanel ^panel, NativeRenderableContainer ^container);
+	void Initialize(Windows::UI::Xaml::Controls::SwapChainPanel ^panel, EarthInBeatsNativeLibrary::NativeRenderableContainer ^container);
 
 	void SaveState();
 	void LoadState();
@@ -61,4 +60,3 @@ private:
 	void Update();
 	bool Render();
 };
-
