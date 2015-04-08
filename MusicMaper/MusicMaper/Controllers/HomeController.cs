@@ -10,6 +10,8 @@ namespace MusicMaper.Controllers
 {
     public class HomeController : Controller
     {
+        TrackManager manager = new TrackManager();
+
         public ActionResult Index()
         {
             return View();
@@ -30,7 +32,7 @@ namespace MusicMaper.Controllers
 
         public ActionResult Update(string Data)
         {
-            ViewBag.Result = "Wrong input! Must be: ?Data={PhoneStatus}?{PhoneID}?{Longitude}?{Latitude}?{Artist}?{Title}. Examlpe:www.sm.com/Home/Update/?Data=ReadyToPlay?PHONE_INDIFICATION?45.3?77.4?Metallica?Master";
+            ViewBag.Result = "Wrong input! Must be: ?Data={PhoneStatus}?{PhoneID}?{Longitude}?{Latitude}?{Artist}?{Title}. Examlpe:www.sm.com/Home/Update/?Data=Play?PHONE_INDIFICATION?45.3?77.4?Metallica?Master";
             if (Data == null)
                 return View();
 
@@ -38,7 +40,7 @@ namespace MusicMaper.Controllers
             {
                 PhoneInput phone = PhoneInput.Parse(Data);
 
-                TrackManager.Update(phone);
+                manager.Update(phone);
 
                 ViewBag.Result =
                     "\nPlayerStatus:" + phone.Status +

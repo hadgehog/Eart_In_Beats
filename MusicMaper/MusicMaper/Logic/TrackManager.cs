@@ -1,14 +1,17 @@
 ﻿using MusicMaper.DAL;
 using MusicMaper.Models;
 using System.Data.Entity;
+using System.Data.Entity.Core;
+using System.Data.Entity.Core.Objects;
+using System.Linq;
 
 namespace MusicMaper.Logic
 {
-    static public class TrackManager
+    public class TrackManager
     {
-        static TrackContext db = new TrackContext();
+        TrackContext db = new TrackContext();
 
-        static public void Update(PhoneInput Phone)
+        public void Update(PhoneInput Phone)
         {
             switch (Phone.Status)
             {
@@ -29,30 +32,41 @@ namespace MusicMaper.Logic
             }
         }
 
-        static void Add(PlayerNode Player)
+        void Add(PlayerNode Player)
         {
-            var player = db.Players.Find(Player.PhoneID);
-            if (player == null)
+            var player = from o in db.Players
+                         where o.PhoneID == Player.PhoneID
+                         select o;
+
+            if (player.Count() == 0)
             {
                 db.Players.Add(Player);
                 db.SaveChanges();
             }
         }
-        static void Edit(PlayerNode Player)
+        void Edit(PlayerNode Player)
         {
-                var player = db.Players.Find(Player.PhoneID);
-                if (player != null)
-                {
-                    db.Entry(Player).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
+            var db = new TrackContext();
+            var player = (from o in db.Players
+                         where o.PhoneID == Player.PhoneID
+                         select o).FirstOrDefault();
+
+            player.Artist = Player.Artist;
+            player.Latitude = Player.Latitude;
+            player.Longitude = Player.Longitude;
+            player.Title = Player.Title;
+                
+            db.SaveChanges();
         }
-        static void Remove(PlayerNode Player)
+        void Remove(PlayerNode Player)
         {
-            var player = db.Players.Find(Player.PhoneID);
+            var player = (from o in db.Players
+                          where o.PhoneID == Player.PhoneID
+                          select o).FirstOrDefault();
+
             if (player != null)
             {
-                db.Players.Remove(Player);
+                db.Players.Remove(player);
                 db.SaveChanges();
             }
         }

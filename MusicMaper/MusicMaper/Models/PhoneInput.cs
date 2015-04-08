@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using MusicMaper.Helpers;
+using System.Globalization;
 
 namespace MusicMaper.Models
 {
@@ -41,15 +42,15 @@ namespace MusicMaper.Models
                     if (split.Length != 4)
                         throw new FormatException("Wrong input data! Must be: Data=<PhoneStatus>?<PhoneId>?<Lantitude>?<Longtitude>");
                     result.Player.PhoneID = split[1];//need check
-                    result.Player.Latitude = float.Parse(split[2]);
-                    result.Player.Longitude = float.Parse(split[3]);
+                    result.Player.Latitude = float.Parse(split[2], CultureInfo.InvariantCulture);
+                    result.Player.Longitude = float.Parse(split[3], CultureInfo.InvariantCulture);
                     break;
                 case PhoneStatus.Play:
                     if (split.Length != 6)
                         throw new FormatException("Wrong input data! Must be: Data=<PhoneStatus>?<PhoneId>?<Lantitude>?<Longtitude>?<Artist>?<Title>");
                     result.Player.PhoneID = split[1];//need check
-                    result.Player.Latitude = float.Parse(split[2]);
-                    result.Player.Longitude = float.Parse(split[3]);
+                    result.Player.Latitude = float.Parse(split[2], CultureInfo.InvariantCulture);
+                    result.Player.Longitude = float.Parse(split[3], CultureInfo.InvariantCulture);
                     result.Player.Artist = split[4];
                     result.Player.Title = split[5];
                     break;

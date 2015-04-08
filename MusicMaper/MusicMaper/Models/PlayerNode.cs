@@ -21,6 +21,7 @@ namespace MusicMaper.Models
             this.Title = Title;
         }
         [Key]
+        public int Id { get; set; }
         public string PhoneID { get; set; }
         public float Latitude { get; set; }
         public float Longitude { get; set; }
