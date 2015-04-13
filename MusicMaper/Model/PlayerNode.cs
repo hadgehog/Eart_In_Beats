@@ -20,6 +20,7 @@ namespace MusicMaper.Models
             this.Artist = Artist;
             this.Title = Title;
         }
+        
         [Key]
         public int Id { get; set; }
         public string PhoneID { get; set; }
@@ -27,5 +28,32 @@ namespace MusicMaper.Models
         public float Longitude { get; set; }
         public string Artist { get; set; }
         public string Title { get; set; }
+
+
+        public string ToStringUrl()
+        {
+            return PhoneID + "?" + Longitude.ToString() + "?" + Latitude.ToString() + "?" + Artist + "?" + Title;
+        }
+
+        static public PlayerNode Parse(string Input)
+        {
+            PlayerNode answer = new PlayerNode();
+            var data = Input.Split(new char[] { '?' });
+
+            answer.PhoneID = data[0];
+            answer.Longitude = float.Parse(data[1]);
+            answer.Latitude = float.Parse(data[2]);
+
+            if (data.Length == 5)
+            {
+                answer.Artist = data[3];
+                answer.Title = data[4];
+            }
+
+            return answer;
+
+        }
+
+
     }
 }

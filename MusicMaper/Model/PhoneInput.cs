@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using MusicMaper.Helpers;
 using System.Globalization;
 
 namespace MusicMaper.Models
@@ -24,12 +23,12 @@ namespace MusicMaper.Models
         //@todo: add check phoneId
         static public PhoneInput Parse(string Input)
         {
-            var split = Input.Split(new char[] { '?' });
+            var split = Input.Split(new char[] { '?' }, StringSplitOptions.RemoveEmptyEntries);
             PhoneInput result = new PhoneInput();
             if (split.Length > 6 || split.Length == 0)
                 throw new FormatException("Can not parse PhoneInput from string! Wrong input string.");
 
-            result.Status = PhoneInputHelper.StringToPhoneStatus(split[0]);
+            result.Status = StringToPhoneStatus(split[0]);
             result.Player = new PlayerNode();
 
             switch (result.Status)
@@ -57,6 +56,23 @@ namespace MusicMaper.Models
             }
 
             return result;
+        }
+
+        static public PhoneStatus StringToPhoneStatus(string Input)
+        {
+            switch (Input)
+            {
+                case "Connect":
+                    return PhoneStatus.Connect;
+                case "Play":
+                    return PhoneStatus.Play;
+                case "Stop":
+                    return PhoneStatus.Stop;
+                case "Disconnect":
+                    return PhoneStatus.Disconnect;
+                default:
+                    return PhoneStatus.Missing;
+            }
         }
     }
 }

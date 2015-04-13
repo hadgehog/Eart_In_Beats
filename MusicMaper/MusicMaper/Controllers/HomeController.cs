@@ -41,18 +41,16 @@ namespace MusicMaper.Controllers
                 PhoneInput phone = PhoneInput.Parse(Data);
 
                 manager.Update(phone);
-
-                ViewBag.Result =
-                    "\nPlayerStatus:" + phone.Status +
-                    "\nID:" + phone.Player.PhoneID +
-                    "\nLO:" + phone.Player.Longitude +
-                    "\nLA:" + phone.Player.Latitude +
-                    "\nA:" + phone.Player.Artist +
-                    "\nT:" + phone.Player.Title;
+                ViewBag.Result = "Ok";
+                
             }
             catch (FormatException e)
             {
                 ViewBag.Result = e.Message;
+            }
+            catch (Exception e)
+            {
+                ViewBag.Result = "Fail";
             }
 
             return View();
