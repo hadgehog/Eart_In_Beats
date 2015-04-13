@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "ImageUtilsEncodeOptions.h"
 
 ImageUtilsEncodeNoOptions::ImageUtilsEncodeNoOptions(){

@@ -1,5 +1,5 @@
 #pragma once
-#include "Helpers\Timer.h"
+#include "Timer.h"
 
 class ScopedTimer{
 public:

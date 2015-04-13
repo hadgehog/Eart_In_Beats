@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "Timer.h"
 
 const Timer::timer_id Timer::EmptyTimer = std::numeric_limits<timer_id>::max();

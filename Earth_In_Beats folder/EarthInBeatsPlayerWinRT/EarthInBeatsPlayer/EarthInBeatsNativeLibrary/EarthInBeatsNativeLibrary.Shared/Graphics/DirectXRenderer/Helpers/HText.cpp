@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "HText.h"
 #include "Text\UriCodec.h"
 #include "..\config.h"

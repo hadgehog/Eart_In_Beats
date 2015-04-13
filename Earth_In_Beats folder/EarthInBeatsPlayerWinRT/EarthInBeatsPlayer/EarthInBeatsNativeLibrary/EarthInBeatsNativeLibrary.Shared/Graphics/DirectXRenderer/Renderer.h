@@ -20,7 +20,7 @@ namespace EarthInBeatsNativeLibrary
 		void LoadState();
 
 	private:
-		Main main;
+		MainDraw main;
 
 		bool pointerMoves;
 

@@ -32,14 +32,14 @@ public:
 	// Converts Library time(hundred nano-seconds(i.e. 1/10,000,000 of second) since 0 year) to Unix time(seconds since 1970 year).
 	static uint64_t LibTimeToUnix(uint64_t libTime);
 	static uint64_t GetCurrentLibTime();
-#ifdef HAVE_VISUAL_STUDIO
-	static uint64_t FileTimeToLib(FILETIME fileTime);
-	static FILETIME LibTimeToFile(uint64_t libTime);
-
-	// based on http://stackoverflow.com/questions/11615998/how-do-i-parse-a-date-in-a-metro-c-cx-app
-	static uint64_t UniversalTimeToLib(int64_t universalTime);
-	static int64_t LibTimeToUniversal(uint64_t libTime);
-#endif
+//#ifdef HAVE_VISUAL_STUDIO
+//	static uint64_t FileTimeToLib(FILETIME fileTime);
+//	static FILETIME LibTimeToFile(uint64_t libTime);
+//
+//	// based on http://stackoverflow.com/questions/11615998/how-do-i-parse-a-date-in-a-metro-c-cx-app
+//	static uint64_t UniversalTimeToLib(int64_t universalTime);
+//	static int64_t LibTimeToUniversal(uint64_t libTime);
+//#endif
 private:
 	static uint64_t GetSysClockEpochTicks();
 };

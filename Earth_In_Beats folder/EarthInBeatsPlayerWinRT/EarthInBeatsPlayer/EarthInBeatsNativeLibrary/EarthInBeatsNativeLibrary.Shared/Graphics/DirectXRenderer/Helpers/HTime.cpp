@@ -38,63 +38,63 @@ uint64_t HTime::GetCurrentLibTime(){
 	return libTime;
 }
 
-#ifdef HAVE_VISUAL_STUDIO
-uint64_t HTime::FileTimeToLib(FILETIME fileTime){
-	uint64_t tmpFileTime = static_cast<uint64_t>(fileTime.dwLowDateTime) | (static_cast<uint64_t>(fileTime.dwHighDateTime) << 32);
-	uint64_t libTime = HTime::Y1601Ticks + tmpFileTime;
-	return libTime;
-}
-
-FILETIME HTime::LibTimeToFile(uint64_t libTime){
-	uint64_t tmpFileTime = libTime - HTime::Y1601Ticks;
-	FILETIME fileTime;
-
-	fileTime.dwLowDateTime = static_cast<DWORD>(tmpFileTime & 0x00000000FFFFFFFF);
-	fileTime.dwHighDateTime = static_cast<DWORD>((tmpFileTime >> 32) & 0x00000000FFFFFFFF);
-
-	return fileTime;
-}
-
-uint64_t HTime::UniversalTimeToLib(int64_t universalTime){
-	SYSTEMTIME st, st_utc;
-	FILETIME ft;
-
-	ft.dwLowDateTime = static_cast<uint64_t>(universalTime) & 0x00000000FFFFFFFF;
-	ft.dwHighDateTime = (static_cast<uint64_t>(universalTime) >> 32) & 0x00000000FFFFFFFF;
-
-	auto res1 = FileTimeToSystemTime(&ft, &st_utc);
-	auto res2 = SystemTimeToTzSpecificLocalTime(nullptr, &st_utc, &st);
-	auto res3 = SystemTimeToFileTime(&st, &ft);
-
-	auto libTime = HTime::FileTimeToLib(ft);
-
-	if (res1 && res2 && res3){
-		return libTime;
-	}
-	else{
-		return 0;
-	}
-}
-
-int64_t HTime::LibTimeToUniversal(uint64_t libTime){
-	SYSTEMTIME st, st_utc;
-
-	auto ft = HTime::LibTimeToFile(libTime);
-
-	auto res1 = FileTimeToSystemTime(&ft, &st);
-	auto res2 = TzSpecificLocalTimeToSystemTime(nullptr, &st, &st_utc);
-	auto res3 = SystemTimeToFileTime(&st_utc, &ft);
-
-	int64_t universalTime = static_cast<int64_t>(ft.dwLowDateTime | (static_cast<uint64_t>(ft.dwHighDateTime) << 32));
-
-	if (res1 && res2 && res3){
-		return universalTime;
-	}
-	else{
-		return 0;
-	}
-}
-#endif
+//#ifdef HAVE_VISUAL_STUDIO
+//uint64_t HTime::FileTimeToLib(FILETIME fileTime){
+//	uint64_t tmpFileTime = static_cast<uint64_t>(fileTime.dwLowDateTime) | (static_cast<uint64_t>(fileTime.dwHighDateTime) << 32);
+//	uint64_t libTime = HTime::Y1601Ticks + tmpFileTime;
+//	return libTime;
+//}
+//
+//FILETIME HTime::LibTimeToFile(uint64_t libTime){
+//	uint64_t tmpFileTime = libTime - HTime::Y1601Ticks;
+//	FILETIME fileTime;
+//
+//	fileTime.dwLowDateTime = static_cast<DWORD>(tmpFileTime & 0x00000000FFFFFFFF);
+//	fileTime.dwHighDateTime = static_cast<DWORD>((tmpFileTime >> 32) & 0x00000000FFFFFFFF);
+//
+//	return fileTime;
+//}
+//
+//uint64_t HTime::UniversalTimeToLib(int64_t universalTime){
+//	SYSTEMTIME st, st_utc;
+//	FILETIME ft;
+//
+//	ft.dwLowDateTime = static_cast<uint64_t>(universalTime) & 0x00000000FFFFFFFF;
+//	ft.dwHighDateTime = (static_cast<uint64_t>(universalTime) >> 32) & 0x00000000FFFFFFFF;
+//
+//	auto res1 = FileTimeToSystemTime(&ft, &st_utc);
+//	auto res2 = SystemTimeToTzSpecificLocalTime(nullptr, &st_utc, &st);
+//	auto res3 = SystemTimeToFileTime(&st, &ft);
+//
+//	auto libTime = HTime::FileTimeToLib(ft);
+//
+//	if (res1 && res2 && res3){
+//		return libTime;
+//	}
+//	else{
+//		return 0;
+//	}
+//}
+//
+//int64_t HTime::LibTimeToUniversal(uint64_t libTime){
+//	SYSTEMTIME st, st_utc;
+//
+//	auto ft = HTime::LibTimeToFile(libTime);
+//
+//	auto res1 = FileTimeToSystemTime(&ft, &st);
+//	auto res2 = TzSpecificLocalTimeToSystemTime(nullptr, &st, &st_utc);
+//	auto res3 = SystemTimeToFileTime(&st_utc, &ft);
+//
+//	int64_t universalTime = static_cast<int64_t>(ft.dwLowDateTime | (static_cast<uint64_t>(ft.dwHighDateTime) << 32));
+//
+//	if (res1 && res2 && res3){
+//		return universalTime;
+//	}
+//	else{
+//		return 0;
+//	}
+//}
+//#endif
 
 uint64_t HTime::GetSysClockEpochTicks(){
 	static uint64_t SysClockEpochTicks = 0;

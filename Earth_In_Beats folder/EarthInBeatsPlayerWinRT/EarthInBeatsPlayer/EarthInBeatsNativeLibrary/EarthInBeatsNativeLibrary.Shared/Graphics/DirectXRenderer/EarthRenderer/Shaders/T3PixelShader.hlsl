@@ -20,43 +20,6 @@ float4 main(PsInput input) : SV_TARGET{
 	float c = input.tex.y;
 	float4 color;
 
-	/*color = fontTexture.Sample(fontSampler, input.tex);
-	color.rgb = color.r;*/
-
-	//float pixSz = PixelSize;// *1.0f / 0.15f;
-
-	//c = 0.0f;
-	//c += fontTexture.Sample(fontSampler, float2(input.tex.x - pixSz, input.tex.y + pixSz));
-	//c += fontTexture.Sample(fontSampler, float2(input.tex.x, input.tex.y + pixSz));
-	//c += fontTexture.Sample(fontSampler, float2(input.tex.x + pixSz, input.tex.y + pixSz));
-
-	//c += fontTexture.Sample(fontSampler, float2(input.tex.x - pixSz, input.tex.y));
-	//c += fontTexture.Sample(fontSampler, float2(input.tex.x, input.tex.y));
-	//c += fontTexture.Sample(fontSampler, float2(input.tex.x + pixSz, input.tex.y));
-
-	//c += fontTexture.Sample(fontSampler, float2(input.tex.x - pixSz, input.tex.y - pixSz));
-	//c += fontTexture.Sample(fontSampler, float2(input.tex.x, input.tex.y - pixSz));
-	//c += fontTexture.Sample(fontSampler, float2(input.tex.x + pixSz, input.tex.y - pixSz));
-
-	//c /= 9.0f;
-
-	//c = fontTexture.Sample(fontSampler, input.tex);
-
-	/*float realPos = (input.tex.x * 1024.0f) % 4;
-
-	if (realPos == 0){
-		c = MitchellNetravali(input.tex.x + 1);
-	}
-	else if (realPos == 1){
-		c = MitchellNetravali(input.tex.x);
-	}
-	else if (realPos == 2){
-		c = MitchellNetravali(input.tex.x - 1);
-	}
-	else if (realPos == 3){
-		c = MitchellNetravali(input.tex.x - 2);
-	}*/
-
 	return float4(c, c, c, 1.0f); // color;//
 }
 
