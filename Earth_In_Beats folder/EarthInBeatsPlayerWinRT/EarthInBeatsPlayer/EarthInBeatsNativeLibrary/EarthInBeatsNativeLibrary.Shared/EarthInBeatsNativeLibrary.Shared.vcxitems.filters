@@ -28,9 +28,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\ImageUtils.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\ImageUtilsEncodeOptions.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\Timer.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\PixelConverter\PixelConverter.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\PixelConverter\PixelConverterCopy.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\PixelConverter\PixelConverterFactory.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\Text\UriCodec.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\HTime.cpp" />
   </ItemGroup>
@@ -77,10 +74,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\Timer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\vector_pool.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\vector_queue.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\PixelConverter\PixelConverter.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\PixelConverter\PixelConverterCopy.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\PixelConverter\PixelConverterFactory.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\PixelConverter\PixelConverterStd8Bit.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\Text\UriCodec.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\HTime.h" />
   </ItemGroup>

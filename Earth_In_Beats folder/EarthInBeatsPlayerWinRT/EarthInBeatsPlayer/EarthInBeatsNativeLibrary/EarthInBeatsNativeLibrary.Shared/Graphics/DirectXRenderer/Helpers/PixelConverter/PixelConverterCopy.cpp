@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "PixelConverterCopy.h"
 
 PixelConverterCopy::PixelConverterCopy(uint32_t pixelByteSize)

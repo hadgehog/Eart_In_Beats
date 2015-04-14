@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "UriCodec.h"
 
 // Uri encode and decode.

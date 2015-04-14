@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "PixelConverterFactory.h"
 #include "PixelConverterCopy.h"
 #include "PixelConverterStd8Bit.h"
