@@ -33,6 +33,8 @@ public:
 	void PointerMoved(Windows::UI::Input::PointerPoint ^ppt);
 	void PointerReleased(Windows::UI::Input::PointerPoint ^ppt);
 
+	void LoadModel(std::string path);
+
 private:
 	std::shared_ptr<INativeRenderable> nativeRenderer;
 

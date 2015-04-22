@@ -130,6 +130,11 @@ void MainDraw::PointerReleased(PointerPoint ^ppt){
 	this->nativeRenderer->PointerReleased(ppt);
 }
 
+void MainDraw::LoadModel(std::string path){
+	std::vector<float> vertexes;
+	
+}
+
 void MainDraw::OnDeviceLost(){
 	this->ReleaseDeviceDependentResources();
 }

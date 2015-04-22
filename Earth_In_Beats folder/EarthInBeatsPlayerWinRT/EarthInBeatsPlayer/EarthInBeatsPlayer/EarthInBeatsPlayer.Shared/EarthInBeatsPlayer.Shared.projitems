@@ -16,4 +16,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)assets\geosphere.txt" />
+  </ItemGroup>
 </Project>
