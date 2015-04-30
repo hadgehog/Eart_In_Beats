@@ -31,6 +31,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\DirectXCommon\DeviceResources.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\EarthRenderer\Renderers\EarthRenderableWinRT.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\EarthRenderer\Renderers\EarthRendererNative.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\FullscreenQuad.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\async_class.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\HData.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\HMath.cpp" />
@@ -44,6 +45,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\WinRT\HDataWinRT.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\INativeRenderable.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\MainDraw.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Quad.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Renderer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\NativeRenderableContainer.cpp" />
   </ItemGroup>
@@ -65,6 +67,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\DirectXCommon\StepTimer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\EarthRenderer\Renderers\EarthRenderableWinRT.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\EarthRenderer\Renderers\EarthRendererNative.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\FullscreenQuad.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\AlignedAllocator.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\array_wrapper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\async_class.h" />
@@ -90,10 +93,17 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\WinRT\HDataWinRT.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\IRenderable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\MainDraw.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Polygone.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Quad.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Renderer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\NativeRenderableContainer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\EarthRenderer\Shaders\FSQuadPS.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\EarthRenderer\Shaders\FSQuadVS.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\EarthRenderer\Shaders\QuadPS.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\EarthRenderer\Shaders\QuadVS.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\EarthRenderer\Shaders\T3PixelShader.hlsl">
       <ShaderType>Pixel</ShaderType>
     </FxCompile>

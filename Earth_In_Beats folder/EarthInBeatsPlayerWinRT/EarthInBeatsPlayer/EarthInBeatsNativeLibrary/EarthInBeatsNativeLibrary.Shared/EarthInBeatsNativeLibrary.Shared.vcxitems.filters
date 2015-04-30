@@ -30,6 +30,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\Timer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\Text\UriCodec.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\HTime.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\FullscreenQuad.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Quad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioData\AudioReader\AudioReader.h" />
@@ -76,9 +78,17 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\vector_queue.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\Text\UriCodec.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\HTime.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Vertex.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Polygone.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\FullscreenQuad.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Quad.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\EarthRenderer\Shaders\T3PixelShader.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\EarthRenderer\Shaders\T3VertexShader.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\EarthRenderer\Shaders\FSQuadPS.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\EarthRenderer\Shaders\FSQuadVS.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\EarthRenderer\Shaders\QuadPS.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\EarthRenderer\Shaders\QuadVS.hlsl" />
   </ItemGroup>
 </Project>

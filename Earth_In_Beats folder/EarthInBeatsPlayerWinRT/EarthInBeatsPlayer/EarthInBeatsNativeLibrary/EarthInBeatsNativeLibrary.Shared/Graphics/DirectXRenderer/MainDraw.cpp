@@ -1,6 +1,8 @@
 #include "MainDraw.h"
 #include "Helpers\H.h"
 
+#include <fstream>
+
 using namespace Concurrency;
 using namespace Windows::Foundation;
 using namespace Windows::System::Threading;
@@ -130,9 +132,48 @@ void MainDraw::PointerReleased(PointerPoint ^ppt){
 	this->nativeRenderer->PointerReleased(ppt);
 }
 
+//TODO: add in helpers swich() for strings
+//TODO: make parsing for all poligones
+//now for triangles only
 void MainDraw::LoadModel(std::string path){
-	std::vector<float> vertexes;
+	std::vector<Vertex> vertexes;
+	std::vector<Polygone> polygones;
+	std::ifstream streamIn;
+	std::string delimiter = " ";
 	
+	streamIn.open(path);
+
+	if (streamIn.is_open()){
+		while (streamIn.eof()){
+			std::string tmp;
+
+			std::getline(streamIn, tmp);
+
+			if (tmp[0] == 'v'){	//parse vertex coords
+				float v1 = tmp[2];
+				float v2 = tmp[4];
+				float v3 = tmp[6];
+
+				Vertex vert;
+				vert.vertex[0] = v1;
+				vert.vertex[1] = v2;
+				vert.vertex[2] = v3;
+
+				vertexes.push_back(vert);
+			} 
+			else
+				if (tmp[0] == 'f'){	//parse triangle vertex indexes
+					size_t pos = 0;
+					std::string token;
+					std::vector<float> tmpVec;
+
+					while ((pos = tmp.find(delimiter)) != std::string::npos){
+						token = tmp.substr(0, pos);
+						tmp.erase(0, pos + delimiter.length());
+					}
+				}
+		}
+	}
 }
 
 void MainDraw::OnDeviceLost(){

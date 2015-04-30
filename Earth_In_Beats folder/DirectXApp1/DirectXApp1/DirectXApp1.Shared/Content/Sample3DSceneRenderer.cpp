@@ -335,3 +335,97 @@ void Sample3DSceneRenderer::ReleaseDeviceDependentResources()
 	m_vertexBuffer.Reset();
 	m_indexBuffer.Reset();
 }
+
+void Sample3DSceneRenderer::DrawCurves(){
+	std::vector<DirectX::XMFLOAT2> points;
+	HRESULT hr = S_OK;
+	Microsoft::WRL::ComPtr<ID2D1GeometrySink> sink;
+	Microsoft::WRL::ComPtr<ID2D1PathGeometry> geometry;
+	Microsoft::WRL::ComPtr<ID2D1SolidColorBrush> solidBrush;
+	auto d2dFactory = this->m_deviceResources->GetD2DFactory();
+	auto d2dCtx = this->m_deviceResources->GetD2DDeviceContext();
+
+	points.push_back(DirectX::XMFLOAT2(200.0f, 400.0f));
+	points.push_back(DirectX::XMFLOAT2(600.0f, 250.0f));
+	points.push_back(DirectX::XMFLOAT2(700.0f, 700.0f));
+	points.push_back(DirectX::XMFLOAT2(900.0f, 600.0f));
+
+	float maxCoord = 0.0f;
+	for (size_t i = 0; i < points.size(); i++){
+		maxCoord = (std::max)(maxCoord, points[i].y);
+	}
+
+	const double s = 1.0 / 128.0;	//0.0078125
+	const double limit = 1.0;
+	double t = 0.0;
+
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> texture2D;
+	D3D11_TEXTURE2D_DESC tex2d = {};
+	D3D11_SUBRESOURCE_DATA texData = {};
+	D2D_SIZE_U size;
+
+	size.width = 1;
+	size.height = 128;
+
+	d2dCtx->BeginDraw();
+
+	hr = d2dFactory->CreatePathGeometry(geometry.GetAddressOf());
+
+	if (SUCCEEDED(hr))
+	{
+		hr = geometry->Open(&sink);
+
+		sink->SetFillMode(D2D1_FILL_MODE_WINDING);
+		d2dCtx->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Red), solidBrush.GetAddressOf());
+		solidBrush->SetOpacity(1);
+
+		std::vector<D2D1_POINT_2F> curve;
+		curve.resize(size.height);
+
+		int i = 0;
+		while (t < limit)
+		{
+			auto p = this->GetCurvePoint(points, t);
+			D2D1_POINT_2F point = D2D1::Point2F(p.x, p.y);
+
+			if (i == 0){
+				sink->BeginFigure(point, D2D1_FIGURE_BEGIN_HOLLOW);
+			}
+
+			curve[i] = point;
+
+			t += s;
+			++i;
+		}
+
+		sink->AddLines(curve.data(), curve.size());
+		sink->EndFigure(D2D1_FIGURE_END_OPEN);
+
+		hr = sink->Close();
+
+		d2dCtx->FillGeometry(geometry.Get(), solidBrush.Get());
+		d2dCtx->DrawGeometry(geometry.Get(), solidBrush.Get(), 3);
+
+		//saves points in texture
+		std::vector<uint8_t> buf;
+		buf.resize(curve.size());	//is it needed? or do push_back
+
+		for (size_t i = 0; i < curve.size(); i++){
+			buf[i] = static_cast<float>(curve[i].y) / maxCoord;
+		}
+
+		texData.pSysMem = buf.data();
+		texData.SysMemPitch = size.width * 4;
+	}
+
+	d2dCtx->EndDraw();
+}
+
+DirectX::XMFLOAT2 Sample3DSceneRenderer::GetCurvePoint(std::vector<DirectX::XMFLOAT2> p, double t){
+	std::vector<DirectX::XMFLOAT2> p1;
+	for (int i = 0; i < p.size() - 1; i++) 
+		p1.push_back(DirectX::XMFLOAT2(p[i].x * (1.0f - t) + p[i + 1].x * t, p[i].y * (1.0f - t) + p[i + 1].y * t));
+	if (p.size()-1 == 1) 
+		return p1[0];
+	return GetCurvePoint(p1, t);
+}

@@ -21,6 +21,8 @@ namespace DirectXApp1
 		void StopTracking();
 		bool IsTracking() { return m_tracking; }
 
+		void DrawCurves();
+
 
 	private:
 		void Rotate(float radians);
@@ -47,6 +49,9 @@ namespace DirectXApp1
 		bool	m_loadingComplete;
 		float	m_degreesPerSecond;
 		bool	m_tracking;
+
+		DirectX::XMFLOAT2 GetCurvePoint(std::vector<DirectX::XMFLOAT2> p, double t);
+
 	};
 }
 

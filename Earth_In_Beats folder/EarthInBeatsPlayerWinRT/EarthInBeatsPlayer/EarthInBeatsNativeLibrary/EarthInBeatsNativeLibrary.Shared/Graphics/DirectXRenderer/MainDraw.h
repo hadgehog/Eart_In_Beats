@@ -2,6 +2,7 @@
 #include "DirectXCommon\DeviceResources.h"
 #include "INativeRenderable.h"
 #include "NativeRenderableContainer.h"
+#include "Polygone.h"
 
 #include <memory>
 #include <future>
@@ -33,7 +34,7 @@ public:
 	void PointerMoved(Windows::UI::Input::PointerPoint ^ppt);
 	void PointerReleased(Windows::UI::Input::PointerPoint ^ppt);
 
-	void LoadModel(std::string path);
+	void LoadModel(std::string path);	//later must sent stream
 
 private:
 	std::shared_ptr<INativeRenderable> nativeRenderer;

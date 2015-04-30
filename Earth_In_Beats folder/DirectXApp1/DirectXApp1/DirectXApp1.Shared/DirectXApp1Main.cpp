@@ -119,8 +119,9 @@ bool DirectXApp1Main::Render()
 
 	// Render the scene objects.
 	// TODO: Replace this with your app's content rendering functions.
-	m_sceneRenderer->Render();
+	//m_sceneRenderer->Render();
 	m_fpsTextRenderer->Render();
+	m_sceneRenderer->DrawCurves();
 
 	return true;
 }
