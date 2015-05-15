@@ -1,0 +1,471 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{1c2d41c2-18a4-4798-883c-4bc411a4c5dc}</ItemsProjectGuid>
+    <ItemsRootNamespace>assimp</ItemsRootNamespace>
+    <ItemsProjectName>assimp.Shared</ItemsProjectName>
+    <CodeSharingProject>248F659F-DAC5-46E8-AC09-60EC9FC95053</CodeSharingProject>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\3DSConverter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\3DSExporter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\3DSLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ACLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ASELoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ASEParser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\AssbinExporter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\AssbinLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Assimp.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\AssimpCExport.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\AssxmlExporter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\B3DImporter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BaseImporter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BaseProcess.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Bitmap.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BlenderBMesh.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BlenderDNA.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BlenderLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BlenderModifier.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BlenderScene.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BlenderTessellator.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BVHLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\CalcTangentsProcess.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\COBLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ColladaExporter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ColladaLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ColladaParser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ComputeUVMappingProcess.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ConvertToLHProcess.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\CSMLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\DeboneProcess.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\DefaultIOStream.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\DefaultIOSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\DefaultLogger.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\DXFLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Exporter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXAnimation.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXBinaryTokenizer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXConverter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXDeformer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXDocument.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXDocumentUtil.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXImporter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXMaterial.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXMeshGeometry.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXModel.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXNodeAttribute.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXParser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXProperties.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXTokenizer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXUtil.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FindDegenerates.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FindInstancesProcess.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FindInvalidDataProcess.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FixNormalsStep.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\GenFaceNormalsProcess.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\GenVertexNormalsProcess.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\HMPLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\IFCBoolean.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\IFCCurve.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\IFCGeometry.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\IFCLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\IFCMaterial.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\IFCOpenings.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\IFCProfile.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\IFCReaderGen.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\IFCUtil.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Importer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ImporterRegistry.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ImproveCacheLocality.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\IRRLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\IRRMeshLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\IRRShared.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\JoinVerticesProcess.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\LimitBoneWeightsProcess.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\LWOAnimation.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\LWOBLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\LWOLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\LWOMaterial.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\LWSLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MakeVerboseFormat.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MaterialSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MD2Loader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MD3Loader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MD5Loader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MD5Parser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MDCLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MDLLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MDLMaterialLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MS3DLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\NDOLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\NFFLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ObjExporter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ObjFileImporter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ObjFileMtlImporter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ObjFileParser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\OFFLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\OgreBinarySerializer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\OgreImporter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\OgreMaterial.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\OgreStructs.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\OgreXmlSerializer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\OpenGEXImporter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\OptimizeGraph.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\OptimizeMeshes.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\PlyExporter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\PlyLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\PlyParser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\PostStepRegistry.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\PretransformVertices.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ProcessHelper.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Q3BSPFileImporter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Q3BSPFileParser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Q3BSPZipArchive.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Q3DLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\RawLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\RemoveComments.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\RemoveRedundantMaterials.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\RemoveVCProcess.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\SceneCombiner.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ScenePreprocessor.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\SGSpatialSort.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\SkeletonMeshBuilder.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\SMDLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\SortByPTypeProcess.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\SpatialSort.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\SplitByBoneCountProcess.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\SplitLargeMeshes.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\StandardShapes.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\StepExporter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\STEPFileEncoding.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\STEPFileReader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\STLExporter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\STLLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Subdivision.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\TargetAnimation.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\TerragenLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\TextureTransform.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\TriangulateProcess.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\UnrealLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ValidateDataStructure.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Version.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\VertexTriangleAdjacency.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\XFileExporter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\XFileImporter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\XFileParser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\code\XGLLoader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\clipper\clipper.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\ConvertUTF\ConvertUTF.c">
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\irrXML\irrXML.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\openddlparser\code\DDLNode.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\openddlparser\code\OpenDDLParser.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\openddlparser\code\Value.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\poly2tri\poly2tri\common\shapes.cc" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\poly2tri\poly2tri\sweep\advancing_front.cc" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\poly2tri\poly2tri\sweep\cdt.cc" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\poly2tri\poly2tri\sweep\sweep.cc" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\poly2tri\poly2tri\sweep\sweep_context.cc" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\unzip\ioapi.c">
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\unzip\unzip.c">
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\3DSExporter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\3DSHelper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\3DSLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ACLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ASELoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ASEParser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\AssbinExporter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\AssbinLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\AssxmlExporter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\B3DImporter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BaseImporter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BaseProcess.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Bitmap.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BlenderBMesh.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BlenderDNA.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BlenderIntermediate.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BlenderLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BlenderModifier.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BlenderScene.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BlenderSceneGen.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BlenderTessellator.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BlobIOSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BoostWorkaround\boost\foreach.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BoostWorkaround\boost\format.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BoostWorkaround\boost\make_shared.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BoostWorkaround\boost\math\common_factor_rt.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BoostWorkaround\boost\scoped_array.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BoostWorkaround\boost\scoped_ptr.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BoostWorkaround\boost\shared_array.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BoostWorkaround\boost\shared_ptr.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BoostWorkaround\boost\static_assert.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BoostWorkaround\boost\tuple\tuple.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BVHLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ByteSwapper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\CalcTangentsProcess.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\CInterfaceIOWrapper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\COBLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\COBScene.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ColladaExporter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ColladaHelper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ColladaLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ColladaParser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ComputeUVMappingProcess.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ConvertToLHProcess.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\CSMLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\DeboneProcess.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\DefaultIOStream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\DefaultIOSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\DefaultProgressHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\DXFHelper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\DXFLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\fast_atof.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXCompileConfig.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXConverter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXDocument.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXImporter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXImportSettings.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXParser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXProperties.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXTokenizer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FBXUtil.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FileLogStream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FindDegenerates.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FindInstancesProcess.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FindInvalidDataProcess.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\FixNormalsStep.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\GenericProperty.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\GenFaceNormalsProcess.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\GenVertexNormalsProcess.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\HalfLifeFileData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Hash.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\HMPFileData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\HMPLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\IFCLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\IFCReaderGen.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\IFCUtil.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\IFF.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Importer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ImproveCacheLocality.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\IRRLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\IRRMeshLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\IRRShared.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\irrXMLWrapper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\JoinVerticesProcess.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\LimitBoneWeightsProcess.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\LineSplitter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\LogAux.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\LWOAnimation.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\LWOFileData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\LWOLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\LWSLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MakeVerboseFormat.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MaterialSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MD2FileData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MD2Loader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MD2NormalTable.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MD3FileData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MD3Loader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MD5Loader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MD5Parser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MDCFileData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MDCLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MDCNormalTable.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MDLDefaultColorMap.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MDLFileData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MDLLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MemoryIOWrapper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\MS3DLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\NDOLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\NFFLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ObjExporter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ObjFileData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ObjFileImporter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ObjFileMtlImporter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ObjFileParser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ObjTools.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\OFFLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\OgreBinarySerializer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\OgreImporter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\OgreParsingUtils.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\OgreStructs.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\OgreXmlSerializer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\OpenGEXImporter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\OpenGEXStructs.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\OptimizeGraph.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\OptimizeMeshes.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ParsingUtils.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\PlyExporter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\PlyLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\PlyParser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\PolyTools.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\PretransformVertices.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ProcessHelper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Profiler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Q3BSPFileData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Q3BSPFileImporter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Q3BSPFileParser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Q3BSPZipArchive.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Q3DLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\qnan.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\RawLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\RemoveComments.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\RemoveRedundantMaterials.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\RemoveVCProcess.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\SceneCombiner.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ScenePreprocessor.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ScenePrivate.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\SGSpatialSort.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\SkeletonMeshBuilder.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\SMDLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\SmoothingGroups.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\SortByPTypeProcess.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\SpatialSort.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\SplitByBoneCountProcess.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\SplitLargeMeshes.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\StandardShapes.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\StdOStreamLogStream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\StepExporter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\STEPFile.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\STEPFileEncoding.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\STEPFileReader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\STLExporter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\STLLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\StreamReader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\StreamWriter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\StringComparison.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Subdivision.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\TargetAnimation.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\TerragenLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\TextureTransform.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\TinyFormatter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\TriangulateProcess.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\UnrealLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\ValidateDataStructure.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Vertex.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\VertexTriangleAdjacency.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\Win32DebugLogStream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\XFileExporter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\XFileHelper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\XFileImporter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\XFileParser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\XGLLoader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\XMLTools.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\clipper\clipper.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\ConvertUTF\ConvertUTF.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\irrXML\CXMLReaderImpl.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\irrXML\heapsort.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\irrXML\irrArray.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\irrXML\irrString.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\irrXML\irrTypes.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\irrXML\irrXML.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\openddlparser\include\openddlparser\DDLNode.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\openddlparser\include\openddlparser\OpenDDLCommon.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\openddlparser\include\openddlparser\OpenDDLParser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\openddlparser\include\openddlparser\OpenDDLParserUtils.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\openddlparser\include\openddlparser\Value.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\poly2tri\poly2tri\common\shapes.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\poly2tri\poly2tri\common\utils.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\poly2tri\poly2tri\sweep\advancing_front.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\poly2tri\poly2tri\sweep\cdt.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\poly2tri\poly2tri\sweep\sweep.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\poly2tri\poly2tri\sweep\sweep_context.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\unzip\crypt.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\unzip\ioapi.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\unzip\unzip.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\ai_assert.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\anim.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\camera.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\cexport.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\cfileio.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\cimport.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\color4.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\Compiler\poppack1.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\Compiler\pstdint.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\Compiler\pushpack1.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\config.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\DefaultLogger.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\defs.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\Exporter.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\Importer.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\importerdesc.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\IOStream.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\IOSystem.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\light.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\Logger.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\LogStream.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\material.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\matrix3x3.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\matrix4x4.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\mesh.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\metadata.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\NullLogger.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\postprocess.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\ProgressHandler.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\quaternion.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\scene.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\texture.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\types.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\vector2.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\vector3.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\version.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)revision.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\code\BlenderDNA.inl">
+      <FileType>Document</FileType>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\color4.inl">
+      <FileType>Document</FileType>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\material.inl">
+      <FileType>Document</FileType>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\matrix3x3.inl">
+      <FileType>Document</FileType>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\matrix4x4.inl">
+      <FileType>Document</FileType>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\quaternion.inl">
+      <FileType>Document</FileType>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\vector2.inl">
+      <FileType>Document</FileType>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\include\assimp\vector3.inl">
+      <FileType>Document</FileType>
+    </ClInclude>
+  </ItemGroup>
+</Project>

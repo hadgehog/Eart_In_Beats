@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{d58c74ea-3a92-4161-81dc-618a7cbb1464}</ItemsProjectGuid>
+    <ItemsRootNamespace>zlib</ItemsRootNamespace>
+    <ItemsProjectName>zlib.Shared</ItemsProjectName>
+    <CodeSharingProject>248F659F-DAC5-46E8-AC09-60EC9FC95053</CodeSharingProject>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\crc32.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\deflate.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\gzguts.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\inffast.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\inffixed.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\inflate.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\inftrees.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\trees.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\zlib.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\zutil.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)zconf.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\adler32.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\compress.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\crc32.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\deflate.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\gzclose.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\gzlib.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\gzread.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\gzwrite.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\infback.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\inffast.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\inflate.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\inftrees.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\trees.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\uncompr.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\..\..\contrib\zlib\zutil.c" />
+  </ItemGroup>
+</Project>
