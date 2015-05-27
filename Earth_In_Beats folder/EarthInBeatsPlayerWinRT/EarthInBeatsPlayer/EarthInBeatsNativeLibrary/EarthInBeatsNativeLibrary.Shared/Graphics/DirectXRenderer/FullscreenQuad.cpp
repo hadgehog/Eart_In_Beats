@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "FullscreenQuad.h"
 #include "Helpers\H.h"
 

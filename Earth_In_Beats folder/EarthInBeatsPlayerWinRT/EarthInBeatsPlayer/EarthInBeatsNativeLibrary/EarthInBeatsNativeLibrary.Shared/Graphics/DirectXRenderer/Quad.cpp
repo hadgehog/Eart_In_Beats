@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "Quad.h"
 #include "Helpers\H.h"
 
