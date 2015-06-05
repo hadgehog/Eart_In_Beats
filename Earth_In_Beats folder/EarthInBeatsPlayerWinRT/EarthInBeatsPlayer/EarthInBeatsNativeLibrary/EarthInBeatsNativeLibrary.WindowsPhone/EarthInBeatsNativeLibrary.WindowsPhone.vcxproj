@@ -71,16 +71,16 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)..\..\NativeLibraries\assimp-win-rt-master\include\assimp\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\NativeLibraries\assimp-win-rt-master\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)..\..\NativeLibraries\assimp-win-rt-master\include\assimp\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\NativeLibraries\assimp-win-rt-master\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <IncludePath>$(ProjectDir)..\..\NativeLibraries\assimp-win-rt-master\include\assimp\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\NativeLibraries\assimp-win-rt-master\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-    <IncludePath>$(ProjectDir)..\..\NativeLibraries\assimp-win-rt-master\include\assimp\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\NativeLibraries\assimp-win-rt-master\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
