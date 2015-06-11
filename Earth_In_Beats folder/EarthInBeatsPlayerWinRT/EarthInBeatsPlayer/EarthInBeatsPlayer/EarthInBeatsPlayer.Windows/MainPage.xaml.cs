@@ -35,6 +35,9 @@ namespace EarthInBeatsPlayer
         List<string> songs;
         bool needInitFoulder = true;
 
+        EarthInBeatsNativeLibrary.Renderer renderer;
+        EarthInBeatsNativeLibrary.EarthRenderableWinRT earthRenderable;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -274,6 +277,11 @@ namespace EarthInBeatsPlayer
             p.Inlines.Add(run);
 
             this.DebugTextBlock.Blocks.Add(p);
+        }
+
+        private void swapChainPanel_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        {
+
         }
     }
 }

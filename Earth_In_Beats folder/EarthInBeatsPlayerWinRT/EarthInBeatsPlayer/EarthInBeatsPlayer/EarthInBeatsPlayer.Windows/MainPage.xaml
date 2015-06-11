@@ -6,11 +6,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
+    
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-       
-        <StackPanel Orientation="Horizontal">
+        
+        <SwapChainPanel x:Name="swapChainPanel" ManipulationDelta="swapChainPanel_ManipulationDelta"/>
 
+        <StackPanel Orientation="Horizontal">
             <Button Content="Create Playlist" Click="Create_Playlist_Button_Click" Width="150" Margin="10, 0, 0, 700"/>
             <Button Content="Chose folder" Click="Folder_Button_Click" Width="150" Margin="20,15,0,715"/>
             <Button Content="p" Click="Previous_Button_Click" Margin="-320,0,0,600"/>
@@ -24,7 +25,6 @@
             <Slider Width="1329" x:Name="sliderProgress" PointerPressed="sliderProgress_PointerPressed" PointerReleased="sliderProgress_PointerReleased" Margin="-310, 700, 0, 20"/>
 
             <RichTextBlock x:Name="DebugTextBlock"  TextWrapping="Wrap" Foreground="White" Margin="-340,10,-30,95" Width="322" />
-
         </StackPanel>
     </Grid>
 </Page>

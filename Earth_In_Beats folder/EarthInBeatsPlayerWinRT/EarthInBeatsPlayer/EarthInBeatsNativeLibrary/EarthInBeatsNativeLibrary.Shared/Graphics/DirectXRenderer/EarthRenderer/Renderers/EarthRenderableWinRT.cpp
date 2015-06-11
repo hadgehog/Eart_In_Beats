@@ -1,7 +1,14 @@
 #include "EarthRenderableWinRT.h"
 
-EarthRenderableWinRT::EarthRenderableWinRT(){
-}
+namespace EarthInBeatsNativeLibrary
+{
+	EarthRenderableWinRT::EarthRenderableWinRT(){
+	}
 
-EarthRenderableWinRT::~EarthRenderableWinRT(){
+	EarthRenderableWinRT::~EarthRenderableWinRT(){
+	}
+
+	NativeRenderableContainer ^EarthRenderableWinRT::Get(){
+		return this->rendererContainer;
+	}
 }
