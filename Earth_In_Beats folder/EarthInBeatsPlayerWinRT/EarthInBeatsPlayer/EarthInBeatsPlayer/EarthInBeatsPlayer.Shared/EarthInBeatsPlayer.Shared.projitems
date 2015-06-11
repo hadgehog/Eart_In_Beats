@@ -18,5 +18,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)assets\geosphere.txt" />
+    <Content Include="$(MSBuildThisFileDirectory)assets\geosphere_with_textures.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)assets\Earth.obj" />
   </ItemGroup>
 </Project>

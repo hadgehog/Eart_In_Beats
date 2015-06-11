@@ -5,6 +5,7 @@
 
 #include <assimp\Importer.hpp>
 #include <assimp\scene.h>
+#include <assimp\postprocess.h>
 
 using namespace Concurrency;
 using namespace Windows::Foundation;
@@ -176,6 +177,18 @@ void MainDraw::LoadModel(std::string path){
 	//}
 
 	//where will be works assimp
+	Assimp::Importer modelImporter;
+	const aiScene *scene = NULL;
+	const aiMesh *mesh = NULL;
+
+	scene = modelImporter.ReadFile(path, aiProcess_Triangulate | aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices | aiProcess_SortByPType);
+
+	if (scene){
+
+	}
+	else{
+		H::System::DebuggerBreak();
+	}
 }
 
 void MainDraw::OnDeviceLost(){
