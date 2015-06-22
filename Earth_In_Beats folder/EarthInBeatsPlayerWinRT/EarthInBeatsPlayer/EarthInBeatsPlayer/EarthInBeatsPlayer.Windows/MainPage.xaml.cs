@@ -54,6 +54,8 @@ namespace EarthInBeatsPlayer
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            this.earthRenderable = new EarthInBeatsNativeLibrary.EarthRenderableWinRT();
+
             await FolderHelper.InitStorages();
 
             this.needInitFoulder = FolderHelper.LatestFolder == null;
