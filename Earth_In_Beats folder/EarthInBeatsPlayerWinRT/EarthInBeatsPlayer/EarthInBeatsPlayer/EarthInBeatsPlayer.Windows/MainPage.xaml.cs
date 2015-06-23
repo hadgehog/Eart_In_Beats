@@ -55,6 +55,10 @@ namespace EarthInBeatsPlayer
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             this.earthRenderable = new EarthInBeatsNativeLibrary.EarthRenderableWinRT();
+            this.renderer = new EarthInBeatsNativeLibrary.Renderer();
+
+            this.renderer.Initialize(Window.Current.CoreWindow, this.swapChainPanel, earthRenderable);
+            this.renderer.BackgroundColor = Windows.UI.Colors.DarkMagenta;
 
             await FolderHelper.InitStorages();
 

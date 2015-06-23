@@ -25,8 +25,4 @@ public:
 	virtual void PointerPressed(Windows::UI::Input::PointerPoint ^ppt) = 0;
 	virtual void PointerMoved(Windows::UI::Input::PointerPoint ^ppt) = 0;
 	virtual void PointerReleased(Windows::UI::Input::PointerPoint ^ppt) = 0;
-
-	//virtual void ManipulationStarted() = 0;
-	//virtual void ManipulationUpdated() = 0;
-	//virtual void ManipulationEnded() = 0;
 };
