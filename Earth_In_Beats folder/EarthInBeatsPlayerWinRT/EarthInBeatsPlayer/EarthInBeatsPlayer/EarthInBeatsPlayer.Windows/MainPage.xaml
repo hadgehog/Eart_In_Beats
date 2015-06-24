@@ -11,20 +11,25 @@
         
         <SwapChainPanel x:Name="swapChainPanel" ManipulationDelta="swapChainPanel_ManipulationDelta"/>
 
-        <StackPanel Orientation="Horizontal">
-            <Button Content="Create Playlist" Click="Create_Playlist_Button_Click" Width="150" Margin="10, 0, 0, 700"/>
-            <Button Content="Chose folder" Click="Folder_Button_Click" Width="150" Margin="20,15,0,715"/>
-            <Button Content="p" Click="Previous_Button_Click" Margin="-320,0,0,600"/>
-            <Button Content="Play" Click="OpenButtonClick" Width="140" Margin="-230, 0, 0, 600"/>
-            <Button Content="n" Click="Next_Button_Click" Margin="-45, 0, 0, 600"/>
-            <Button Content="Stop" Click="Button_Click" Margin="-200, 0, 0, 500"/>
-            
-            <Button Content="Exit" Click="Button_Click_1" Margin="-200,100,0,0"/>
-
-            <Slider Width="294" x:Name="sliderVolume" Margin="-320,260,0,457" ValueChanged="Slider1_ValueChanged"/>
-            <Slider Width="1329" x:Name="sliderProgress" PointerPressed="sliderProgress_PointerPressed" PointerReleased="sliderProgress_PointerReleased" Margin="-310, 700, 0, 20"/>
+        <StackPanel Orientation="Horizontal">          
+            <Slider Width="300" x:Name="sliderVolume" ValueChanged="Slider1_ValueChanged" Margin="20,20,0,694"/>
+            <Slider Width="1329" x:Name="sliderProgress" PointerPressed="sliderProgress_PointerPressed" PointerReleased="sliderProgress_PointerReleased" Margin="-300,620,0,95"/>
 
             <RichTextBlock x:Name="DebugTextBlock"  TextWrapping="Wrap" Foreground="White" Margin="-340,10,-30,95" Width="322" />
         </StackPanel>
     </Grid>
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton x:Name="Previous" Label="Previous" Icon="Previous" Click="Previous_Click"/>
+            <AppBarButton x:Name="Play" Label="Play" Icon="Play" Click="Play_Click"/>
+            <AppBarButton x:Name="Stop" Label="Stop" Icon="Stop" Click="Stop_Click"/>
+            <AppBarButton x:Name="Next" Label="Next" Icon="Next" Click="Next_Click"/>
+
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="Playlist" Label="Create playlist" Icon="Add" Click="Playlist_Click"/>
+                <AppBarButton x:Name="Exit" Label="Exit" Icon="Cancel" Click="Exit_Click"/>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

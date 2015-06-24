@@ -20,6 +20,20 @@
         </m2:DefaultTile>
         <m2:SplashScreen Image="Assets\SplashScreen.png" />
       </m2:VisualElements>
+      <Extensions>
+        <Extension Category="windows.fileOpenPicker">
+          <FileOpenPicker>
+            <SupportedFileTypes>
+              <FileType>.mp3</FileType>
+              <FileType>.wav</FileType>
+              <FileType>.wma</FileType>
+              <FileType>.aac</FileType>
+              <FileType>.flac</FileType>
+              <FileType>.mp4</FileType>
+            </SupportedFileTypes>
+          </FileOpenPicker>
+        </Extension>
+      </Extensions>
     </Application>
   </Applications>
   <Capabilities>
