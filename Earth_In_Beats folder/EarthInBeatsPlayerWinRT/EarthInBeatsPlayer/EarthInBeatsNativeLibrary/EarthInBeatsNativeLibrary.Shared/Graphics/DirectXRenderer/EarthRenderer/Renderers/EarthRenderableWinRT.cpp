@@ -33,4 +33,10 @@ namespace EarthInBeatsNativeLibrary
 	NativeRenderableContainer ^EarthRenderableWinRT::Get(){
 		return this->rendererContainer;
 	}
+
+	Windows::Foundation::IAsyncAction ^EarthRenderableWinRT::Load3DModel(Windows::Storage::Streams::IRandomAccessStream ^stream_not_disposing){
+		return concurrency::create_async([=](){
+
+		});
+	}
 }

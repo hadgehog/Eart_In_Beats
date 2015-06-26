@@ -27,7 +27,7 @@
             <AppBarButton x:Name="Next" Label="Next" Icon="Next" Click="Next_Click"/>
 
             <CommandBar.SecondaryCommands>
-                <AppBarButton x:Name="Playlist" Label="Create playlist" Icon="Add" Click="Playlist_Click"/>
+                <AppBarButton x:Name="Playlist" Label="Create playlist" Icon="MusicInfo" Click="Playlist_Click"/>
                 <AppBarButton x:Name="Exit" Label="Exit" Icon="Cancel" Click="Exit_Click"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>

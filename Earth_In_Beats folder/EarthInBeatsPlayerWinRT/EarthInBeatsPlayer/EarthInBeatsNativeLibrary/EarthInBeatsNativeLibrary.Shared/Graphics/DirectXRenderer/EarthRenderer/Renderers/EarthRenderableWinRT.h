@@ -13,6 +13,7 @@ namespace EarthInBeatsNativeLibrary
 		virtual NativeRenderableContainer ^Get();
 
 		///////////////  all winrt methods
+		Windows::Foundation::IAsyncAction ^Load3DModel(Windows::Storage::Streams::IRandomAccessStream ^stream_not_disposing);
 
 		//Windows::Foundation::IAsyncOperation<Windows::UI::Color> ^GetBackgroundColorAsync();
 		//Windows::Foundation::IAsyncAction ^SetBackgroundColorAsync(Windows::UI::Color v);

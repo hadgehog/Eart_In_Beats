@@ -22,6 +22,7 @@ using Windows.Storage.Pickers;
 using Windows.Storage.AccessCache;
 using Windows.UI;
 using Windows.UI.Xaml.Documents;
+using Windows.Storage.Streams;
 
 namespace EarthInBeatsPlayer
 {
@@ -32,9 +33,6 @@ namespace EarthInBeatsPlayer
         CreatingPlaylist playList;
         Windows.UI.Core.CoreDispatcher dispatcher;
         bool updateProgress = true;
-        List<string> songs;
-        //not used now
-        //bool needInitFolder = true;
 
         EarthInBeatsNativeLibrary.Renderer renderer;
         EarthInBeatsNativeLibrary.EarthRenderableWinRT earthRenderable;
@@ -53,26 +51,15 @@ namespace EarthInBeatsPlayer
             this.sliderProgress.AddHandler(PointerReleasedEvent, new PointerEventHandler(sliderProgress_PointerReleased), true);
         }
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.earthRenderable = new EarthInBeatsNativeLibrary.EarthRenderableWinRT();
             this.renderer = new EarthInBeatsNativeLibrary.Renderer();
 
-            this.renderer.Initialize(Window.Current.CoreWindow, this.swapChainPanel, earthRenderable);
+            this.renderer.Initialize(Window.Current.CoreWindow, this.swapChainPanel, this.earthRenderable);
             this.renderer.BackgroundColor = Windows.UI.Colors.DarkMagenta;
 
-            await FolderHelper.InitStorages();
-
-            //this.needInitFolder = FolderHelper.LatestFolder == null;
-            //
-            //if (this.needInitFolder)
-            //{
-            //    WriteDebugMessage("Audio folder not found! Please select torrents folder.", Colors.Red);
-            //}
-            //else
-            //{
-            //    WriteDebugMessage("Audio folder is: " + FolderHelper.LatestFolder.Path, Colors.Green);
-            //}
+            WriteDebugMessage("To select songs press Win + Z", Colors.Yellow);
         }
 
         private void Slider1_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
@@ -81,18 +68,6 @@ namespace EarthInBeatsPlayer
             {
                 this.player.Volume((float)e.NewValue / 100);
             }
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            if (this.player != null)
-            {
-                this.player.Dispose();
-            }
-
-            GC.Collect();
-
-            Application.Current.Exit();
         }
 
         private async void IncreaseProgress()
@@ -148,33 +123,6 @@ namespace EarthInBeatsPlayer
                 this.updateProgress = true;
             }
         }
-
-        //private async void Folder_Button_Click(object sender, RoutedEventArgs e)
-        //{
-        //    var fPiker = new FolderPicker();
-        //    fPiker.FileTypeFilter.Add("*");
-        //    var folder = await fPiker.PickSingleFolderAsync();
-        //
-        //    if (folder != null)
-        //    {
-        //        FolderHelper.AddStorage(folder);
-        //
-        //        this.needInitFolder = FolderHelper.LatestFolder == null;
-        //
-        //        if (this.needInitFolder)
-        //        {
-        //            WriteDebugMessage("Audio folder not found! Please select torrents folder.", Colors.Red);
-        //        }
-        //        else
-        //        {
-        //            WriteDebugMessage("Audio folder is: " + FolderHelper.LatestFolder.Path, Colors.Green);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        WriteDebugMessage("Folder is NULL!!!", Colors.Red);
-        //    }
-        //}
 
         private void WriteDebugMessage(string msg)
         {
@@ -244,6 +192,7 @@ namespace EarthInBeatsPlayer
 
             filePicker.ViewMode = PickerViewMode.List;
             filePicker.SuggestedStartLocation = PickerLocationId.ComputerFolder;
+
             filePicker.FileTypeFilter.Add(".mp3");
             filePicker.FileTypeFilter.Add(".wav");
             filePicker.FileTypeFilter.Add(".wma");
@@ -255,10 +204,10 @@ namespace EarthInBeatsPlayer
 
             if (pickedFiles != null)
             {
-                if (this.songs == null)
-                {
-                    this.songs = new List<string>();
-                }
+                List<string> songs = new List<string>();
+                List<IRandomAccessStream> streams = new List<IRandomAccessStream>();
+
+                WriteDebugMessage("Chosen files:", Colors.Yellow);
 
                 for (int i = 0; i < pickedFiles.Count; i++)
                 {
@@ -266,7 +215,13 @@ namespace EarthInBeatsPlayer
                     var path = file.Path;
                     var name = file.Name;
 
-                    this.songs.Add(name);
+                    songs.Add(name);
+
+                    var stream = await file.OpenStreamForReadAsync();
+                    IRandomAccessStream resultStream = stream.AsRandomAccessStream();
+                    streams.Add(resultStream);
+
+                    WriteDebugMessage(name, Colors.Green);
                 }
 
                 if (this.player != null)
@@ -278,18 +233,13 @@ namespace EarthInBeatsPlayer
 
                 //create playlist
                 this.playList = new CreatingPlaylist();
-                this.playList.CreatePlayList(this.songs);
+                this.playList.CreatePlayList(songs, streams, pickedFiles);
 
                 //init players list
                 this.player = new Reader();
                 this.player.InitPlayer(this.playList);
 
-                WriteDebugMessage("Playlist successfully created.", Colors.Green);
-                for (int i = 0; i < pickedFiles.Count; i++)
-                {
-                    WriteDebugMessage(pickedFiles[i].Name, Colors.Green);
-                }
-
+                WriteDebugMessage("Playlist successfully created.", Colors.Yellow);
             }
             else
             {

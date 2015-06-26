@@ -17,7 +17,8 @@ namespace MediaData
     {
         private List<Track> trackList;
         private string infoAboutTracks = "";
-        StorageFolder folder;
+        List<IRandomAccessStream> streamsToSongs;
+        IReadOnlyList<StorageFile> files;
 
         public CreatingPlaylist()
         {
@@ -29,38 +30,28 @@ namespace MediaData
         }
 
         //send a vector with song names
-        public void CreatePlayList(List<string> songs)
+        public void CreatePlayList(List<string> songs, List<IRandomAccessStream> streams, IReadOnlyList<StorageFile> files)
         {
-            this.folder = FolderHelper.LatestFolder;
-
-            trackList = new List<Track>();
+            this.trackList = new List<Track>();
+            this.streamsToSongs = streams;
+            this.files = files;
 
             for (int i = 0; i < songs.Count; i++)
             {
-                AddTrackInPlayList(i + 1, songs[i]);
+                this.AddTrackInPlayList(i + 1, songs[i]);
             }
         }
 
         public virtual IRandomAccessStream GetStream(int trackNumber)
         {
-            var t = this.folder.GetFileAsync(trackList[trackNumber].GetName()).AsTask();
-            t.Wait();
-            StorageFile file = t.Result;
-
-            var t2 = file.OpenAsync(FileAccessMode.Read).AsTask();
-            t2.Wait();
-
-            return t2.Result;
+            var stream = this.streamsToSongs[trackNumber];
+            return stream;
         }
 
         //return info about track
-        public virtual string GetInfoAboutTrack(int trackNumber)
+        public virtual string GetInfoAboutTrack(int songIndex)
         {
-            var t = this.folder.GetFileAsync(trackList[trackNumber].GetName()).AsTask();
-            t.Wait();
-            StorageFile file = t.Result;
-
-            StorageItemContentProperties contentProperties = file.Properties;
+            StorageItemContentProperties contentProperties = files[songIndex].Properties;
 
             var musicProperties = contentProperties.GetMusicPropertiesAsync().AsTask();
             musicProperties.Wait();
@@ -89,7 +80,7 @@ namespace MediaData
             trackList.Add(track);
         }
 
-        public ITrack GetTrack(int index)
+        public virtual ITrack GetTrack(int index)
         {
             return this.trackList[index];
         }
@@ -97,7 +88,6 @@ namespace MediaData
         public void SortPlaylist()
         {
             this.trackList.Sort((x, y) => x.Position - y.Position);
-            int st = 23;
         }
     }
 }

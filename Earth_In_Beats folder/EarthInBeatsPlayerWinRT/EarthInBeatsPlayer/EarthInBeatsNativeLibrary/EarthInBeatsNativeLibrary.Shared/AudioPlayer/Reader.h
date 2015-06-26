@@ -22,7 +22,7 @@ namespace EarthInBeatsNativeLibrary
 		void SortPlaylist();
 		ITrack ^GetTrack(int index);
 		Windows::Storage::Streams::IRandomAccessStream ^GetStream(int trackNumber);
-		Platform::String ^GetInfoAboutTrack(int trackNumber);	//return info about track
+		Platform::String ^GetInfoAboutTrack(int trackNumber);
 		bool CheckNext(int currentNumber);
 		int GetPlayListLength();
 	};

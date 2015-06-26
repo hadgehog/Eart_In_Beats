@@ -37,7 +37,7 @@ void Reader::InitPlayer(IPlayList ^playList)
 	this->currentPlayList->SortPlaylist();
 	this->FindGlobalDuration();	
 
-	for (uint16_t i = 0; i < currentPlayList->GetPlayListLength(); i++)
+	for (uint16_t i = 0; i < this->currentPlayList->GetPlayListLength(); i++)
 	{
 		auto player = std::shared_ptr<XAudio2Player>(new XAudio2Player());
 		Windows::Storage::Streams::IRandomAccessStream ^stream;
@@ -53,7 +53,8 @@ void Reader::InitPlayer(IPlayList ^playList)
 
 		stream = this->currentPlayList->GetStream(i);
 
-		this->tracksInfo.push_back(this->currentPlayList->GetInfoAboutTrack(i));
+		auto info = this->currentPlayList->GetInfoAboutTrack(i);
+		this->tracksInfo.push_back(info);
 
 		reader->Initialize(stream);
 
