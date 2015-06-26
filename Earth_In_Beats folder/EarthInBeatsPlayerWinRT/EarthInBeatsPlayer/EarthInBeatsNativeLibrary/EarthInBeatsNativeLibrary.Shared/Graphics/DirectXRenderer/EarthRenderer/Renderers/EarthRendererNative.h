@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\..\INativeRenderable.h"
+#include "..\..\DirectXWinRTHelpers\INativeRenderable.h"
 #include "Graphics\DirectXRenderer\Helpers\Timer.h"
 
 #include <memory>

@@ -1,5 +1,5 @@
 #include "MainDraw.h"
-#include "Helpers\H.h"
+#include "..\Helpers\H.h"
 
 #include <fstream>
 

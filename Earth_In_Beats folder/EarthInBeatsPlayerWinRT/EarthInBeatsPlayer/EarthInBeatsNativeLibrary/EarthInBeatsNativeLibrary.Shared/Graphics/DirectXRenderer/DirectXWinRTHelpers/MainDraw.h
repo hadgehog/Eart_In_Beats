@@ -1,5 +1,5 @@
 #pragma once
-#include "DirectXCommon\DeviceResources.h"
+#include "..\DirectXCommon\DeviceResources.h"
 #include "INativeRenderable.h"
 #include "NativeRenderableContainer.h"
 #include "Polygone.h"
@@ -34,7 +34,7 @@ public:
 	void PointerMoved(Windows::UI::Input::PointerPoint ^ppt);
 	void PointerReleased(Windows::UI::Input::PointerPoint ^ppt);
 
-	void LoadModel(std::string path);	//later must sent stream
+	void LoadModel(std::string path);	//later must sent stream. need move no EarthRendererNative
 
 private:
 	std::shared_ptr<INativeRenderable> nativeRenderer;

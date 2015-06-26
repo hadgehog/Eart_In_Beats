@@ -1,6 +1,6 @@
 #pragma once
-#include "DirectXCommon\DeviceResources.h"
-#include "DirectXCommon\StepTimer.h"
+#include "..\DirectXCommon\DeviceResources.h"
+#include "..\DirectXCommon\StepTimer.h"
 
 #include <memory>
 
