@@ -93,11 +93,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Helpers\WinRT\HDataWinRT.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\DirectXWinRTHelpers\IRenderable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\DirectXWinRTHelpers\MainDraw.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\DirectXWinRTHelpers\Polygone.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\Quad.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\DirectXWinRTHelpers\Renderer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\DirectXWinRTHelpers\NativeRenderableContainer.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\DirectXWinRTHelpers\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\EarthRenderer\Shaders\FSQuadPS.hlsl">

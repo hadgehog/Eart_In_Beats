@@ -3,10 +3,6 @@
 
 #include <fstream>
 
-#include <assimp\Importer.hpp>
-#include <assimp\scene.h>
-#include <assimp\postprocess.h>
-
 using namespace Concurrency;
 using namespace Windows::Foundation;
 using namespace Windows::System::Threading;
@@ -134,61 +130,6 @@ void MainDraw::PointerMoved(PointerPoint ^ppt){
 
 void MainDraw::PointerReleased(PointerPoint ^ppt){
 	this->nativeRenderer->PointerReleased(ppt);
-}
-
-void MainDraw::LoadModel(std::string path){
-	//std::vector<Vertex> vertexes;
-	//std::vector<Polygone> polygones;
-	//std::ifstream streamIn;
-	//std::string delimiter = " ";
-	//
-	//streamIn.open(path);
-	//
-	//if (streamIn.is_open()){
-	//	while (streamIn.eof()){
-	//		std::string tmp;
-	//
-	//		std::getline(streamIn, tmp);
-	//
-	//		if (tmp[0] == 'v'){	//parse vertex coords
-	//			float v1 = tmp[2];
-	//			float v2 = tmp[4];
-	//			float v3 = tmp[6];
-	//
-	//			Vertex vert;
-	//			vert.vertex[0] = v1;
-	//			vert.vertex[1] = v2;
-	//			vert.vertex[2] = v3;
-	//
-	//			vertexes.push_back(vert);
-	//		} 
-	//		else
-	//			if (tmp[0] == 'f'){	//parse triangle vertex indexes
-	//				size_t pos = 0;
-	//				std::string token;
-	//				std::vector<float> tmpVec;
-	//
-	//				while ((pos = tmp.find(delimiter)) != std::string::npos){
-	//					token = tmp.substr(0, pos);
-	//					tmp.erase(0, pos + delimiter.length());
-	//				}
-	//			}
-	//	}
-	//}
-
-	//where will be works assimp
-	Assimp::Importer modelImporter;
-	const aiScene *scene = NULL;
-	const aiMesh *mesh = NULL;
-
-	scene = modelImporter.ReadFile(path, aiProcess_Triangulate | aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices | aiProcess_SortByPType);
-
-	if (scene){
-
-	}
-	else{
-		H::System::DebuggerBreak();
-	}
 }
 
 void MainDraw::OnDeviceLost(){

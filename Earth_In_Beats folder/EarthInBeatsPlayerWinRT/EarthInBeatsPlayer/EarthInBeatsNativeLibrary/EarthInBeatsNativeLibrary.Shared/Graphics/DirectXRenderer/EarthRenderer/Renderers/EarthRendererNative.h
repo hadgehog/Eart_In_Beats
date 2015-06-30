@@ -33,6 +33,8 @@ public:
 	virtual void PointerMoved(Windows::UI::Input::PointerPoint ^ppt) override;
 	virtual void PointerReleased(Windows::UI::Input::PointerPoint ^ppt) override;
 
+	void LoadModel(std::string path);
+
 private:
 	std::shared_ptr<DX::DeviceResources> dxDev;
 
