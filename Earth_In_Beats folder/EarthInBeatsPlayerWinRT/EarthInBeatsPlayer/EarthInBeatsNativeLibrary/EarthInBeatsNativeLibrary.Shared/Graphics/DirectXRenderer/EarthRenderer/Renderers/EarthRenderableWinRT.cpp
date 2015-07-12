@@ -34,9 +34,8 @@ namespace EarthInBeatsNativeLibrary
 		return this->rendererContainer;
 	}
 
-	Windows::Foundation::IAsyncAction ^EarthRenderableWinRT::Load3DModel(Windows::Storage::Streams::IRandomAccessStream ^stream_not_disposing){
-		return concurrency::create_async([=](){
-
-		});
+	void EarthRenderableWinRT::Load3DModel(Platform::String ^path){
+		std::string strPath = H::Text::ConvertToUTF8(path);
+		this->nativeRenderer->LoadModel(strPath);
 	}
 }

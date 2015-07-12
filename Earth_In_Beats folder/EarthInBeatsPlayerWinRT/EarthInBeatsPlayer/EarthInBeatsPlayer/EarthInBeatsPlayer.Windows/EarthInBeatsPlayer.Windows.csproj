@@ -136,6 +136,8 @@
     <Content Include="Assets\AlbumArt_{0D5E074E-9562-49C9-97DB-C2F787991E56}_Large.jpg" />
     <Content Include="Assets\AlbumArt_{0D5E074E-9562-49C9-97DB-C2F787991E56}_Small.jpg" />
     <Content Include="Assets\Folder.jpg" />
+    <Content Include="Assets\geosphere.txt" />
+    <Content Include="Assets\geosphere_with_textures.txt" />
     <Content Include="Assets\kosmos_05.scale-100.png" />
     <Content Include="Assets\kosmos_05.scale-140.png" />
     <Content Include="Assets\kosmos_051.png" />
@@ -150,6 +152,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Earth.obj" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

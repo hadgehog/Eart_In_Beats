@@ -60,6 +60,9 @@ namespace EarthInBeatsPlayer
             this.renderer.BackgroundColor = Windows.UI.Colors.DarkMagenta;
 
             WriteDebugMessage("To select songs press Win + Z", Colors.Yellow);
+
+            String path = "Assets\\Earth.obj";
+            this.earthRenderable.Load3DModel(path);
         }
 
         private void Slider1_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
