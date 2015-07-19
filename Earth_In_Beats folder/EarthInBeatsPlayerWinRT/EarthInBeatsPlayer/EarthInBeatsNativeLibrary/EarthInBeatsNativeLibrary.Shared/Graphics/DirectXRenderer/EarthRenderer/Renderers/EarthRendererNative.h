@@ -2,6 +2,7 @@
 
 #include "..\..\DirectXWinRTHelpers\INativeRenderable.h"
 #include "Graphics\DirectXRenderer\Helpers\Timer.h"
+#include "..\..\VertexTextureNormal.h"
 
 #include <memory>
 #include <string>

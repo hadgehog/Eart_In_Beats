@@ -80,6 +80,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\DirectXWinRTHelpers\MainDraw.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\DirectXWinRTHelpers\NativeRenderableContainer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\DirectXWinRTHelpers\Renderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\VertexTextureNormal.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXRenderer\EarthRenderer\Shaders\T3PixelShader.hlsl" />
