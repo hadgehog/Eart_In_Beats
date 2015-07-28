@@ -25,7 +25,8 @@ MainDraw::~MainDraw()
 		critical_section::scoped_lock lock(this->renderLoopCS);
 	}
 
-	this->dxDev->RegisterDeviceNotify(nullptr);
+	auto dxDev = this->dx->Get();
+	dxDev->RegisterDeviceNotify(nullptr);
 }
 
 std::array<float, 4> MainDraw::GetClearColor(){
@@ -55,12 +56,16 @@ void MainDraw::SetClearColor(float r, float g, float b){
 }
 
 void MainDraw::Initialize(SwapChainPanel ^panel, EarthInBeatsNativeLibrary::NativeRenderableContainer ^container){
-	this->dxDev = std::make_shared<DX::DeviceResources>();
-	this->dxDev->SetSwapChainPanel(panel);
-	this->dxDev->RegisterDeviceNotify(this);
+	this->dx = std::make_shared<GuardedDeviceResources>();
+
+	{
+		auto dxDev = this->dx->Get();
+		dxDev->SetSwapChainPanel(panel);
+		dxDev->RegisterDeviceNotify(this);
+	}
 
 	this->nativeRenderer = container->Get();
-	this->nativeRenderer->Initialize(this->dxDev);
+	this->nativeRenderer->Initialize(this->dx);
 	this->nativeRenderer->CreateDeviceDependentResources();
 
 	if (panel->ActualWidth > 0 && panel->ActualHeight > 0){
@@ -72,7 +77,11 @@ void MainDraw::Initialize(SwapChainPanel ^panel, EarthInBeatsNativeLibrary::Nati
 
 void MainDraw::SaveState(){
 	critical_section::scoped_lock lock(this->criticalSection);
-	this->dxDev->Trim();
+	
+	{
+		auto dxDev = this->dx->Get();
+		dxDev->Trim();
+	}
 
 	// Stop rendering when the app is suspended.
 	this->StopRenderLoop();
@@ -93,30 +102,51 @@ void MainDraw::VisibilityChanged(bool visible){
 
 void MainDraw::DpiChanged(float dpi){
 	critical_section::scoped_lock lock(this->criticalSection);
-	this->dxDev->SetDpi(dpi);
+	
+	{
+		auto dxDev = this->dx->Get();
+		dxDev->SetDpi(dpi);
+	}
+
 	this->CreateSizeDependentResources();
 }
 
 void MainDraw::OrientationChanged(Windows::Graphics::Display::DisplayOrientations orientation){
 	critical_section::scoped_lock lock(this->criticalSection);
-	this->dxDev->SetCurrentOrientation(orientation);
+	
+	{
+		auto dxDev = this->dx->Get();
+		dxDev->SetCurrentOrientation(orientation);
+	}
+
 	this->CreateSizeDependentResources();
 }
 
 void MainDraw::DisplayContentsInvalidated(){
 	critical_section::scoped_lock lock(this->criticalSection);
-	this->dxDev->ValidateDevice();
+	auto dxDev = this->dx->Get();
+	dxDev->ValidateDevice();
 }
 
 void MainDraw::CompositionScaleChanged(float scaleX, float scaleY){
 	critical_section::scoped_lock lock(this->criticalSection);
-	this->dxDev->SetCompositionScale(scaleX, scaleY);
+	
+	{
+		auto dxDev = this->dx->Get();
+		dxDev->SetCompositionScale(scaleX, scaleY);
+	}
+
 	this->CreateSizeDependentResources();
 }
 
 void MainDraw::SizeChanged(Windows::Foundation::Size size){
 	critical_section::scoped_lock lock(this->criticalSection);
-	this->dxDev->SetLogicalSize(size);
+	
+	{
+		auto dxDev = this->dx->Get();
+		dxDev->SetLogicalSize(size);
+	}
+
 	this->CreateSizeDependentResources();
 }
 
@@ -171,7 +201,8 @@ void MainDraw::StartRenderLoop(){
 			critical_section::scoped_lock lock(this->criticalSection);
 			this->Update();
 			if (this->Render()){
-				this->dxDev->Present();
+				auto dxDev = this->dx->Get();
+				dxDev->Present();
 			}
 		}
 
@@ -202,19 +233,22 @@ bool MainDraw::Render(){
 		return false;
 	}
 
-	auto context = this->dxDev->GetD3DDeviceContext();
+	{
+		auto dxDev = this->dx->Get();
+		auto context = dxDev->GetD3DDeviceContext();
 
-	// Reset the viewport to target the whole screen.
-	auto viewport = this->dxDev->GetScreenViewport();
-	context->RSSetViewports(1, &viewport);
+		// Reset the viewport to target the whole screen.
+		auto viewport = dxDev->GetScreenViewport();
+		context->RSSetViewports(1, &viewport);
 
-	// Reset render targets to the screen.
-	ID3D11RenderTargetView *const targets[1] = { this->dxDev->GetBackBufferRenderTargetView() };
-	context->OMSetRenderTargets(1, targets, this->dxDev->GetDepthStencilView());
+		// Reset render targets to the screen.
+		ID3D11RenderTargetView *const targets[1] = { dxDev->GetBackBufferRenderTargetView() };
+		context->OMSetRenderTargets(1, targets, dxDev->GetDepthStencilView());
 
-	// Clear the back buffer and depth stencil view.
-	context->ClearRenderTargetView(this->dxDev->GetBackBufferRenderTargetView(), this->clearColor.data());
-	context->ClearDepthStencilView(this->dxDev->GetDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+		// Clear the back buffer and depth stencil view.
+		context->ClearRenderTargetView(dxDev->GetBackBufferRenderTargetView(), this->clearColor.data());
+		context->ClearDepthStencilView(dxDev->GetDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	}
 
 	this->nativeRenderer->Render();
 

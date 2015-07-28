@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DirectXWinRTHelpers\INativeRenderable.h"
+#include "..\DirectXWinRTHelpers\INativeRenderable.h"
 
 struct VertexTextureNormal{
 	DirectX::XMFLOAT3 Position;

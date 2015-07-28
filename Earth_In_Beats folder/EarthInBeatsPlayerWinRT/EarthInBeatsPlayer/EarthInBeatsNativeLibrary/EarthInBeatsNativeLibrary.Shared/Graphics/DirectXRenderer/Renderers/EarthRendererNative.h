@@ -1,8 +1,10 @@
 #pragma once
 
-#include "..\..\DirectXWinRTHelpers\INativeRenderable.h"
+#include "..\DirectXWinRTHelpers\INativeRenderable.h"
 #include "Graphics\DirectXRenderer\Helpers\Timer.h"
-#include "..\..\VertexTextureNormal.h"
+#include "..\VertexTextureNormal.h"
+#include "Graphics\DirectXRenderer\Helpers\Thread\PPL\safe_task.h"
+#include "..\DirectXResources\MediaRendererDxResources.h"
 
 #include <memory>
 #include <string>
@@ -17,7 +19,7 @@ public:
 	EarthRendererNative();
 	~EarthRendererNative();
 
-	virtual void Initialize(const std::shared_ptr<DX::DeviceResources> &dxDev) override;
+	virtual void Initialize(const std::shared_ptr<GuardedDeviceResources> &dx) override;
 
 	virtual void CreateDeviceDependentResources() override;
 	virtual void ReleaseDeviceDependentResources() override;
@@ -37,13 +39,13 @@ public:
 	void LoadModel(std::string path);
 
 private:
-	std::shared_ptr<DX::DeviceResources> dxDev;
-
-	//std::unique_ptr<Quad> fsQuad;
-	DirectX::XMFLOAT4X4 fsQuadBaseLocalTransform;
-	DirectX::XMFLOAT4X4 fsQuadBaseWorldTranslation;
+	std::shared_ptr<GuardedDeviceResources> dx;
 	DirectX::XMFLOAT4X4 projection;
+	std::unique_ptr<MediaRendererDxResources> dxResources;
 
-
+	concurrency::safe_task<void> initializeTask;
+	std::mutex initializedMtx;
+	std::condition_variable inititalizedCv;
+	bool initialized;
 };
 

@@ -1,6 +1,4 @@
-﻿//#define NOMINMAX
-
-#include "DeviceResources.h"
+﻿#include "DeviceResources.h"
 #include "DirectXHelper.h"
 
 #include <algorithm>
@@ -214,7 +212,7 @@ void DX::DeviceResources::CreateDeviceResources()
 }
 
 // These resources need to be recreated every time the window size is changed.
-void DX::DeviceResources::CreateWindowSizeDependentResources() 
+void DX::DeviceResources::CreateWindowSizeDependentResources(bool uiThread)
 {
 	// Clear the previous window size specific context.
 	ID3D11RenderTargetView* nullViews[] = {nullptr};
@@ -313,10 +311,8 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
 				)
 			);
 
-		// Associate swap chain with SwapChainPanel
-		// UI changes will need to be dispatched back to the UI thread
-		m_swapChainPanel->Dispatcher->RunAsync(CoreDispatcherPriority::High, ref new DispatchedHandler([=]()
-		{
+		if (uiThread) {
+			// Fixes crash when need quickly destroy renderer
 			// Get backing native interface for SwapChainPanel
 			ComPtr<ISwapChainPanelNative> panelNative;
 			DX::ThrowIfFailed(
@@ -326,8 +322,26 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
 			DX::ThrowIfFailed(
 				panelNative->SetSwapChain(m_swapChain.Get())
 				);
-		}, CallbackContext::Any));
-		
+		}
+		else {
+			// Associate swap chain with SwapChainPanel
+			// UI changes will need to be dispatched back to the UI thread
+			
+			// TODO Maybe need to wait for task completion.
+			m_swapChainPanel->Dispatcher->RunAsync(CoreDispatcherPriority::High, ref new DispatchedHandler([=]()
+			{
+				// Get backing native interface for SwapChainPanel
+				ComPtr<ISwapChainPanelNative> panelNative;
+				DX::ThrowIfFailed(
+					reinterpret_cast<IUnknown*>(m_swapChainPanel)->QueryInterface(IID_PPV_ARGS(&panelNative))
+					);
+
+				DX::ThrowIfFailed(
+					panelNative->SetSwapChain(m_swapChain.Get())
+					);
+			}, CallbackContext::Any));
+		}
+
 		// Ensure that DXGI does not queue more than one frame at a time. This both reduces latency and
 		// ensures that the application will only render after each VSync, minimizing power consumption.
 		DX::ThrowIfFailed(
@@ -486,7 +500,7 @@ void DX::DeviceResources::SetSwapChainPanel(SwapChainPanel^ panel)
 	m_dpi = currentDisplayInformation->LogicalDpi;
 	m_d2dContext->SetDpi(m_dpi, m_dpi);
 
-	CreateWindowSizeDependentResources();
+	CreateWindowSizeDependentResources(true);
 }
 
 // This method is called in the event handler for the SizeChanged event.

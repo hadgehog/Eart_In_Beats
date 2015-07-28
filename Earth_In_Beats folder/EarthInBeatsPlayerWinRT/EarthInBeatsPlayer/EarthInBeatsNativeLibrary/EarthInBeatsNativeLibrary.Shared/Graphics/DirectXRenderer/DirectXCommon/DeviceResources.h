@@ -13,8 +13,8 @@
 
 namespace DX
 {
-    // Provides an interface for an application that owns DeviceResources to be notified of the device being lost or created.
-	class IDeviceNotify{
+	// Provides an interface for an application that owns DeviceResources to be notified of the device being lost or created.
+	class IDeviceNotify {
 	public:
 		virtual ~IDeviceNotify();
 
@@ -23,7 +23,7 @@ namespace DX
 	};
 
 	// Controls all the DirectX device resources.
-	class DeviceResources{
+	class DeviceResources {
 	public:
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/dd756649%28v=vs.85%29.aspx
 		static const float D2DDefaultDPI;
@@ -41,34 +41,35 @@ namespace DX
 		void Present();
 
 		// Device Accessors.
-		Windows::Foundation::Size GetOutputSize() const					{ return m_outputSize; }
-		Windows::Foundation::Size GetLogicalSize() const				{ return m_logicalSize; }
-		float DPI() const												{ return this->m_dpi; }
-		float ScaleX() const											{ return this->m_compositionScaleX; }
-		float ScaleY() const											{ return this->m_compositionScaleY; }
+		Windows::Foundation::Size GetOutputSize() const { return m_outputSize; }
+		Windows::Foundation::Size GetLogicalSize() const { return m_logicalSize; }
+		Windows::Foundation::Size GetRendertargetSize() const { return m_d3dRenderTargetSize; }
+		float DPI() const { return this->m_dpi; }
+		float ScaleX() const { return this->m_compositionScaleX; }
+		float ScaleY() const { return this->m_compositionScaleY; }
 		// D3D Accessors.
-		ID3D11Device2*			GetD3DDevice() const					{ return m_d3dDevice.Get(); }
-		ID3D11DeviceContext2*	GetD3DDeviceContext() const				{ return m_d3dContext.Get(); }
-		IDXGISwapChain1*		GetSwapChain() const					{ return m_swapChain.Get(); }
-		D3D_FEATURE_LEVEL		GetDeviceFeatureLevel() const			{ return m_d3dFeatureLevel; }
-		ID3D11RenderTargetView*	GetBackBufferRenderTargetView() const	{ return m_d3dRenderTargetView.Get(); }
-		ID3D11DepthStencilView* GetDepthStencilView() const				{ return m_d3dDepthStencilView.Get(); }
-		D3D11_VIEWPORT			GetScreenViewport() const				{ return m_screenViewport; }
-		DirectX::XMFLOAT4X4		GetOrientationTransform3D() const		{ return m_orientationTransform3D; }
+		ID3D11Device2*			GetD3DDevice() const { return m_d3dDevice.Get(); }
+		ID3D11DeviceContext2*	GetD3DDeviceContext() const { return m_d3dContext.Get(); }
+		IDXGISwapChain1*		GetSwapChain() const { return m_swapChain.Get(); }
+		D3D_FEATURE_LEVEL		GetDeviceFeatureLevel() const { return m_d3dFeatureLevel; }
+		ID3D11RenderTargetView*	GetBackBufferRenderTargetView() const { return m_d3dRenderTargetView.Get(); }
+		ID3D11DepthStencilView* GetDepthStencilView() const { return m_d3dDepthStencilView.Get(); }
+		D3D11_VIEWPORT			GetScreenViewport() const { return m_screenViewport; }
+		DirectX::XMFLOAT4X4		GetOrientationTransform3D() const { return m_orientationTransform3D; }
 
 		// D2D Accessors.
-		ID2D1Factory2*			GetD2DFactory() const					{ return m_d2dFactory.Get(); }
-		ID2D1Device1*			GetD2DDevice() const					{ return m_d2dDevice.Get(); }
-		ID2D1DeviceContext1*	GetD2DDeviceContext() const				{ return m_d2dContext.Get(); }
-		ID2D1Bitmap1*			GetD2DTargetBitmap() const				{ return m_d2dTargetBitmap.Get(); }
-		IDWriteFactory2*		GetDWriteFactory() const				{ return m_dwriteFactory.Get();	 }
-		IWICImagingFactory2*	GetWicImagingFactory() const			{ return m_wicFactory.Get(); }
-		D2D1::Matrix3x2F		GetOrientationTransform2D() const		{ return m_orientationTransform2D; }
+		ID2D1Factory2*			GetD2DFactory() const { return m_d2dFactory.Get(); }
+		ID2D1Device1*			GetD2DDevice() const { return m_d2dDevice.Get(); }
+		ID2D1DeviceContext1*	GetD2DDeviceContext() const { return m_d2dContext.Get(); }
+		ID2D1Bitmap1*			GetD2DTargetBitmap() const { return m_d2dTargetBitmap.Get(); }
+		IDWriteFactory2*		GetDWriteFactory() const { return m_dwriteFactory.Get(); }
+		IWICImagingFactory2*	GetWicImagingFactory() const { return m_wicFactory.Get(); }
+		D2D1::Matrix3x2F		GetOrientationTransform2D() const { return m_orientationTransform2D; }
 
 	private:
 		void CreateDeviceIndependentResources();
 		void CreateDeviceResources();
-		void CreateWindowSizeDependentResources();
+		void CreateWindowSizeDependentResources(bool uiThread = false);
 		DXGI_MODE_ROTATION ComputeDisplayRotation();
 
 		// Direct3D objects.
@@ -111,5 +112,19 @@ namespace DX
 
 		// The IDeviceNotify can be held directly as it owns the DeviceResources.
 		IDeviceNotify* m_deviceNotify;
+
+	public:
+		// class for accessing thread-safe objects
+		class Multithread {
+		public:
+			Multithread(DeviceResources *dxDev)
+				: d3dDevice(dxDev->m_d3dDevice) {
+			}
+
+			ID3D11Device2 *GetD3DDevice() const { return this->d3dDevice.Get(); }
+		private:
+			// https://msdn.microsoft.com/en-us/library/windows/desktop/ff476891%28v=vs.85%29.aspx
+			Microsoft::WRL::ComPtr<ID3D11Device2> d3dDevice;
+		};
 	};
 }

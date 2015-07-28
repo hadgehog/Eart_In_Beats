@@ -1,5 +1,5 @@
 #pragma once
-#include "..\DirectXCommon\DeviceResources.h"
+#include "..\DirectXCommon\GuardedDeviceResources.h"
 #include "..\DirectXCommon\StepTimer.h"
 
 #include <memory>
@@ -9,7 +9,7 @@ public:
 	INativeRenderable();
 	virtual ~INativeRenderable();
 
-	virtual void Initialize(const std::shared_ptr<DX::DeviceResources> &dxDev) = 0;
+	virtual void Initialize(const std::shared_ptr<GuardedDeviceResources> &dx) = 0;
 
 	virtual void CreateDeviceDependentResources() = 0;
 	virtual void ReleaseDeviceDependentResources() = 0;

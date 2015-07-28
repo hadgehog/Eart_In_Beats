@@ -1,5 +1,5 @@
 #pragma once
-#include "..\DirectXCommon\DeviceResources.h"
+#include "..\DirectXCommon\GuardedDeviceResources.h"
 #include "INativeRenderable.h"
 #include "NativeRenderableContainer.h"
 
@@ -37,7 +37,7 @@ private:
 	std::shared_ptr<INativeRenderable> nativeRenderer;
 
 	DX::StepTimer timer;
-	std::shared_ptr<DX::DeviceResources> dxDev;
+	std::shared_ptr<GuardedDeviceResources> dx;
 	Windows::Foundation::IAsyncAction^ renderLoopWorker;
 	Concurrency::critical_section renderLoopCS;
 	std::array<float, 4> clearColor;

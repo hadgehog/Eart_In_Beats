@@ -1,5 +1,5 @@
 #include "EarthRendererNative.h"
-#include "..\..\Helpers\H.h"
+#include "..\Helpers\H.h"
 
 #include <fstream>
 
@@ -13,7 +13,7 @@ EarthRendererNative::EarthRendererNative(){
 EarthRendererNative::~EarthRendererNative(){
 }
 
-void EarthRendererNative::Initialize(const std::shared_ptr<DX::DeviceResources> &dxDev){
+void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResources> &dx){
 
 }
 
@@ -98,8 +98,6 @@ void EarthRendererNative::LoadModel(std::string path){
 
 				for (size_t i = 0; i < verticesNum; i++){
 					posTexNormList[i].Position = DirectX::XMFLOAT3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
-
-					//DirectX::XMStoreFloat3(&posTexNormList[i].Position, DirectX::XMVector3TransformCoord(DirectX::XMLoadFloat3(&posTexNormList[i].Position), mLocalWorld));
 				}
 
 				if (mesh->HasNormals()){
@@ -117,6 +115,7 @@ void EarthRendererNative::LoadModel(std::string path){
 					}
 				}
 			}
+
 			int stop = 3;
 		}
 		else{

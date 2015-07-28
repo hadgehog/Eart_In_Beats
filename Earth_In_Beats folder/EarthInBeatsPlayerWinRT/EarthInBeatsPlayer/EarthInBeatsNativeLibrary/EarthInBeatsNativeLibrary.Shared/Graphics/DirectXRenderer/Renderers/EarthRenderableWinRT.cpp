@@ -1,6 +1,6 @@
 #include "EarthRenderableWinRT.h"
 
-#include "..\..\Helpers\H.h"
+#include "..\Helpers\H.h"
 
 #include <mfidl.h>
 

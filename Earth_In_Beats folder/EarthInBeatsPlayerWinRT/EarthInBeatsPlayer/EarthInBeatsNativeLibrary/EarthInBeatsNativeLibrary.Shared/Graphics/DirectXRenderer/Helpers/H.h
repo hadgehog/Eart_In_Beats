@@ -4,8 +4,9 @@
 #include "HSystem.h"
 #include "HTime.h"
 #include "HMath.h"
+#include "Macros.h"
 
-#include "WinRT/HDataWinRT.h"
+#include "WinRT\HDataWinRT.h"
 
 #define WSTR1(x) L#x
 #define WSTR2(x) WSTR1(x)
