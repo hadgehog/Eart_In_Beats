@@ -90,4 +90,52 @@ public:
 	static DirectX::XMMATRIX XMMatrixFrom(const D2D1_MATRIX_3X2_F &v);
 
 	static DirectX::XMVECTOR GetAABBSizeFrom(DirectX::CXMMATRIX matrix);
+
+	static int RoundUp(int numToRound, int multiple)
+	{
+		if (multiple == 0)
+		{
+			return numToRound;
+		}
+
+		int remainder = numToRound % multiple;
+		if (remainder == 0)
+		{
+			return numToRound;
+		}
+
+		return numToRound + multiple - remainder;
+	}
+
+	static float GetRadsToDegsScale() {
+		const float scale = (180.0f / DirectX::XM_PI);
+		return scale;
+	}
+
+	static float GetDegsToRadsScale() {
+		const float scale = (DirectX::XM_PI / 180.0f);
+		return scale;
+	}
+
+	static DirectX::XMMATRIX XMMatrixPerspectiveLH(
+		float ViewWidth,
+		float ViewHeight,
+		float ViewZ,
+		float NearZ,
+		float FarZ)
+	{
+		float _viewZ = ViewZ * NearZ;
+		return DirectX::XMMatrixPerspectiveLH(ViewWidth * _viewZ, ViewHeight * _viewZ, NearZ, FarZ);
+	}
+
+	template<class T> static T RoundUpPOT(T v) {
+		v--;
+		v |= v >> 1;
+		v |= v >> 2;
+		v |= v >> 4;
+		v |= v >> 8;
+		v |= v >> 16;
+		v++;
+		return v;
+	}
 };

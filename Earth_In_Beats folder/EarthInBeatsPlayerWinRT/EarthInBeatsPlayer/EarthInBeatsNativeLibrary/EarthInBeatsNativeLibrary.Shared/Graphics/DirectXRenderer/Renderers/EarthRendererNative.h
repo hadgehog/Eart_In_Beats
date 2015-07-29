@@ -5,6 +5,7 @@
 #include "..\VertexTextureNormal.h"
 #include "Graphics\DirectXRenderer\Helpers\Thread\PPL\safe_task.h"
 #include "..\DirectXResources\MediaRendererDxResources.h"
+#include "..\Shaders\QuadVertexShaderSettings.h"
 
 #include <memory>
 #include <string>
@@ -43,9 +44,19 @@ private:
 	DirectX::XMFLOAT4X4 projection;
 	std::unique_ptr<MediaRendererDxResources> dxResources;
 
+	concurrency::critical_section dataCs;
+
 	concurrency::safe_task<void> initializeTask;
 	std::mutex initializedMtx;
 	std::condition_variable inititalizedCv;
 	bool initialized;
+
+	std::shared_ptr<Geometry> quad;
+	std::shared_ptr<QuadVs> quadVs;
+	std::unique_ptr<QuadVs::Cbuffer> quadVsCbuffer;
+	std::shared_ptr<QuadPs> quadPs;
+	Microsoft::WRL::ComPtr<ID3D11SamplerState> quadSampler;
+
+	void WaitForInitialization();
 };
 
