@@ -1,9 +1,9 @@
 #pragma once
 
 #include "..\DirectXWinRTHelpers\INativeRenderable.h"
-#include "Graphics\DirectXRenderer\Helpers\Timer.h"
+#include "Graphics\Helpers\Timer.h"
 #include "..\VertexTextureNormal.h"
-#include "Graphics\DirectXRenderer\Helpers\Thread\PPL\safe_task.h"
+#include "Graphics\Helpers\Thread\PPL\safe_task.h"
 #include "..\DirectXResources\MediaRendererDxResources.h"
 #include "..\Shaders\QuadVertexShaderSettings.h"
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graphics\DirectXRenderer\DirectXWinRTHelpers\IRenderable.h"
+#include "Graphics\DirectXWinRTHelpers\IRenderable.h"
 #include "EarthRendererNative.h"
 
 namespace EarthInBeatsNativeLibrary
