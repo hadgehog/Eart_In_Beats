@@ -99,7 +99,8 @@ void EarthRendererNative::LoadModel(std::string path){
 	std::vector<int> materialIndices;
 	std::vector<VertexTextureNormal> posTexNormList;
 
-	scene = modelImporter.ReadFile(path, aiProcess_CalcTangentSpace | aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_SortByPType);
+	////scene = modelImporter.ReadFile(path, aiProcess_CalcTangentSpace | aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_SortByPType | aiProcess_GenNormals);
+	scene = modelImporter.ReadFile(path, aiProcess_Triangulate | aiProcess_GenNormals);
 
 	if (scene){
 		mesh = scene->mMeshes[0];
@@ -129,7 +130,7 @@ void EarthRendererNative::LoadModel(std::string path){
 				posTexNormList.resize(verticesNum);
 
 				for (size_t i = 0; i < verticesNum; i++){
-					posTexNormList[i].Position = DirectX::XMFLOAT3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
+					posTexNormList[i].Vertex = DirectX::XMFLOAT3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
 				}
 
 				if (mesh->HasNormals()){
@@ -143,12 +144,18 @@ void EarthRendererNative::LoadModel(std::string path){
 
 				if (mesh->HasTextureCoords(0)) {
 					for (size_t i = 0; i < verticesNum; i++){
-						posTexNormList[i].TextureCoord= DirectX::XMFLOAT2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
+						posTexNormList[i].TextureCoord = DirectX::XMFLOAT2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 					}
 				}
 			}
 
 			int stop = 3;
+
+			////////////// create shaders
+
+
+
+
 		}
 		else{
 			H::System::DebuggerBreak();
