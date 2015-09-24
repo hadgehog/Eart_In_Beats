@@ -18,7 +18,7 @@ namespace MediaData
         private List<Track> trackList;
         private string infoAboutTracks = "";
         List<IRandomAccessStream> streamsToSongs;
-        IReadOnlyList<StorageFile> files;
+        List<StorageFile> files;
 
         public CreatingPlaylist()
         {
@@ -30,7 +30,7 @@ namespace MediaData
         }
 
         //send a vector with song names
-        public void CreatePlayList(List<string> songs, List<IRandomAccessStream> streams, IReadOnlyList<StorageFile> files)
+        public void CreatePlayList(List<string> songs, List<IRandomAccessStream> streams, List<StorageFile> files)
         {
             this.trackList = new List<Track>();
             this.streamsToSongs = streams;
@@ -39,6 +39,27 @@ namespace MediaData
             for (int i = 0; i < songs.Count; i++)
             {
                 this.AddTrackInPlayList(i + 1, songs[i]);
+            }
+        }
+
+        public void AddTrack(List<string> songs, List<IRandomAccessStream> streams, List<StorageFile> files)
+        {
+            if(this.trackList != null)
+            {
+                foreach(var stream in streams)
+                {
+                    this.streamsToSongs.Add(stream);
+                }
+
+                foreach(var file in files)
+                {
+                    this.files.Add(file);
+                }
+ 
+                for(int i = 0; i< songs.Count; i++)
+                {
+                    this.AddTrackInPlayList(this.trackList.Count + i + 1, songs[i]);
+                }
             }
         }
 
@@ -77,7 +98,7 @@ namespace MediaData
         private void AddTrackInPlayList(int trackNumber, string trackName)
         {
             var track = new Track(trackNumber, trackName);
-            trackList.Add(track);
+            this.trackList.Add(track);
         }
 
         public virtual ITrack GetTrack(int index)

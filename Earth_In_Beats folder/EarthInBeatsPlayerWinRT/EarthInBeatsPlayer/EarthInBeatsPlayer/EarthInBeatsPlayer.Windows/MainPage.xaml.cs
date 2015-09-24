@@ -23,6 +23,7 @@ using Windows.Storage.AccessCache;
 using Windows.UI;
 using Windows.UI.Xaml.Documents;
 using Windows.Storage.Streams;
+using Windows.Storage;
 
 namespace EarthInBeatsPlayer
 {
@@ -57,12 +58,12 @@ namespace EarthInBeatsPlayer
             this.renderer = new EarthInBeatsNativeLibrary.Renderer();
 
             this.renderer.Initialize(Window.Current.CoreWindow, this.swapChainPanel, this.earthRenderable);
-            this.renderer.BackgroundColor = Windows.UI.Colors.DarkMagenta;
+            this.renderer.BackgroundColor = Windows.UI.Colors.Black;
 
             WriteDebugMessage("To select songs press Win + Z", Colors.Yellow);
 
-            String path = "Assets\\Earth.obj";
-            this.earthRenderable.Load3DModel(path);
+            //String path = "Assets\\Earth.obj";
+            //this.earthRenderable.Load3DModel(path);
         }
 
         private void Slider1_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
@@ -203,7 +204,9 @@ namespace EarthInBeatsPlayer
             filePicker.FileTypeFilter.Add(".flac");
             filePicker.FileTypeFilter.Add(".mp4");
 
-            var pickedFiles = await filePicker.PickMultipleFilesAsync();
+            //TODO correct convertion to List !!!!
+            var pickedFilesTmp = await filePicker.PickMultipleFilesAsync();
+            List<StorageFile> pickedFiles = new List<StorageFile>(pickedFilesTmp);
 
             if (pickedFiles != null)
             {
@@ -224,23 +227,25 @@ namespace EarthInBeatsPlayer
                     IRandomAccessStream resultStream = stream.AsRandomAccessStream();
                     streams.Add(resultStream);
 
-                    WriteDebugMessage(name, Colors.Green);
+                    WriteDebugMessage(name, Colors.LightGreen);
                 }
 
-                if (this.player != null)
+                if (this.player == null)
+                {
+                    //create playlist
+                    this.playList = new CreatingPlaylist();
+                    this.playList.CreatePlayList(songs, streams, pickedFiles);
+
+                    //init players list
+                    this.player = new Reader();
+                    this.player.InitPlayer(this.playList);
+                }
+                else
                 {
                     this.player.Stop();
-                    this.player.Dispose();
-                    GC.Collect();
+                    this.playList.AddTrack(songs, streams, pickedFiles);
+                    this.player.InitPlayer(this.playList);
                 }
-
-                //create playlist
-                this.playList = new CreatingPlaylist();
-                this.playList.CreatePlayList(songs, streams, pickedFiles);
-
-                //init players list
-                this.player = new Reader();
-                this.player.InitPlayer(this.playList);
 
                 WriteDebugMessage("Playlist successfully created.", Colors.Yellow);
             }
@@ -260,6 +265,24 @@ namespace EarthInBeatsPlayer
             GC.Collect();
 
             Application.Current.Exit();
+        }
+
+        private void ClearPlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.player != null)
+            {
+                if (this.playList != null)
+                {
+                    this.player.Stop();
+                    this.player.ClearPlayList();
+
+                    this.player.Dispose();
+                    GC.Collect();
+
+                    this.player = null;
+                    this.playList = null;
+                }
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 
 #include "..\DirectXWinRTHelpers\INativeRenderable.h"
 #include "Graphics\Helpers\Timer.h"
-#include "..\VertexTextureNormal.h"
+#include "VertexTextureNormal.h"
 #include "Graphics\Helpers\Thread\PPL\safe_task.h"
 #include "..\DirectXResources\MediaRendererDxResources.h"
 #include "..\Shaders\QuadVertexShaderSettings.h"
@@ -56,6 +56,8 @@ private:
 	std::unique_ptr<QuadVs::Cbuffer> quadVsCbuffer;
 	std::shared_ptr<QuadPs> quadPs;
 	Microsoft::WRL::ComPtr<ID3D11SamplerState> quadSampler;
+
+	std::vector<VertexTextureNormal> posTexNormList;
 
 	void WaitForInitialization();
 };

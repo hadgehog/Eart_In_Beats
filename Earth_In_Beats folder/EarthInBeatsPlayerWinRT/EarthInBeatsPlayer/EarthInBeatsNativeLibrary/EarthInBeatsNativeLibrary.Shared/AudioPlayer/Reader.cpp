@@ -181,6 +181,12 @@ int64_t Reader::GetGlobalDuration()
 	return this->globalDuration;
 }
 
+void Reader::ClearPlayList() {
+	this->currentPlayList = nullptr;
+	this->playersList.clear();
+	this->tracksInfo.clear();
+}
+
 void Reader::EndOfRewindingTrack()
 {
 

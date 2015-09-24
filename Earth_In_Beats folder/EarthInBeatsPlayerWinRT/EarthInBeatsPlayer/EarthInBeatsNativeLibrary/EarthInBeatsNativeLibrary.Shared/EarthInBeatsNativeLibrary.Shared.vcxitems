@@ -33,6 +33,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXResources\MediaRendererGeometryDxResources.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXResources\MediaRendererSamplerDxResources.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXResources\MediaRendererShaderDxResources.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Renderers\DxRenderingContext.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Renderers\EarthRenderableWinRT.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Renderers\EarthRendererNative.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Geometry\Geometry.cpp" />
@@ -52,6 +53,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXWinRTHelpers\MainDraw.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXWinRTHelpers\Renderer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXWinRTHelpers\NativeRenderableContainer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Renderers\GestureHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioData\AudioReader\AudioReader.h" />
@@ -66,6 +68,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioHelpers\Rational.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\Reader.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\config.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\D2D1RenderingContext.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXCommon\DeviceResources.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXCommon\DirectXHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXCommon\GuardedDeviceResources.h" />
@@ -76,9 +79,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXResources\MediaRendererSamplerDxResources.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXResources\MediaRendererShaderDxResources.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXResources\Resources.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\DxRenderingContext.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Helpers\Macros.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\EarthRenderableWinRT.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\EarthRendererNative.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\GestureHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\CBuffer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\PixelShader.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\QuadVertexShaderSettings.h" />
@@ -124,7 +129,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXWinRTHelpers\MainDraw.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXWinRTHelpers\Renderer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXWinRTHelpers\NativeRenderableContainer.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\VertexTextureNormal.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\VertexTextureNormal.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\Shaders\QuadPixelShader.hlsl">

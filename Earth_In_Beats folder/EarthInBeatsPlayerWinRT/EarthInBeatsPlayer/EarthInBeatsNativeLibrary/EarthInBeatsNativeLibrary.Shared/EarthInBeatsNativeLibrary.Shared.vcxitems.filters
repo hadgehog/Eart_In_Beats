@@ -36,6 +36,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Helpers\Timer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Renderers\EarthRenderableWinRT.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Renderers\EarthRendererNative.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Renderers\DxRenderingContext.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Renderers\GestureHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioData\AudioReader\AudioReader.h" />
@@ -108,7 +110,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\QuadVertexShaderSettings.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\VertexShader.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\config.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\VertexTextureNormal.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\D2D1RenderingContext.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\DxRenderingContext.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\VertexTextureNormal.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\GestureHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\Shaders\QuadPixelShader.hlsl" />

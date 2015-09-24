@@ -6,9 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        
+
         <SwapChainPanel x:Name="swapChainPanel" ManipulationDelta="swapChainPanel_ManipulationDelta"/>
 
         <StackPanel Orientation="Horizontal">          
@@ -28,6 +28,7 @@
 
             <CommandBar.SecondaryCommands>
                 <AppBarButton x:Name="Playlist" Label="Create playlist" Icon="MusicInfo" Click="Playlist_Click"/>
+                <AppBarButton x:Name="ClearPlaylist" Label="Clear playlist" Icon="Clear" Click="ClearPlaylist_Click"/>
                 <AppBarButton x:Name="Exit" Label="Exit" Icon="Cancel" Click="Exit_Click"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
