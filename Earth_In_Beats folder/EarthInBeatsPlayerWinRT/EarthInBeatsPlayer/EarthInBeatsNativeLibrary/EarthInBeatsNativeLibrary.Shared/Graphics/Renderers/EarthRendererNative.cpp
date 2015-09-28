@@ -102,7 +102,7 @@ void EarthRendererNative::LoadModel(std::string path){
 	const aiFace *faces = NULL;
 	int indicesNum = 0;
 	int verticesNum = 0;
-	std::vector<int> materialIndices;
+	std::vector<uint32_t> materialIndices;
 
 	HRESULT hr = S_OK;
 
@@ -156,8 +156,7 @@ void EarthRendererNative::LoadModel(std::string path){
 			}
 
 			//Create index buffer
-			D3D11_BUFFER_DESC indexBufferDesc;
-			ZeroMemory(&indexBufferDesc, sizeof(indexBufferDesc));
+			D3D11_BUFFER_DESC indexBufferDesc = { 0 };
 
 			indexBufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
 			indexBufferDesc.ByteWidth = sizeof(DWORD) * mesh->mNumFaces * 3;
@@ -172,8 +171,7 @@ void EarthRendererNative::LoadModel(std::string path){
 			HSystem::ThrowIfFailed(hr);
 
 			//Create Vertex Buffer
-			D3D11_BUFFER_DESC vertexBufferDesc;
-			ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
+			D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
 
 			vertexBufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
 			vertexBufferDesc.ByteWidth = sizeof(VertexTextureNormal) * verticesNum;
