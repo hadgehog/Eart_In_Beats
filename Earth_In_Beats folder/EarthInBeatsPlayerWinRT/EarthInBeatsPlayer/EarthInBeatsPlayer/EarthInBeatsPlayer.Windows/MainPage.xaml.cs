@@ -52,7 +52,7 @@ namespace EarthInBeatsPlayer
             this.sliderProgress.AddHandler(PointerReleasedEvent, new PointerEventHandler(sliderProgress_PointerReleased), true);
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             this.earthRenderable = new EarthInBeatsNativeLibrary.EarthRenderableWinRT();
             this.renderer = new EarthInBeatsNativeLibrary.Renderer();
@@ -62,8 +62,8 @@ namespace EarthInBeatsPlayer
 
             WriteDebugMessage("To select songs press Win + Z", Colors.Yellow);
 
-            //String path = "Assets\\Earth.obj";
-            //this.earthRenderable.Load3DModel(path);
+            String path = "Assets\\Earth.obj";
+            await this.earthRenderable.Load3DModel(path);
         }
 
         private void Slider1_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)

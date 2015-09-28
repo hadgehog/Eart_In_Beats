@@ -8,7 +8,7 @@
 #include <assimp\scene.h>
 #include <assimp\postprocess.h>
 
-EarthRendererNative::EarthRendererNative() : initialized(false){
+EarthRendererNative::EarthRendererNative() : initialized(false), modelLoaded(false){
 	DirectX::XMStoreFloat4x4(&this->projection, DirectX::XMMatrixIdentity());
 }
 
@@ -188,7 +188,7 @@ void EarthRendererNative::LoadModel(std::string path){
 			hr = d3dDev->CreateBuffer(&vertexBufferDesc, &vertexBufferData, this->vertexBuffer.GetAddressOf());
 			HSystem::ThrowIfFailed(hr);
 
-
+			this->modelLoaded = true;
 		}
 		else{
 			H::System::DebuggerBreak();

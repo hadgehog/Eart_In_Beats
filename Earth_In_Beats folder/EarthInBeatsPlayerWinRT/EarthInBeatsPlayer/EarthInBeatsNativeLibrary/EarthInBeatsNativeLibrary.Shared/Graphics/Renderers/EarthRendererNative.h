@@ -50,11 +50,16 @@ private:
 	std::condition_variable inititalizedCv;
 	bool initialized;
 
+	bool modelLoaded;
+
 	DirectX::XMFLOAT4X4 projection;
 	Microsoft::WRL::ComPtr<ID3D11BlendState> blendState;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
 	Microsoft::WRL::ComPtr<ID3D11SamplerState> quadSampler;
+
+	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> meshSRV;
+	std::vector<std::wstring> textureNameArray;
 
 	std::vector<VertexTextureNormal> modelPoints;
 	std::vector<SurfaceMaterial> materials;

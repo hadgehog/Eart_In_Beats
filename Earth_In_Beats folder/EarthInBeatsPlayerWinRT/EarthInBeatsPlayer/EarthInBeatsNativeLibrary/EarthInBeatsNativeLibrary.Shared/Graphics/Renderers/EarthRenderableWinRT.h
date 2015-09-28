@@ -13,7 +13,7 @@ namespace EarthInBeatsNativeLibrary
 		virtual NativeRenderableContainer ^Get();
 
 		///////////////  all winrt methods
-		void Load3DModel(Platform::String ^path);
+		Windows::Foundation::IAsyncAction ^Load3DModel(Platform::String ^path);
 
 
 	private:
