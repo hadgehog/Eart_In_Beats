@@ -13,16 +13,10 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioHelpers\InitMasterVoice.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AudioPlayer\Reader.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXCommon\DeviceResources.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXResources\MediaRendererDxResources.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXResources\MediaRendererGeometryDxResources.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXResources\MediaRendererSamplerDxResources.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXResources\MediaRendererShaderDxResources.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXWinRTHelpers\INativeRenderable.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXWinRTHelpers\MainDraw.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXWinRTHelpers\NativeRenderableContainer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXWinRTHelpers\Renderer.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Geometry\Geometry.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Geometry\VertexBuffer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Helpers\Text\UriCodec.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Helpers\WinRT\HDataWinRT.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Helpers\async_class.cpp" />
@@ -55,19 +49,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXCommon\DirectXHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXCommon\GuardedDeviceResources.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXCommon\StepTimer.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXResources\AsyncResource.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXResources\MediaRendererDxResources.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXResources\MediaRendererGeometryDxResources.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXResources\MediaRendererSamplerDxResources.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXResources\MediaRendererShaderDxResources.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXResources\Resources.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXWinRTHelpers\INativeRenderable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXWinRTHelpers\IRenderable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXWinRTHelpers\MainDraw.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXWinRTHelpers\NativeRenderableContainer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXWinRTHelpers\Renderer.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Geometry\Geometry.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Geometry\VertexBuffer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Helpers\Metainfo\PointerGetter.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Helpers\Metainfo\RawType.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Helpers\Metainfo\Signature.h" />
@@ -105,15 +91,13 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Helpers\vector_queue.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\EarthRenderableWinRT.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\EarthRendererNative.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\CBuffer.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\PixelShader.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\QuadVertexShaderSettings.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\VertexShader.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\config.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\D2D1RenderingContext.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\DxRenderingContext.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\VertexTextureNormal.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\GestureHelper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\SurfaceMaterial.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\ConstantBufferData.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\Shaders\QuadPixelShader.hlsl" />

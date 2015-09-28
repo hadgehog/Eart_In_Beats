@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\DirectXResources\Resources.h"
+#include <DirectXMath.h>
 
 #include <d2d1.h>
 #include <d3d11_2.h>

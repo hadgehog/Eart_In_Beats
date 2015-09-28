@@ -1,6 +1,7 @@
 #pragma once
-#include "..\DirectXResources\Resources.h"
+
 #include "..\DirectXCommon\DeviceResources.h"
+#include <DirectXMath.h>
 
 class DxRenderingContext {
 public:

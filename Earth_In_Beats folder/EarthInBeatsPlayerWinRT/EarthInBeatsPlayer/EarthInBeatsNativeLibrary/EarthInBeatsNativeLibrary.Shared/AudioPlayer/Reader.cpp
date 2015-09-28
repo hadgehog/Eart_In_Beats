@@ -76,7 +76,7 @@ void Reader::Play()
 }
 
 void Reader::Next(){
-	if (this->currentPlayerNum < playersList.size() - 1)
+	if (this->currentPlayerNum < (int)playersList.size() - 1)
 	{
 		if (this->playersList[this->currentPlayerNum])
 		{
@@ -197,7 +197,7 @@ void Reader::EndOfPlayingTrack(int c)	//start new player incrementing currentPla
 	this->playersList[this->currentPlayerNum]->Stop();
 	this->currentPlayerNum++;
 
-	if (this->currentPlayerNum < this->playersList.size())
+	if (this->currentPlayerNum < (int)this->playersList.size())
 	{
 		if (this->playersList[this->currentPlayerNum])
 		{

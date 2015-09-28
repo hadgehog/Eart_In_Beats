@@ -4,8 +4,9 @@
 #include "Graphics\Helpers\Timer.h"
 #include "VertexTextureNormal.h"
 #include "Graphics\Helpers\Thread\PPL\safe_task.h"
-#include "..\DirectXResources\MediaRendererDxResources.h"
-#include "..\Shaders\QuadVertexShaderSettings.h"
+#include "..\Shaders\ConstantBufferData.h"
+#include "..\Shaders\SurfaceMaterial.h"
+
 
 #include <memory>
 #include <string>
@@ -41,8 +42,6 @@ public:
 
 private:
 	std::shared_ptr<GuardedDeviceResources> dx;
-	DirectX::XMFLOAT4X4 projection;
-	std::unique_ptr<MediaRendererDxResources> dxResources;
 
 	concurrency::critical_section dataCs;
 
@@ -51,13 +50,14 @@ private:
 	std::condition_variable inititalizedCv;
 	bool initialized;
 
-	std::shared_ptr<Geometry> quad;
-	std::shared_ptr<QuadVs> quadVs;
-	std::unique_ptr<QuadVs::Cbuffer> quadVsCbuffer;
-	std::shared_ptr<QuadPs> quadPs;
+	DirectX::XMFLOAT4X4 projection;
+	Microsoft::WRL::ComPtr<ID3D11BlendState> blendState;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
 	Microsoft::WRL::ComPtr<ID3D11SamplerState> quadSampler;
 
-	std::vector<VertexTextureNormal> posTexNormList;
+	std::vector<VertexTextureNormal> modelPoints;
+	std::vector<SurfaceMaterial> materials;
 
 	void WaitForInitialization();
 };

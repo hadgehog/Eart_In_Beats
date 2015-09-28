@@ -1,6 +1,4 @@
-
 Texture2D Tex : register(t0);
-
 SamplerState TexSampler : register(s0);
 
 struct PsInput{
