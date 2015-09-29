@@ -53,6 +53,10 @@ private:
 	bool modelLoaded;
 
 	DirectX::XMFLOAT4X4 projection;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> d2dVertBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> d2dIndexBuffer;
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> PS;
+	Microsoft::WRL::ComPtr<ID3D11VertexShader> VS;
 	Microsoft::WRL::ComPtr<ID3D11BlendState> blendState;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;

@@ -27,6 +27,7 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 		////////
 		//create resources
 
+
 		std::unique_lock<std::mutex> lkInit(this->initializedMtx);
 		this->initialized = true;
 		this->inititalizedCv.notify_all();
@@ -94,6 +95,7 @@ void EarthRendererNative::LoadModel(std::string path){
 
 	auto dxDev = this->dx->Get();
 	auto d3dDev = dxDev->GetD3DDevice();
+	auto d3dCtx = dxDev->GetD3DDeviceContext();
 	concurrency::critical_section::scoped_lock lk(this->dataCs);
 
 	Assimp::Importer modelImporter;
@@ -155,6 +157,8 @@ void EarthRendererNative::LoadModel(std::string path){
 				}
 			}
 
+			this->modelLoaded = true;
+
 			//Create index buffer
 			D3D11_BUFFER_DESC indexBufferDesc = { 0 };
 
@@ -186,7 +190,21 @@ void EarthRendererNative::LoadModel(std::string path){
 			hr = d3dDev->CreateBuffer(&vertexBufferDesc, &vertexBufferData, this->vertexBuffer.GetAddressOf());
 			HSystem::ThrowIfFailed(hr);
 
-			this->modelLoaded = true;
+			// Compile Shaders from shader files
+			auto pixelShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\QuadPixelShader.cso");
+			auto vertexShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\QuadVertexShader.cso");
+
+			hr = d3dDev->CreatePixelShader(pixelShaderData.data(), pixelShaderData.size(), NULL, this->PS.GetAddressOf());
+			HSystem::ThrowIfFailed(hr);
+
+			hr = d3dDev->CreateVertexShader(vertexShaderData.data(), vertexShaderData.size(), NULL, this->VS.GetAddressOf());
+			HSystem::ThrowIfFailed(hr);
+
+			//Set Vertex and Pixel Shaders
+			d3dCtx->VSSetShader(VS.Get(), 0, 0);
+			d3dCtx->PSSetShader(PS.Get(), 0, 0);
+
+
 		}
 		else{
 			H::System::DebuggerBreak();
