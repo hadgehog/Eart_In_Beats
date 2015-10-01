@@ -22,6 +22,7 @@ public:
 	~EarthRendererNative();
 
 	virtual void Initialize(const std::shared_ptr<GuardedDeviceResources> &dx) override;
+	void Shutdown() override;
 
 	virtual void CreateDeviceDependentResources() override;
 	virtual void ReleaseDeviceDependentResources() override;
@@ -53,14 +54,20 @@ private:
 	bool modelLoaded;
 
 	DirectX::XMFLOAT4X4 projection;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> d2dVertBuffer;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> d2dIndexBuffer;
-	Microsoft::WRL::ComPtr<ID3D11PixelShader> PS;
-	Microsoft::WRL::ComPtr<ID3D11VertexShader> VS;
-	Microsoft::WRL::ComPtr<ID3D11BlendState> blendState;
+
 	Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> constantBuffer;
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixelShader;
+	Microsoft::WRL::ComPtr<ID3D11VertexShader> vertexShader;
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> matrixBuffer;
+
+	Microsoft::WRL::ComPtr<ID3D11BlendState> blendState;
 	Microsoft::WRL::ComPtr<ID3D11SamplerState> quadSampler;
+
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> sharedTex;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> d2dTexture;
 
 	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> meshSRV;
 	std::vector<std::wstring> textureNameArray;

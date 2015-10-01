@@ -10,6 +10,7 @@ public:
 	virtual ~INativeRenderable();
 
 	virtual void Initialize(const std::shared_ptr<GuardedDeviceResources> &dx) = 0;
+	virtual void Shutdown() = 0;
 
 	virtual void CreateDeviceDependentResources() = 0;
 	virtual void ReleaseDeviceDependentResources() = 0;

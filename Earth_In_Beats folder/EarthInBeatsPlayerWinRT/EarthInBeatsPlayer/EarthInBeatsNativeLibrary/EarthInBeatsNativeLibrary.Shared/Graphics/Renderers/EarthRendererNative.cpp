@@ -22,16 +22,71 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 
 		concurrency::critical_section::scoped_lock lk(this->dataCs);
 
+		HRESULT hr = S_OK;
 		auto d3dDev = dxDev->GetD3DDevice();
+		auto d3dCtx = dxDev->GetD3DDeviceContext();
 
-		////////
-		//create resources
+		auto size = dxDev->GetLogicalSize();
 
+		// Setup the viewport
+		D3D11_VIEWPORT vp;
+		vp.Width = size.Width;
+		vp.Height = size.Height;
+		vp.MinDepth = 0.0f;
+		vp.MaxDepth = 1.0f;
+		vp.TopLeftX = 0;
+		vp.TopLeftY = 0;
+		d3dCtx->RSSetViewports(1, &vp);
+
+		// load Shaders from shader files
+		auto pixelShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\QuadPixelShader.cso");
+		auto vertexShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\QuadVertexShader.cso");
+
+		hr = d3dDev->CreatePixelShader(pixelShaderData.data(), pixelShaderData.size(), NULL, this->pixelShader.GetAddressOf());
+		HSystem::ThrowIfFailed(hr);
+
+		hr = d3dDev->CreateVertexShader(vertexShaderData.data(), vertexShaderData.size(), NULL, this->vertexShader.GetAddressOf());
+		HSystem::ThrowIfFailed(hr);
+
+		// Define the input layout
+		D3D11_INPUT_ELEMENT_DESC layout[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		};
+
+		auto numElements = sizeof(layout) / sizeof(layout[0]);
+
+		hr = d3dDev->CreateInputLayout(layout, numElements, vertexShaderData.data(), vertexShaderData.size(), this->inputLayout.GetAddressOf());
+		HSystem::ThrowIfFailed(hr);
+
+		d3dCtx->IASetInputLayout(this->inputLayout.Get());
+
+		d3dCtx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+		// create constBuffer
+		D3D11_BUFFER_DESC constBuff = { 0 };
+		constBuff.Usage = D3D11_USAGE_DEFAULT;
+		constBuff.ByteWidth = sizeof(ConstantBufferData);
+		constBuff.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		constBuff.CPUAccessFlags = 0;
+		constBuff.MiscFlags = 0;
+
+		hr = d3dDev->CreateBuffer(&constBuff, nullptr, this->constantBuffer.GetAddressOf());
+		HSystem::ThrowIfFailed(hr);
+
+		// need world matrices?
 
 		std::unique_lock<std::mutex> lkInit(this->initializedMtx);
 		this->initialized = true;
 		this->inititalizedCv.notify_all();
 	});
+}
+
+void EarthRendererNative::Shutdown(){
+	this->indexBuffer.Get()->Release();
+	this->vertexBuffer.Get()->Release();
 }
 
 void EarthRendererNative::CreateDeviceDependentResources(){
@@ -76,6 +131,10 @@ void EarthRendererNative::Render(){
 	proj = DirectX::XMMatrixMultiply(proj, rotationMatrix);
 	
 	
+
+	//Set Vertex and Pixel Shaders
+	d3dCtx->VSSetShader(this->vertexShader.Get(), 0, 0);
+	d3dCtx->PSSetShader(this->pixelShader.Get(), 0, 0);
 }
 
 void EarthRendererNative::PointerPressed(Windows::UI::Input::PointerPoint ^ppt){
@@ -157,8 +216,6 @@ void EarthRendererNative::LoadModel(std::string path){
 				}
 			}
 
-			this->modelLoaded = true;
-
 			//Create index buffer
 			D3D11_BUFFER_DESC indexBufferDesc = { 0 };
 
@@ -190,21 +247,7 @@ void EarthRendererNative::LoadModel(std::string path){
 			hr = d3dDev->CreateBuffer(&vertexBufferDesc, &vertexBufferData, this->vertexBuffer.GetAddressOf());
 			HSystem::ThrowIfFailed(hr);
 
-			// Compile Shaders from shader files
-			auto pixelShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\QuadPixelShader.cso");
-			auto vertexShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\QuadVertexShader.cso");
-
-			hr = d3dDev->CreatePixelShader(pixelShaderData.data(), pixelShaderData.size(), NULL, this->PS.GetAddressOf());
-			HSystem::ThrowIfFailed(hr);
-
-			hr = d3dDev->CreateVertexShader(vertexShaderData.data(), vertexShaderData.size(), NULL, this->VS.GetAddressOf());
-			HSystem::ThrowIfFailed(hr);
-
-			//Set Vertex and Pixel Shaders
-			d3dCtx->VSSetShader(VS.Get(), 0, 0);
-			d3dCtx->PSSetShader(PS.Get(), 0, 0);
-
-
+			this->modelLoaded = true;
 		}
 		else{
 			H::System::DebuggerBreak();
