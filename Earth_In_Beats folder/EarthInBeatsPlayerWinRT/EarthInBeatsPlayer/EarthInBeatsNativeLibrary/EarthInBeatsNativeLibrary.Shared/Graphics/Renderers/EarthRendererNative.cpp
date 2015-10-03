@@ -29,14 +29,14 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 		auto size = dxDev->GetLogicalSize();
 
 		// Setup the viewport
-		D3D11_VIEWPORT vp;
-		vp.Width = size.Width;
-		vp.Height = size.Height;
-		vp.MinDepth = 0.0f;
-		vp.MaxDepth = 1.0f;
-		vp.TopLeftX = 0;
-		vp.TopLeftY = 0;
-		d3dCtx->RSSetViewports(1, &vp);
+		//D3D11_VIEWPORT vp;
+		//vp.Width = size.Width;
+		//vp.Height = size.Height;
+		//vp.MinDepth = 0.0f;
+		//vp.MaxDepth = 1.0f;
+		//vp.TopLeftX = 0;
+		//vp.TopLeftY = 0;
+		//d3dCtx->RSSetViewports(1, &vp);
 
 		// load Shaders from shader files
 		auto pixelShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\QuadPixelShader.cso");
@@ -46,6 +46,21 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 		HSystem::ThrowIfFailed(hr);
 
 		hr = d3dDev->CreateVertexShader(vertexShaderData.data(), vertexShaderData.size(), NULL, this->vertexShader.GetAddressOf());
+		HSystem::ThrowIfFailed(hr);
+
+		// Describe the Sample State
+		D3D11_SAMPLER_DESC sampDesc;
+		ZeroMemory(&sampDesc, sizeof(sampDesc));
+		sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+		sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+		sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+		sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+		sampDesc.MinLOD = 0;
+		sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
+
+		//Create the Sample State
+		hr = d3dDev->CreateSamplerState(&sampDesc, this->quadSampler.GetAddressOf());
 		HSystem::ThrowIfFailed(hr);
 
 		// Define the input layout
@@ -126,15 +141,24 @@ void EarthRendererNative::Render(){
 	auto d3dCtx = dxDev->GetD3DDeviceContext();
 	concurrency::critical_section::scoped_lock lk(this->dataCs);
 
- 	DirectX::XMMATRIX proj = DirectX::XMLoadFloat4x4(&this->projection);
-	DirectX::XMMATRIX rotationMatrix = DirectX::XMLoadFloat4x4(&dxDev->GetOrientationTransform3D());
-	proj = DirectX::XMMatrixMultiply(proj, rotationMatrix);
-	
-	
+	if (this->modelLoaded) {
+		DirectX::XMMATRIX proj = DirectX::XMLoadFloat4x4(&this->projection);
+		DirectX::XMMATRIX rotationMatrix = DirectX::XMLoadFloat4x4(&dxDev->GetOrientationTransform3D());
+		proj = DirectX::XMMatrixMultiply(proj, rotationMatrix);
 
-	//Set Vertex and Pixel Shaders
-	d3dCtx->VSSetShader(this->vertexShader.Get(), 0, 0);
-	d3dCtx->PSSetShader(this->pixelShader.Get(), 0, 0);
+		ConstantBufferData constBufferData;
+		constBufferData.MVP = proj;
+		//constBufferData.hasTexture = false;
+		//constBufferData.color = DirectX::XMFLOAT4(0, 0, 0, 0);
+
+		d3dCtx->UpdateSubresource(this->constantBuffer.Get(), 0, nullptr, &constBufferData, 0, 0);
+
+		d3dCtx->VSSetShader(this->vertexShader.Get(), 0, 0);
+		d3dCtx->VSSetConstantBuffers(0, 1, this->constantBuffer.GetAddressOf());
+
+		d3dCtx->PSSetShader(this->pixelShader.Get(), 0, 0);
+		d3dCtx->PSSetConstantBuffers(0, 1, this->constantBuffer.GetAddressOf());
+	}
 }
 
 void EarthRendererNative::PointerPressed(Windows::UI::Input::PointerPoint ^ppt){
