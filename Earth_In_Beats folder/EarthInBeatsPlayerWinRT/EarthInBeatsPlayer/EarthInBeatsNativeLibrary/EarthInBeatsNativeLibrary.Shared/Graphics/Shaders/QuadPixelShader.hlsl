@@ -11,5 +11,7 @@ float4 main(PsInput input) : SV_TARGET{
 
 	color = Tex.Sample(TexSampler, input.tex);
 
+	color = float4(0, 1, 0, 1);
+
 	return color;
 }

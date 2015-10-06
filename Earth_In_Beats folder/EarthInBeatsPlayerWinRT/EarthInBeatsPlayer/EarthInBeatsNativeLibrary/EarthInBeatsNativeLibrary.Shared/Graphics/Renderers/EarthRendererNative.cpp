@@ -67,8 +67,8 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 		D3D11_INPUT_ELEMENT_DESC layout[] =
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 
 		auto numElements = sizeof(layout) / sizeof(layout[0]);
@@ -120,6 +120,9 @@ void EarthRendererNative::CreateSizeDependentResources(){
 
 	auto size = dxDev->GetLogicalSize();
 	//resize model
+
+	auto proj = H::Math::XMMatrixPerspectiveLH((size.Width / size.Height) * 2, 2, 1.0f, 0.1f, 1000.0f);
+	DirectX::XMStoreFloat4x4(&this->projection, proj);
 }
 
 void EarthRendererNative::OnRenderThreadStart(){
@@ -143,13 +146,11 @@ void EarthRendererNative::Render(){
 
 	if (this->modelLoaded) {
 		DirectX::XMMATRIX proj = DirectX::XMLoadFloat4x4(&this->projection);
-		DirectX::XMMATRIX rotationMatrix = DirectX::XMLoadFloat4x4(&dxDev->GetOrientationTransform3D());
+		DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixTranslation(0, 0, 10);// DirectX::XMLoadFloat4x4(&dxDev->GetOrientationTransform3D());
 		proj = DirectX::XMMatrixMultiply(proj, rotationMatrix);
 
 		ConstantBufferData constBufferData;
 		constBufferData.MVP = proj;
-		//constBufferData.hasTexture = false;
-		//constBufferData.color = DirectX::XMFLOAT4(0, 0, 0, 0);
 
 		d3dCtx->UpdateSubresource(this->constantBuffer.Get(), 0, nullptr, &constBufferData, 0, 0);
 
@@ -157,7 +158,20 @@ void EarthRendererNative::Render(){
 		d3dCtx->VSSetConstantBuffers(0, 1, this->constantBuffer.GetAddressOf());
 
 		d3dCtx->PSSetShader(this->pixelShader.Get(), 0, 0);
-		d3dCtx->PSSetConstantBuffers(0, 1, this->constantBuffer.GetAddressOf());
+
+		d3dCtx->IASetInputLayout(this->inputLayout.Get());
+		d3dCtx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+		{
+			uint32_t stride = sizeof(VertexTextureNormal);
+			uint32_t offset = 0;
+
+			d3dCtx->IASetVertexBuffers(0, 1, this->vertexBuffer.GetAddressOf(), &stride, &offset);
+		}
+
+		d3dCtx->IASetIndexBuffer(this->indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+
+		d3dCtx->DrawIndexed(this->indexCount, 0, 0);
 	}
 }
 
@@ -196,7 +210,7 @@ void EarthRendererNative::LoadModel(std::string path){
 
 	if (scene){
 		mesh = scene->mMeshes[0];
-
+		
 		if (mesh){
 			if (mesh->HasFaces()){
 				faces = mesh->mFaces;
@@ -239,6 +253,8 @@ void EarthRendererNative::LoadModel(std::string path){
 					}
 				}
 			}
+
+			this->indexCount = mesh->mNumFaces * 3;
 
 			//Create index buffer
 			D3D11_BUFFER_DESC indexBufferDesc = { 0 };

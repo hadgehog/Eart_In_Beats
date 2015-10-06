@@ -53,6 +53,7 @@ private:
 
 	bool modelLoaded;
 
+	uint32_t indexCount;
 	DirectX::XMFLOAT4X4 projection;
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;

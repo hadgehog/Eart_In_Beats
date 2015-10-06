@@ -1,3 +1,6 @@
+//// FIX IT!!!!!!!!!
+
+
 static const float2 TexCoordScale = float2(1.0f, -1.0f);
 static const float2 TexCoordOffset = float2(0.5f, 0.5f);
 
@@ -6,6 +9,7 @@ cbuffer Buf0 : register(b0){
 	//matrix MNorm;	// matrix normals for light
 }
 
+//// FIX IT!!!!!!!!!
 struct VsInput{
 	float2 pos : POSITION;
 };

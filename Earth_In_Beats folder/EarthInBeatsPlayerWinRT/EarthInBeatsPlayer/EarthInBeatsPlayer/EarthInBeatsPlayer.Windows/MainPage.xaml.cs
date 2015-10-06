@@ -58,7 +58,7 @@ namespace EarthInBeatsPlayer
             this.renderer = new EarthInBeatsNativeLibrary.Renderer();
 
             this.renderer.Initialize(Window.Current.CoreWindow, this.swapChainPanel, this.earthRenderable);
-            this.renderer.BackgroundColor = Windows.UI.Colors.Black;
+            this.renderer.BackgroundColor = Windows.UI.Colors.CornflowerBlue;
 
             WriteDebugMessage("To select songs press Win + Z", Colors.Yellow);
 
