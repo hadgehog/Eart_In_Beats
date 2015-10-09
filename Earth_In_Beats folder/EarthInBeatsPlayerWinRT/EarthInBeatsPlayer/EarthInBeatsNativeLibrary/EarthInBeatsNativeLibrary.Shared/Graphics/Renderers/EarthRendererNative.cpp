@@ -91,8 +91,6 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 		hr = d3dDev->CreateBuffer(&constBuff, nullptr, this->constantBuffer.GetAddressOf());
 		HSystem::ThrowIfFailed(hr);
 
-		// need world matrices?
-
 		std::unique_lock<std::mutex> lkInit(this->initializedMtx);
 		this->initialized = true;
 		this->inititalizedCv.notify_all();
@@ -121,7 +119,7 @@ void EarthRendererNative::CreateSizeDependentResources(){
 	auto size = dxDev->GetLogicalSize();
 	//resize model
 
-	auto proj = H::Math::XMMatrixPerspectiveLH((size.Width / size.Height) * 2, 2, 1.0f, 0.1f, 1000.0f);
+	auto proj = H::Math::XMMatrixPerspectiveLH((size.Width / size.Height) * 2, 2, 1.0f, 0.1f, 10.0f);
 	DirectX::XMStoreFloat4x4(&this->projection, proj);
 }
 

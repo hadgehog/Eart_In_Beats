@@ -11,12 +11,15 @@ cbuffer Buf0 : register(b0){
 
 //// FIX IT!!!!!!!!!
 struct VsInput{
-	float2 pos : POSITION;
+	float4 pos : POSITION;
+	float2 tex : TEXCOORD0;
+	float3 norm : NORMAL;
 };
 
 struct PsInput{
 	float4 pos : SV_POSITION;
 	float2 tex : TEXCOORD0;
+	float3 norm : NORMAL;
 };
 
 // multiply-add
@@ -28,6 +31,7 @@ PsInput main(VsInput input){
 
 	output.pos = mul(float4(input.pos.xy, 0.0f, 1.0f), MVP);
 	output.tex = GetTexCoords(input.pos);
+	output.norm = mul(input.norm, MVP);
 
 	return output;
 }
