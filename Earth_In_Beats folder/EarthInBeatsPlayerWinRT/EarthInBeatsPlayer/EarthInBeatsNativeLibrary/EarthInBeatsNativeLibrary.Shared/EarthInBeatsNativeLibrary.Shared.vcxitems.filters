@@ -96,11 +96,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\DxRenderingContext.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\VertexTextureNormal.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\GestureHelper.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\SurfaceMaterial.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\ConstantBufferData.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\ShaderStructures.h" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\Shaders\QuadPixelShader.hlsl" />
-    <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\Shaders\QuadVertexShader.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\Shaders\VertexShader.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\Shaders\PixelShader.hlsl" />
   </ItemGroup>
 </Project>

@@ -2,10 +2,8 @@
 
 #include <DirectXMath.h>
 
-struct ConstantBufferData {
-	DirectX::XMMATRIX  MVP;
-
-	//These will be used for the pixel shader
-	//DirectX::XMFLOAT4 color;
-	//bool hasTexture;
+struct ConstantBufferData{
+	DirectX::XMFLOAT4X4 World;
+	DirectX::XMFLOAT4X4 View;
+	DirectX::XMFLOAT4X4 Projection;
 };

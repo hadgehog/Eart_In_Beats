@@ -8,7 +8,8 @@
 #include <assimp\scene.h>
 #include <assimp\postprocess.h>
 
-EarthRendererNative::EarthRendererNative() : initialized(false), modelLoaded(false){
+EarthRendererNative::EarthRendererNative() : initialized(false), modelLoaded(false), 
+	rotationAngle(0.0f), indexCount(0){
 	DirectX::XMStoreFloat4x4(&this->projection, DirectX::XMMatrixIdentity());
 }
 
@@ -28,19 +29,9 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 
 		auto size = dxDev->GetLogicalSize();
 
-		// Setup the viewport
-		//D3D11_VIEWPORT vp;
-		//vp.Width = size.Width;
-		//vp.Height = size.Height;
-		//vp.MinDepth = 0.0f;
-		//vp.MaxDepth = 1.0f;
-		//vp.TopLeftX = 0;
-		//vp.TopLeftY = 0;
-		//d3dCtx->RSSetViewports(1, &vp);
-
 		// load Shaders from shader files
-		auto pixelShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\QuadPixelShader.cso");
-		auto vertexShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\QuadVertexShader.cso");
+		auto pixelShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\PixelShader.cso");
+		auto vertexShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\VertexShader.cso");
 
 		hr = d3dDev->CreatePixelShader(pixelShaderData.data(), pixelShaderData.size(), NULL, this->pixelShader.GetAddressOf());
 		HSystem::ThrowIfFailed(hr);
@@ -60,15 +51,14 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 		sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
 		//Create the Sample State
-		hr = d3dDev->CreateSamplerState(&sampDesc, this->quadSampler.GetAddressOf());
+		hr = d3dDev->CreateSamplerState(&sampDesc, this->sampler.GetAddressOf());
 		HSystem::ThrowIfFailed(hr);
 
 		// Define the input layout
 		D3D11_INPUT_ELEMENT_DESC layout[] =
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 
 		auto numElements = sizeof(layout) / sizeof(layout[0]);
@@ -90,6 +80,22 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 
 		hr = d3dDev->CreateBuffer(&constBuff, nullptr, this->constantBuffer.GetAddressOf());
 		HSystem::ThrowIfFailed(hr);
+
+		D3D11_RASTERIZER_DESC rsDesc;
+
+		rsDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
+		rsDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_FRONT;
+		rsDesc.FrontCounterClockwise = FALSE;
+		rsDesc.DepthBias = 0;
+		rsDesc.SlopeScaledDepthBias = 0.0f;
+		rsDesc.DepthBiasClamp = 0.0f;
+		rsDesc.DepthClipEnable = TRUE;
+		rsDesc.ScissorEnable = FALSE;
+		rsDesc.MultisampleEnable = FALSE;
+		rsDesc.AntialiasedLineEnable = FALSE;
+
+		hr = d3dDev->CreateRasterizerState(&rsDesc, this->rsState.GetAddressOf());
+		H::System::ThrowIfFailed(hr);
 
 		std::unique_lock<std::mutex> lkInit(this->initializedMtx);
 		this->initialized = true;
@@ -117,10 +123,50 @@ void EarthRendererNative::CreateSizeDependentResources(){
 	concurrency::critical_section::scoped_lock lk(this->dataCs);
 
 	auto size = dxDev->GetLogicalSize();
-	//resize model
 
-	auto proj = H::Math::XMMatrixPerspectiveLH((size.Width / size.Height) * 2, 2, 1.0f, 0.1f, 10.0f);
-	DirectX::XMStoreFloat4x4(&this->projection, proj);
+	//auto proj = H::Math::XMMatrixPerspectiveLH((size.Width / size.Height) * 2, 2, 1.0f, 0.1f, 10.0f);
+	//DirectX::XMStoreFloat4x4(&this->projection, proj);
+
+	auto view = DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(-2, 2, 0, 1), DirectX::XMVectorSet(0, 0, 2, 1), DirectX::g_XMIdentityR1);
+
+	DirectX::XMStoreFloat4x4(&this->constantBufferData.model, DirectX::XMMatrixTranspose(DirectX::XMMatrixTranslation(0, 0, 2)));
+	DirectX::XMStoreFloat4x4(&this->constantBufferData.view, DirectX::XMMatrixTranspose(view));
+	DirectX::XMStoreFloat4x4(&this->constantBufferData.projection, DirectX::XMMatrixIdentity());
+
+	{
+		auto outputSize = dxDev->GetOutputSize();
+		float aspectRatio = outputSize.Width / outputSize.Height;
+		float fovAngleY = 90.0f * DirectX::XM_PI / 180.0f;
+
+		// This is a simple example of change that can be made when the app is in
+		// portrait or snapped view.
+		/*if (aspectRatio < 1.0f)
+		{
+		fovAngleY *= 2.0f;
+		}*/
+
+		// Note that the OrientationTransform3D matrix is post-multiplied here
+		// in order to correctly orient the scene to match the display orientation.
+		// This post-multiplication step is required for any draw calls that are
+		// made to the swap chain render target. For draw calls to other targets,
+		// this transform should not be applied.
+
+		// This sample makes use of a right-handed coordinate system using row-major matrices.
+		DirectX::XMMATRIX perspectiveMatrix = DirectX::XMMatrixPerspectiveFovLH(
+			fovAngleY,
+			aspectRatio,
+			0.01f,
+			100.0f
+			);
+
+		DirectX::XMFLOAT4X4 orientation = dxDev->GetOrientationTransform3D();
+		DirectX::XMMATRIX orientationMatrix = XMLoadFloat4x4(&orientation);
+
+		DirectX::XMStoreFloat4x4(
+			&this->constantBufferData.projection,
+			XMMatrixTranspose(perspectiveMatrix * orientationMatrix)
+			);
+	}
 }
 
 void EarthRendererNative::OnRenderThreadStart(){
@@ -132,7 +178,7 @@ void EarthRendererNative::OnRenderThreadEnd(){
 }
 
 void EarthRendererNative::Update(const DX::StepTimer &timer){
-
+	this->rotationAngle += (float)timer.GetElapsedSeconds() * 45.0f;
 }
 
 void EarthRendererNative::Render(){
@@ -144,30 +190,53 @@ void EarthRendererNative::Render(){
 
 	if (this->modelLoaded) {
 		DirectX::XMMATRIX proj = DirectX::XMLoadFloat4x4(&this->projection);
-		DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixTranslation(0, 0, 10);// DirectX::XMLoadFloat4x4(&dxDev->GetOrientationTransform3D());
+
+		DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixMultiplyTranspose(DirectX::XMMatrixTranslation(0, 0, 10),
+			DirectX::XMMatrixRotationRollPitchYaw(0.0f, DirectX::XMConvertToRadians(this->rotationAngle), 0.0f));// DirectX::XMLoadFloat4x4(&dxDev->GetOrientationTransform3D());
+
 		proj = DirectX::XMMatrixMultiply(proj, rotationMatrix);
 
-		ConstantBufferData constBufferData;
-		constBufferData.MVP = proj;
+		DirectX::XMStoreFloat4x4(&this->constantBufferData.model, proj);
 
-		d3dCtx->UpdateSubresource(this->constantBuffer.Get(), 0, nullptr, &constBufferData, 0, 0);
+		{
+			UINT stride = sizeof(DirectX::XMFLOAT3);
+			UINT offset = 0;
+
+			d3dCtx->IASetVertexBuffers(
+				0,
+				1,
+				this->vertexBuffer.GetAddressOf(),
+				&stride,
+				&offset
+				);
+
+			d3dCtx->IASetVertexBuffers(
+				1,
+				1,
+				this->normalBuffer.GetAddressOf(),
+				&stride,
+				&offset
+				);
+		}
+
+		d3dCtx->IASetIndexBuffer(
+			this->indexBuffer.Get(),
+			DXGI_FORMAT_R16_UINT, // Each index is one 16-bit unsigned integer (short).
+			0
+			);
+
+		d3dCtx->IASetInputLayout(this->inputLayout.Get());
+		d3dCtx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		d3dCtx->VSSetShader(this->vertexShader.Get(), 0, 0);
 		d3dCtx->VSSetConstantBuffers(0, 1, this->constantBuffer.GetAddressOf());
 
 		d3dCtx->PSSetShader(this->pixelShader.Get(), 0, 0);
 
-		d3dCtx->IASetInputLayout(this->inputLayout.Get());
-		d3dCtx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		DirectX::XMStoreFloat4x4(&this->objectConstBufferData.View, DirectX::XMMatrixIdentity());
+		this->objectConstBufferData.Projection = this->constantBufferData.projection;
 
-		{
-			uint32_t stride = sizeof(VertexTextureNormal);
-			uint32_t offset = 0;
-
-			d3dCtx->IASetVertexBuffers(0, 1, this->vertexBuffer.GetAddressOf(), &stride, &offset);
-		}
-
-		d3dCtx->IASetIndexBuffer(this->indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+		d3dCtx->UpdateSubresource(this->constantBuffer.Get(), 0, nullptr, &this->objectConstBufferData, 0, 0);
 
 		d3dCtx->DrawIndexed(this->indexCount, 0, 0);
 	}
@@ -230,10 +299,12 @@ void EarthRendererNative::LoadModel(std::string path){
 			if (mesh->HasPositions()){			
 				verticesNum = mesh->mNumVertices;
 
-				this->modelPoints.resize(verticesNum);
+				this->modelPoints.Vertex.resize(verticesNum);
+				this->modelPoints.Normal.resize(verticesNum);
+				this->modelPoints.TextureCoord.resize(verticesNum);
 
 				for (int i = 0; i < verticesNum; i++){
-					this->modelPoints[i].Vertex = DirectX::XMFLOAT3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
+					this->modelPoints.Vertex[i] = DirectX::XMFLOAT3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
 				}
 
 				if (mesh->HasNormals()){
@@ -241,48 +312,62 @@ void EarthRendererNative::LoadModel(std::string path){
 						DirectX::XMVECTOR xvNormal = DirectX::XMLoadFloat3((DirectX::XMFLOAT3 *)&mesh->mNormals[i]);
 						xvNormal = DirectX::XMVector3Normalize(xvNormal);
 
-						DirectX::XMStoreFloat3(&this->modelPoints[i].Normal, xvNormal);
+						DirectX::XMStoreFloat3(&this->modelPoints.Normal[i], xvNormal);
 					}
 				}
 
 				if (mesh->HasTextureCoords(0)) {
 					for (int i = 0; i < verticesNum; i++){
-						this->modelPoints[i].TextureCoord = DirectX::XMFLOAT2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
+						this->modelPoints.TextureCoord[i] = DirectX::XMFLOAT2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 					}
 				}
 			}
 
 			this->indexCount = mesh->mNumFaces * 3;
 
-			//Create index buffer
+			//Create Index buffer
 			D3D11_BUFFER_DESC indexBufferDesc = { 0 };
-
 			indexBufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
-			indexBufferDesc.ByteWidth = sizeof(DWORD) * mesh->mNumFaces * 3;
+			indexBufferDesc.ByteWidth = sizeof(DWORD) * this->indexCount;
 			indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 			indexBufferDesc.CPUAccessFlags = 0;
 			indexBufferDesc.MiscFlags = 0;
+			indexBufferDesc.StructureByteStride = 0;
 
 			D3D11_SUBRESOURCE_DATA idxInitData;
+			idxInitData.pSysMem = materialIndices.data();
 
-			idxInitData.pSysMem = &materialIndices[0];
 			hr = d3dDev->CreateBuffer(&indexBufferDesc, &idxInitData, this->indexBuffer.GetAddressOf());
 			HSystem::ThrowIfFailed(hr);
 
 			//Create Vertex Buffer
 			D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
-
 			vertexBufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
-			vertexBufferDesc.ByteWidth = sizeof(VertexTextureNormal) * verticesNum;
+			vertexBufferDesc.ByteWidth = sizeof(DirectX::XMFLOAT3) * verticesNum;
 			vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 			vertexBufferDesc.CPUAccessFlags = 0;
 			vertexBufferDesc.MiscFlags = 0;
 
 			D3D11_SUBRESOURCE_DATA vertexBufferData;
-
 			ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
-			vertexBufferData.pSysMem = &this->modelPoints[0];
+			vertexBufferData.pSysMem = this->modelPoints.Vertex.data();
+
 			hr = d3dDev->CreateBuffer(&vertexBufferDesc, &vertexBufferData, this->vertexBuffer.GetAddressOf());
+			HSystem::ThrowIfFailed(hr);
+
+			//Create Normal Buffer
+			D3D11_BUFFER_DESC normalBufferDesc = { 0 };
+			normalBufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
+			normalBufferDesc.ByteWidth = sizeof(DirectX::XMFLOAT3) * this->modelPoints.Normal.size();
+			normalBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+			normalBufferDesc.CPUAccessFlags = 0;
+			normalBufferDesc.MiscFlags = 0;
+
+			D3D11_SUBRESOURCE_DATA normalBufferData;
+			ZeroMemory(&normalBufferData, sizeof(normalBufferData));
+			normalBufferData.pSysMem = this->modelPoints.Normal.data();
+
+			hr = d3dDev->CreateBuffer(&normalBufferDesc, &normalBufferData, this->normalBuffer.GetAddressOf());
 			HSystem::ThrowIfFailed(hr);
 
 			this->modelLoaded = true;

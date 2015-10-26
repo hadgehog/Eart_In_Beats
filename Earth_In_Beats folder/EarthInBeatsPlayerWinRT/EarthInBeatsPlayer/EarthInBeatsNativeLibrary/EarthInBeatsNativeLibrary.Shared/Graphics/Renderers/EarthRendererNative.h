@@ -5,8 +5,7 @@
 #include "VertexTextureNormal.h"
 #include "Graphics\Helpers\Thread\PPL\safe_task.h"
 #include "..\Shaders\ConstantBufferData.h"
-#include "..\Shaders\SurfaceMaterial.h"
-
+#include "..\Shaders\ShaderStructures.h"
 
 #include <memory>
 #include <string>
@@ -52,20 +51,26 @@ private:
 	bool initialized;
 
 	bool modelLoaded;
-
+	float rotationAngle;
 	uint32_t indexCount;
+
 	DirectX::XMFLOAT4X4 projection;
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> normalBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> constantBuffer;
-	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixelShader;
+
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> vertexShader;
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixelShader;
+
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> matrixBuffer;
 
 	Microsoft::WRL::ComPtr<ID3D11BlendState> blendState;
-	Microsoft::WRL::ComPtr<ID3D11SamplerState> quadSampler;
+	Microsoft::WRL::ComPtr<ID3D11SamplerState> sampler;
+
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState> rsState;
 
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> sharedTex;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> d2dTexture;
@@ -73,8 +78,10 @@ private:
 	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> meshSRV;
 	std::vector<std::wstring> textureNameArray;
 
-	std::vector<VertexTextureNormal> modelPoints;
-	std::vector<SurfaceMaterial> materials;
+	VertexTextureNormal modelPoints;
+
+	EarthInBeatsNativeLibrary::MVPConstantBuffer constantBufferData;
+	ConstantBufferData objectConstBufferData;
 
 	void WaitForInitialization();
 };
