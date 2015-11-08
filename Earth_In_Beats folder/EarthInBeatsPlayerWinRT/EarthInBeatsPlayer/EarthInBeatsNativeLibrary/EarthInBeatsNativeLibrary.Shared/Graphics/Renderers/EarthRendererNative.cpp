@@ -138,20 +138,6 @@ void EarthRendererNative::CreateSizeDependentResources(){
 		float aspectRatio = outputSize.Width / outputSize.Height;
 		float fovAngleY = 90.0f * DirectX::XM_PI / 180.0f;
 
-		// This is a simple example of change that can be made when the app is in
-		// portrait or snapped view.
-		/*if (aspectRatio < 1.0f)
-		{
-		fovAngleY *= 2.0f;
-		}*/
-
-		// Note that the OrientationTransform3D matrix is post-multiplied here
-		// in order to correctly orient the scene to match the display orientation.
-		// This post-multiplication step is required for any draw calls that are
-		// made to the swap chain render target. For draw calls to other targets,
-		// this transform should not be applied.
-
-		// This sample makes use of a right-handed coordinate system using row-major matrices.
 		DirectX::XMMATRIX perspectiveMatrix = DirectX::XMMatrixPerspectiveFovLH(
 			fovAngleY,
 			aspectRatio,

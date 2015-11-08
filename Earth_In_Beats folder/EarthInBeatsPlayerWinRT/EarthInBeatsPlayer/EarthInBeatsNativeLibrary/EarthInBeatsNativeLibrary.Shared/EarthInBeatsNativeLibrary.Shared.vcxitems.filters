@@ -98,6 +98,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\GestureHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\ConstantBufferData.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\ShaderStructures.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\PsConstBufferData.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\Shaders\VertexShader.hlsl" />

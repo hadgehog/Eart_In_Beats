@@ -6,6 +6,7 @@
 #include "Graphics\Helpers\Thread\PPL\safe_task.h"
 #include "..\Shaders\ConstantBufferData.h"
 #include "..\Shaders\ShaderStructures.h"
+#include "..\Shaders\PsConstBufferData.h"
 
 #include <memory>
 #include <string>
@@ -82,6 +83,7 @@ private:
 
 	EarthInBeatsNativeLibrary::MVPConstantBuffer constantBufferData;
 	ConstantBufferData objectConstBufferData;
+	PsConstBufferData pixelConstBuffer;
 
 	void WaitForInitialization();
 };
