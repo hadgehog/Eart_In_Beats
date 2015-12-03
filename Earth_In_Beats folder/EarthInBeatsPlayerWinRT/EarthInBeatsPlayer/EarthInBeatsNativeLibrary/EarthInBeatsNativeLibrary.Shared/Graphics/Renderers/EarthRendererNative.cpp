@@ -127,7 +127,9 @@ void EarthRendererNative::CreateSizeDependentResources(){
 	//auto proj = H::Math::XMMatrixPerspectiveLH((size.Width / size.Height) * 2, 2, 1.0f, 0.1f, 10.0f);
 	//DirectX::XMStoreFloat4x4(&this->projection, proj);
 
-	auto view = DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(-2, 2, 0, 1), DirectX::XMVectorSet(0, 0, 2, 1), DirectX::g_XMIdentityR1);
+	/*auto view = DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(-2, 2, 0, 1), DirectX::XMVectorSet(0, 0, 2, 1), DirectX::g_XMIdentityR1);*/
+
+	auto view = DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f), DirectX::XMVectorSet(0, 0, 10, 0), DirectX::g_XMIdentityR1);
 
 	DirectX::XMStoreFloat4x4(&this->constantBufferData.model, DirectX::XMMatrixTranspose(DirectX::XMMatrixTranslation(0, 0, 2)));
 	DirectX::XMStoreFloat4x4(&this->constantBufferData.view, DirectX::XMMatrixTranspose(view));
@@ -177,8 +179,9 @@ void EarthRendererNative::Render(){
 	if (this->modelLoaded) {
 		DirectX::XMMATRIX proj = DirectX::XMLoadFloat4x4(&this->projection);
 
-		DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixMultiplyTranspose(DirectX::XMMatrixTranslation(0, 0, 10),
-			DirectX::XMMatrixRotationRollPitchYaw(0.0f, DirectX::XMConvertToRadians(this->rotationAngle), 0.0f));// DirectX::XMLoadFloat4x4(&dxDev->GetOrientationTransform3D());
+		DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixMultiplyTranspose(
+			DirectX::XMMatrixRotationRollPitchYaw(0.0f, DirectX::XMConvertToRadians(this->rotationAngle), 0.0f),
+			DirectX::XMMatrixTranslation(0, 0, 10));// DirectX::XMLoadFloat4x4(&dxDev->GetOrientationTransform3D());
 
 		proj = DirectX::XMMatrixMultiply(proj, rotationMatrix);
 
@@ -207,7 +210,7 @@ void EarthRendererNative::Render(){
 
 		d3dCtx->IASetIndexBuffer(
 			this->indexBuffer.Get(),
-			DXGI_FORMAT_R16_UINT, // Each index is one 16-bit unsigned integer (short).
+			DXGI_FORMAT_R32_UINT, // Each index is one 16-bit unsigned integer (short).
 			0
 			);
 
