@@ -219,10 +219,7 @@ void EarthRendererNative::Render(){
 
 		d3dCtx->PSSetShader(this->pixelShader.Get(), 0, 0);
 
-		DirectX::XMStoreFloat4x4(&this->objectConstBufferData.View, DirectX::XMMatrixIdentity());
-		this->objectConstBufferData.Projection = this->constantBufferData.projection;
-
-		d3dCtx->UpdateSubresource(this->constantBuffer.Get(), 0, nullptr, &this->objectConstBufferData, 0, 0);
+		d3dCtx->UpdateSubresource(this->constantBuffer.Get(), 0, nullptr, &this->constantBufferData, 0, 0);
 
 		d3dCtx->DrawIndexed(this->indexCount, 0, 0);
 	}

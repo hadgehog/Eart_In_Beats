@@ -8,14 +8,14 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
         <SwapChainPanel x:Name="swapChainPanel" ManipulationDelta="swapChainPanel_ManipulationDelta"/>
+        <RichTextBlock x:Name="DebugTextBlock"  TextWrapping="Wrap" Foreground="White" Margin="966,0,0,0" />
 
-        <StackPanel Orientation="Horizontal">          
-            <Slider Width="300" x:Name="sliderVolume" ValueChanged="Slider1_ValueChanged" Margin="20,20,0,694"/>
-            <Slider Width="1329" x:Name="sliderProgress" PointerPressed="sliderProgress_PointerPressed" PointerReleased="sliderProgress_PointerReleased" Margin="-300,620,0,95"/>
-
-            <RichTextBlock x:Name="DebugTextBlock"  TextWrapping="Wrap" Foreground="White" Margin="-340,10,-30,95" Width="322" />
+        <StackPanel Height="100" VerticalAlignment="Top">
+            <Slider x:Name="sliderVolume" ValueChanged="Slider1_ValueChanged" VerticalAlignment="Center" Margin="19,0,19,0" />
+        </StackPanel>
+        <StackPanel Height="100" VerticalAlignment="Bottom">
+            <Slider x:Name="sliderProgress" PointerPressed="sliderProgress_PointerPressed" PointerReleased="sliderProgress_PointerReleased" VerticalAlignment="Center" Margin="19,0,19,0"/>
         </StackPanel>
     </Grid>
 

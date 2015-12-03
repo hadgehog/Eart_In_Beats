@@ -82,8 +82,6 @@ private:
 	VertexTextureNormal modelPoints;
 
 	EarthInBeatsNativeLibrary::MVPConstantBuffer constantBufferData;
-	ConstantBufferData objectConstBufferData;
-	PsConstBufferData pixelConstBuffer;
 
 	void WaitForInitialization();
 };
