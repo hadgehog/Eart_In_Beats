@@ -219,7 +219,7 @@ namespace EarthInBeatsPlayer
             var pickedFilesTmp = await filePicker.PickMultipleFilesAsync();
             List<StorageFile> pickedFiles = new List<StorageFile>(pickedFilesTmp);
 
-            if (pickedFiles != null)
+            if (pickedFiles != null && pickedFiles.Count != 0)
             {
                 List<string> songs = new List<string>();
                 List<IRandomAccessStream> streams = new List<IRandomAccessStream>();
