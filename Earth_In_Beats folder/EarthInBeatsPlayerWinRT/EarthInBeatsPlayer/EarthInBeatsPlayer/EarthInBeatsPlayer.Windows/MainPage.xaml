@@ -9,7 +9,7 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <SwapChainPanel x:Name="swapChainPanel" ManipulationDelta="swapChainPanel_ManipulationDelta"/>
-        <RichTextBlock x:Name="DebugTextBlock"  TextWrapping="Wrap" Foreground="White" HorizontalAlignment="Right" Width="300" Margin="0,100" />
+        <RichTextBlock x:Name="DebugTextBlock"  TextWrapping="Wrap" TextAlignment="Left" Foreground="White" HorizontalAlignment="Left" Width="300" Margin="0,50,0,100" />
 
         <StackPanel Height="100" VerticalAlignment="Top">
             <Slider x:Name="sliderVolume" ValueChanged="Slider1_ValueChanged" VerticalAlignment="Center" Margin="19,0,19,0" />

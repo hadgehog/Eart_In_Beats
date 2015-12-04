@@ -62,8 +62,11 @@ namespace EarthInBeatsPlayer
 
             WriteDebugMessage("To select songs press Win + Z", Colors.Yellow);
 
-            String path = "Assets\\Earth.obj";
-            await this.earthRenderable.Load3DModel(path);
+            await Task.Run(async () =>
+             {
+                 string path = "Assets\\Earth.obj";
+                 await this.earthRenderable.Load3DModel(path);
+             });
         }
 
         private void Slider1_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
@@ -78,7 +81,7 @@ namespace EarthInBeatsPlayer
         {
             this.dispatcher = CoreApplication.MainView.Dispatcher;
 
-            while (this.player.CurrPos() <= this.player.Duration.Ticks)
+            while (this.player != null && this.playList != null && this.player.CurrPos() <= this.player.Duration.Ticks)
             {
                 await this.dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
@@ -89,6 +92,7 @@ namespace EarthInBeatsPlayer
                     }
 
                 });
+
                 await Task.Delay(TimeSpan.FromSeconds(1.0));
             }
         }
