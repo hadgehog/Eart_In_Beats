@@ -40,4 +40,12 @@ namespace EarthInBeatsNativeLibrary
 			this->nativeRenderer->LoadModel(strPath);
 		});
 	}
+
+	bool EarthRenderableWinRT::EarthRotationEnabled::get() {
+		return this->nativeRenderer->GetEarthRotationEnabled();
+	}
+
+	void EarthRenderableWinRT::EarthRotationEnabled::set(bool v) {
+		this->nativeRenderer->SetEarthRotationEnabled(v);
+	}
 }

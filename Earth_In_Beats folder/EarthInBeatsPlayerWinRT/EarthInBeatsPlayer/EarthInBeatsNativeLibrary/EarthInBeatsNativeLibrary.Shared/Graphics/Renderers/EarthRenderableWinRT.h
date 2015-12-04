@@ -12,9 +12,12 @@ namespace EarthInBeatsNativeLibrary
 
 		virtual NativeRenderableContainer ^Get();
 
-		///////////////  all winrt methods
 		Windows::Foundation::IAsyncAction ^Load3DModel(Platform::String ^path);
-
+		
+		property bool EarthRotationEnabled {
+			bool get();
+			void set(bool v);
+		}
 
 	private:
 		NativeRenderableContainer ^rendererContainer;

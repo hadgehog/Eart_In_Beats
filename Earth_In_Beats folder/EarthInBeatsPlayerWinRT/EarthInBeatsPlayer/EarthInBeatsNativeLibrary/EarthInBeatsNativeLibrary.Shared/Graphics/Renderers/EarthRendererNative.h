@@ -41,10 +41,14 @@ public:
 
 	void LoadModel(std::string path);
 
+	bool GetEarthRotationEnabled();
+	void SetEarthRotationEnabled(bool v);
+
 private:
 	std::shared_ptr<GuardedDeviceResources> dx;
 
 	concurrency::critical_section dataCs;
+	concurrency::critical_section externDataCs;
 
 	concurrency::safe_task<void> initializeTask;
 	std::mutex initializedMtx;
@@ -53,6 +57,7 @@ private:
 
 	bool modelLoaded;
 	float rotationAngle;
+	bool earthRotationEnabled;
 	uint32_t indexCount;
 
 	DirectX::XMFLOAT4X4 projection;

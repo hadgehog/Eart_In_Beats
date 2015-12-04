@@ -42,8 +42,8 @@ namespace EarthInBeatsPlayer
         {
             this.InitializeComponent();
             this.NavigationCacheMode = NavigationCacheMode.Required;
-            sliderVolume.Value = 100;
-            sliderProgress.Value = 0;
+            this.sliderVolume.Value = 100;
+            this.sliderProgress.Value = 0;
 
             this.sliderProgress.PointerPressed += sliderProgress_PointerPressed;
             this.sliderProgress.PointerReleased += sliderProgress_PointerReleased;
@@ -58,7 +58,7 @@ namespace EarthInBeatsPlayer
             this.renderer = new EarthInBeatsNativeLibrary.Renderer();
 
             this.renderer.Initialize(Window.Current.CoreWindow, this.swapChainPanel, this.earthRenderable);
-            this.renderer.BackgroundColor = Windows.UI.Colors.CornflowerBlue;
+            this.renderer.BackgroundColor = Windows.UI.Colors.Black;
 
             WriteDebugMessage("To select songs press Win + Z", Colors.Yellow);
 
@@ -85,11 +85,11 @@ namespace EarthInBeatsPlayer
                     if (this.updateProgress && this.player != null)
                     {
                         var cur = this.player.CurrPos();
-                        sliderProgress.Value = (cur * 100.0) / (double)this.player.Duration.Ticks;
+                        this.sliderProgress.Value = (cur * 100.0) / (double)this.player.Duration.Ticks;
                     }
 
                 });
-                await Task.Delay(TimeSpan.FromSeconds(1));
+                await Task.Delay(TimeSpan.FromSeconds(1.0));
             }
         }
 
@@ -117,7 +117,7 @@ namespace EarthInBeatsPlayer
                 PointerPoint pt = e.GetCurrentPoint(this.sliderProgress);
                 var pos = pt.Position.X;
 
-                var rewind = (pos / this.sliderProgress.Width) * this.player.Duration.Ticks;
+                var rewind = (pos / this.sliderProgress.ActualWidth) * this.player.Duration.Ticks;
 
                 if (this.player != null)
                 {
@@ -130,10 +130,10 @@ namespace EarthInBeatsPlayer
 
         private void WriteDebugMessage(string msg)
         {
-            WriteDebugMessage(msg, Colors.White);
+            this.WriteDebugMessage(msg, Colors.White);
         }
 
-        private void WriteDebugMessage(string msg, Color color)
+        private void WriteDebugMessage(string msg, Color color, bool clear = false)
         {
             Run run = new Run();
             Paragraph p = new Paragraph();
@@ -143,6 +143,11 @@ namespace EarthInBeatsPlayer
             run.Foreground = new SolidColorBrush(color);
 
             p.Inlines.Add(run);
+
+            if (clear)
+            {
+                this.DebugTextBlock.Blocks.Clear();
+            }
 
             this.DebugTextBlock.Blocks.Add(p);
         }
@@ -160,6 +165,7 @@ namespace EarthInBeatsPlayer
                 this.player.Play();
                 this.ResetProgress();
                 this.IncreaseProgress();
+                this.earthRenderable.EarthRotationEnabled = true;
             }
         }
 
@@ -169,6 +175,7 @@ namespace EarthInBeatsPlayer
 
             if (this.player != null)
             {
+                this.earthRenderable.EarthRotationEnabled = false;
                 this.player.Stop();
                 this.ResetProgress();
             }
@@ -213,7 +220,7 @@ namespace EarthInBeatsPlayer
                 List<string> songs = new List<string>();
                 List<IRandomAccessStream> streams = new List<IRandomAccessStream>();
 
-                WriteDebugMessage("Chosen files:", Colors.Yellow);
+                this.WriteDebugMessage("Chosen files:", Colors.Yellow);
 
                 for (int i = 0; i < pickedFiles.Count; i++)
                 {
@@ -227,7 +234,7 @@ namespace EarthInBeatsPlayer
                     IRandomAccessStream resultStream = stream.AsRandomAccessStream();
                     streams.Add(resultStream);
 
-                    WriteDebugMessage(name, Colors.LightGreen);
+                    this.WriteDebugMessage(name, Colors.LightGreen);
                 }
 
                 if (this.player == null)
@@ -247,11 +254,11 @@ namespace EarthInBeatsPlayer
                     this.player.InitPlayer(this.playList);
                 }
 
-                WriteDebugMessage("Playlist successfully created.", Colors.Yellow);
+                this.WriteDebugMessage("Playlist successfully created.", Colors.Yellow);
             }
             else
             {
-                WriteDebugMessage("Wrong chosen files! Chosen files = NULL!!!", Colors.Red);
+                this.WriteDebugMessage("Wrong chosen files! Chosen files = NULL!!!", Colors.Red);
             }
         }
 
@@ -273,8 +280,15 @@ namespace EarthInBeatsPlayer
             {
                 if (this.playList != null)
                 {
+                    this.WriteDebugMessage("Playlist successfully cleaned.", Colors.Yellow, true);
+
                     this.player.Stop();
                     this.player.ClearPlayList();
+
+                    this.ResetProgress();
+
+                    this.sliderProgress.Value = 0.0;
+                    this.earthRenderable.EarthRotationEnabled = false;
 
                     this.player.Dispose();
                     GC.Collect();

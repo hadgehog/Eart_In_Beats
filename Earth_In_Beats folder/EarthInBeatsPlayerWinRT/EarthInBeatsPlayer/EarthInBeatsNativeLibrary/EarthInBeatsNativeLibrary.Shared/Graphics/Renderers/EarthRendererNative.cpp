@@ -9,7 +9,7 @@
 #include <assimp\postprocess.h>
 
 EarthRendererNative::EarthRendererNative() : initialized(false), modelLoaded(false), 
-	rotationAngle(0.0f), indexCount(0){
+	rotationAngle(0.0f), indexCount(0), earthRotationEnabled(false) {
 	DirectX::XMStoreFloat4x4(&this->projection, DirectX::XMMatrixIdentity());
 }
 
@@ -123,12 +123,6 @@ void EarthRendererNative::CreateSizeDependentResources(){
 	concurrency::critical_section::scoped_lock lk(this->dataCs);
 
 	auto size = dxDev->GetLogicalSize();
-
-	//auto proj = H::Math::XMMatrixPerspectiveLH((size.Width / size.Height) * 2, 2, 1.0f, 0.1f, 10.0f);
-	//DirectX::XMStoreFloat4x4(&this->projection, proj);
-
-	/*auto view = DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(-2, 2, 0, 1), DirectX::XMVectorSet(0, 0, 2, 1), DirectX::g_XMIdentityR1);*/
-
 	auto view = DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f), DirectX::XMVectorSet(0, 0, 10, 0), DirectX::g_XMIdentityR1);
 
 	DirectX::XMStoreFloat4x4(&this->constantBufferData.model, DirectX::XMMatrixTranspose(DirectX::XMMatrixTranslation(0, 0, 2)));
@@ -166,7 +160,9 @@ void EarthRendererNative::OnRenderThreadEnd(){
 }
 
 void EarthRendererNative::Update(const DX::StepTimer &timer){
-	this->rotationAngle += (float)timer.GetElapsedSeconds() * 45.0f;
+	if (this->earthRotationEnabled) {
+		this->rotationAngle += (float)timer.GetElapsedSeconds() * 45.0f;
+	}
 }
 
 void EarthRendererNative::Render(){
@@ -229,7 +225,7 @@ void EarthRendererNative::Render(){
 }
 
 void EarthRendererNative::PointerPressed(Windows::UI::Input::PointerPoint ^ppt){
-
+	int s = 34;
 }
 
 void EarthRendererNative::PointerMoved(Windows::UI::Input::PointerPoint ^ppt){
@@ -365,6 +361,16 @@ void EarthRendererNative::LoadModel(std::string path){
 	else{
 		H::System::DebuggerBreak();
 	}
+}
+
+bool EarthRendererNative::GetEarthRotationEnabled(){
+	concurrency::critical_section::scoped_lock lk(this->externDataCs);
+	return this->earthRotationEnabled;
+}
+
+void EarthRendererNative::SetEarthRotationEnabled(bool v){
+	concurrency::critical_section::scoped_lock lk(this->externDataCs);
+	this->earthRotationEnabled = v;
 }
 
 void EarthRendererNative::WaitForInitialization() {

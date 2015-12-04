@@ -65,7 +65,13 @@ namespace MediaData
 
         public virtual IRandomAccessStream GetStream(int trackNumber)
         {
-            var stream = this.streamsToSongs[trackNumber];
+            IRandomAccessStream stream = null;
+
+            if (this.streamsToSongs.Count != 0)
+            {
+                stream = this.streamsToSongs[trackNumber];
+            }
+            
             return stream;
         }
 
