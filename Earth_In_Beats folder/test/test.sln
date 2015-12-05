@@ -1,0 +1,70 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{B7069363-D719-4681-A85A-535531DDF9CE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test.Shared", "test\test.Shared\test.Shared.vcxitems", "{A0ED814A-1FEB-446A-9A5E-DF3189E210BE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test.Windows", "test\test.Windows\test.Windows.vcxproj", "{F3F7C73F-7E5D-4C3B-8657-63CF5B3FBBE4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test.WindowsPhone", "test\test.WindowsPhone\test.WindowsPhone.vcxproj", "{9CEB924E-C44F-4B6C-A23E-DFAC565EE017}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		test\test.Shared\test.Shared.vcxitems*{9ceb924e-c44f-4b6c-a23e-dfac565ee017}*SharedItemsImports = 4
+		test\test.Shared\test.Shared.vcxitems*{f3f7c73f-7e5d-4c3b-8657-63cf5b3fbbe4}*SharedItemsImports = 4
+		test\test.Shared\test.Shared.vcxitems*{a0ed814a-1feb-446a-9a5e-df3189e210be}*SharedItemsImports = 9
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|ARM = Release|ARM
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F3F7C73F-7E5D-4C3B-8657-63CF5B3FBBE4}.Debug|ARM.ActiveCfg = Debug|ARM
+		{F3F7C73F-7E5D-4C3B-8657-63CF5B3FBBE4}.Debug|ARM.Build.0 = Debug|ARM
+		{F3F7C73F-7E5D-4C3B-8657-63CF5B3FBBE4}.Debug|ARM.Deploy.0 = Debug|ARM
+		{F3F7C73F-7E5D-4C3B-8657-63CF5B3FBBE4}.Debug|x64.ActiveCfg = Debug|x64
+		{F3F7C73F-7E5D-4C3B-8657-63CF5B3FBBE4}.Debug|x64.Build.0 = Debug|x64
+		{F3F7C73F-7E5D-4C3B-8657-63CF5B3FBBE4}.Debug|x64.Deploy.0 = Debug|x64
+		{F3F7C73F-7E5D-4C3B-8657-63CF5B3FBBE4}.Debug|x86.ActiveCfg = Debug|Win32
+		{F3F7C73F-7E5D-4C3B-8657-63CF5B3FBBE4}.Debug|x86.Build.0 = Debug|Win32
+		{F3F7C73F-7E5D-4C3B-8657-63CF5B3FBBE4}.Debug|x86.Deploy.0 = Debug|Win32
+		{F3F7C73F-7E5D-4C3B-8657-63CF5B3FBBE4}.Release|ARM.ActiveCfg = Release|ARM
+		{F3F7C73F-7E5D-4C3B-8657-63CF5B3FBBE4}.Release|ARM.Build.0 = Release|ARM
+		{F3F7C73F-7E5D-4C3B-8657-63CF5B3FBBE4}.Release|ARM.Deploy.0 = Release|ARM
+		{F3F7C73F-7E5D-4C3B-8657-63CF5B3FBBE4}.Release|x64.ActiveCfg = Release|x64
+		{F3F7C73F-7E5D-4C3B-8657-63CF5B3FBBE4}.Release|x64.Build.0 = Release|x64
+		{F3F7C73F-7E5D-4C3B-8657-63CF5B3FBBE4}.Release|x64.Deploy.0 = Release|x64
+		{F3F7C73F-7E5D-4C3B-8657-63CF5B3FBBE4}.Release|x86.ActiveCfg = Release|Win32
+		{F3F7C73F-7E5D-4C3B-8657-63CF5B3FBBE4}.Release|x86.Build.0 = Release|Win32
+		{F3F7C73F-7E5D-4C3B-8657-63CF5B3FBBE4}.Release|x86.Deploy.0 = Release|Win32
+		{9CEB924E-C44F-4B6C-A23E-DFAC565EE017}.Debug|ARM.ActiveCfg = Debug|ARM
+		{9CEB924E-C44F-4B6C-A23E-DFAC565EE017}.Debug|ARM.Build.0 = Debug|ARM
+		{9CEB924E-C44F-4B6C-A23E-DFAC565EE017}.Debug|ARM.Deploy.0 = Debug|ARM
+		{9CEB924E-C44F-4B6C-A23E-DFAC565EE017}.Debug|x64.ActiveCfg = Debug|Win32
+		{9CEB924E-C44F-4B6C-A23E-DFAC565EE017}.Debug|x86.ActiveCfg = Debug|Win32
+		{9CEB924E-C44F-4B6C-A23E-DFAC565EE017}.Debug|x86.Build.0 = Debug|Win32
+		{9CEB924E-C44F-4B6C-A23E-DFAC565EE017}.Debug|x86.Deploy.0 = Debug|Win32
+		{9CEB924E-C44F-4B6C-A23E-DFAC565EE017}.Release|ARM.ActiveCfg = Release|ARM
+		{9CEB924E-C44F-4B6C-A23E-DFAC565EE017}.Release|ARM.Build.0 = Release|ARM
+		{9CEB924E-C44F-4B6C-A23E-DFAC565EE017}.Release|ARM.Deploy.0 = Release|ARM
+		{9CEB924E-C44F-4B6C-A23E-DFAC565EE017}.Release|x64.ActiveCfg = Release|Win32
+		{9CEB924E-C44F-4B6C-A23E-DFAC565EE017}.Release|x86.ActiveCfg = Release|Win32
+		{9CEB924E-C44F-4B6C-A23E-DFAC565EE017}.Release|x86.Build.0 = Release|Win32
+		{9CEB924E-C44F-4B6C-A23E-DFAC565EE017}.Release|x86.Deploy.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A0ED814A-1FEB-446A-9A5E-DF3189E210BE} = {B7069363-D719-4681-A85A-535531DDF9CE}
+		{F3F7C73F-7E5D-4C3B-8657-63CF5B3FBBE4} = {B7069363-D719-4681-A85A-535531DDF9CE}
+		{9CEB924E-C44F-4B6C-A23E-DFAC565EE017} = {B7069363-D719-4681-A85A-535531DDF9CE}
+	EndGlobalSection
+EndGlobal
