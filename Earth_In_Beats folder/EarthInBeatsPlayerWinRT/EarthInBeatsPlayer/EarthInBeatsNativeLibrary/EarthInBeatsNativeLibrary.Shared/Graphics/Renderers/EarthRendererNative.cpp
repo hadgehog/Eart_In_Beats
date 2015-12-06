@@ -59,6 +59,7 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 2, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 		};
 
 		auto numElements = sizeof(layout) / sizeof(layout[0]);
@@ -236,7 +237,7 @@ void EarthRendererNative::PointerReleased(Windows::UI::Input::PointerPoint ^ppt)
 
 }
 
-void EarthRendererNative::LoadModel(std::string path){
+void EarthRendererNative::LoadModel(const std::string &path){
 	this->WaitForInitialization();
 
 	auto dxDev = this->dx->Get();
@@ -244,6 +245,7 @@ void EarthRendererNative::LoadModel(std::string path){
 	auto d3dCtx = dxDev->GetD3DDeviceContext();
 	concurrency::critical_section::scoped_lock lk(this->dataCs);
 
+	HRESULT hr = S_OK;
 	Assimp::Importer modelImporter;
 	const aiScene *scene = NULL;
 	const aiMesh *mesh = NULL;
@@ -252,9 +254,6 @@ void EarthRendererNative::LoadModel(std::string path){
 	int verticesNum = 0;
 	std::vector<uint32_t> materialIndices;
 
-	HRESULT hr = S_OK;
-
-	////scene = modelImporter.ReadFile(path, aiProcess_CalcTangentSpace | aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_SortByPType | aiProcess_GenNormals);
 	scene = modelImporter.ReadFile(path, aiProcess_Triangulate | aiProcess_GenNormals);
 
 	if (scene){
@@ -361,6 +360,26 @@ void EarthRendererNative::LoadModel(std::string path){
 	else{
 		H::System::DebuggerBreak();
 	}
+}
+
+void EarthRendererNative::LoadModelTexture(const std::string &path) {
+	this->WaitForInitialization();
+
+	auto dxDev = this->dx->Get();
+	auto d3dDev = dxDev->GetD3DDevice();
+	auto d3dCtx = dxDev->GetD3DDeviceContext();
+	concurrency::critical_section::scoped_lock lk(this->dataCs);
+
+	HRESULT hr = S_OK;
+
+	//////////////////////////////
+	D3D11_TEXTURE2D_DESC texDesc = { 0 };
+
+
+
+	
+	//hr = d3dDev->CreateTexture2D();
+	HSystem::ThrowIfFailed(hr);
 }
 
 bool EarthRendererNative::GetEarthRotationEnabled(){

@@ -15,6 +15,7 @@
 #include <condition_variable>
 #include <mutex>
 #include <stdlib.h>
+#include <d3d11.h>
 
 class EarthRendererNative : public INativeRenderable{
 public:
@@ -39,7 +40,8 @@ public:
 	virtual void PointerMoved(Windows::UI::Input::PointerPoint ^ppt) override;
 	virtual void PointerReleased(Windows::UI::Input::PointerPoint ^ppt) override;
 
-	void LoadModel(std::string path);
+	void LoadModel(const std::string &path);
+	void LoadModelTexture(const std::string &path);
 
 	bool GetEarthRotationEnabled();
 	void SetEarthRotationEnabled(bool v);
@@ -78,8 +80,8 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState> rsState;
 
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> sharedTex;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> d2dTexture;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> texture;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> textureView;
 
 	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> meshSRV;
 	std::vector<std::wstring> textureNameArray;

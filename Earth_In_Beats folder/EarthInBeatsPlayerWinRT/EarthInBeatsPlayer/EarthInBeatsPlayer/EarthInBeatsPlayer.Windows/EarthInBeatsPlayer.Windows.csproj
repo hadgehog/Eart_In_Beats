@@ -125,26 +125,18 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\02 - Master of Puppets.mp3" />
-    <Content Include="Assets\02 Quutamo.mp3" />
-    <Content Include="Assets\1 Caroline Duris - Barrage%28original mix%29.mp3" />
-    <Content Include="Assets\150.jpg" />
-    <Content Include="Assets\22.scale-100.jpg" />
-    <Content Include="Assets\9d64d647715f9e.mp3" />
-    <Content Include="Assets\a9d220db4fcf.mp3" />
-    <Content Include="Assets\AlbumArtSmall.jpg" />
-    <Content Include="Assets\AlbumArt_{0D5E074E-9562-49C9-97DB-C2F787991E56}_Large.jpg" />
-    <Content Include="Assets\AlbumArt_{0D5E074E-9562-49C9-97DB-C2F787991E56}_Small.jpg" />
-    <Content Include="Assets\Folder.jpg" />
-    <Content Include="Assets\geosphere.txt" />
-    <Content Include="Assets\geosphere_with_textures.txt" />
-    <Content Include="Assets\kosmos_05.scale-100.png" />
-    <Content Include="Assets\kosmos_05.scale-140.png" />
-    <Content Include="Assets\kosmos_051.png" />
-    <Content Include="Assets\master.png" />
+    <Content Include="Assets\150.png" />
+    <Content Include="Assets\24.png" />
+    <Content Include="Assets\30.png" />
+    <Content Include="Assets\310.png" />
+    <Content Include="Assets\310_150.png" />
+    <Content Include="Assets\50.png" />
+    <Content Include="Assets\70.png" />
+    <Content Include="Assets\earth.jpg" />
+    <Content Include="Assets\earth_clouds.jpg" />
     <Content Include="Assets\SmallLogo.scale-100.png" />
-    <Content Include="Assets\SplashScreen.scale-100.png" />
-    <Content Include="Assets\SplashScreen.scale-180.png" />
+    <Content Include="Assets\space_background.jpg" />
+    <Content Include="Assets\SplashScreen.png" />
     <Content Include="Assets\StoreLogo.scale-100.png" />
   </ItemGroup>
   <ItemGroup>
