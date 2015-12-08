@@ -65,6 +65,9 @@ namespace EarthInBeatsPlayer
             await Task.Run(async () =>
              {
                  string path = "Assets\\Earth.obj";
+                 string pathTex = "Assets\\earth.png";
+
+                 await this.earthRenderable.LoadModelTexture(pathTex);
                  await this.earthRenderable.Load3DModel(path);
              });
         }

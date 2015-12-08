@@ -29,6 +29,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioHelpers\InitMasterVoice.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AudioPlayer\Reader.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\DirectXCommon\DeviceResources.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Helpers\PixelConverter\PixelConverter.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Helpers\PixelConverter\PixelConverterCopy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Helpers\PixelConverter\PixelConverterFactory.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Renderers\DxRenderingContext.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Renderers\EarthRenderableWinRT.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Graphics\Renderers\EarthRendererNative.cpp" />
@@ -62,6 +65,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\AudioHelpers\Rational.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioPlayer\Reader.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\config.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Helpers\PixelConverter\PixelConverter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Helpers\PixelConverter\PixelConverterCopy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Helpers\PixelConverter\PixelConverterFactory.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Helpers\PixelConverter\PixelConverterStd8Bit.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\D2D1RenderingContext.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXCommon\DeviceResources.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\DirectXCommon\DirectXHelper.h" />

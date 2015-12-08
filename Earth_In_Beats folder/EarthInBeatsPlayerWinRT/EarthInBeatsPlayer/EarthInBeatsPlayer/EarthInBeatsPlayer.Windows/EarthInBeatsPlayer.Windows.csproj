@@ -133,7 +133,9 @@
     <Content Include="Assets\50.png" />
     <Content Include="Assets\70.png" />
     <Content Include="Assets\earth.jpg" />
+    <Content Include="Assets\earth.png" />
     <Content Include="Assets\earth_clouds.jpg" />
+    <Content Include="Assets\earth_clouds.png" />
     <Content Include="Assets\SmallLogo.scale-100.png" />
     <Content Include="Assets\space_background.jpg" />
     <Content Include="Assets\SplashScreen.png" />

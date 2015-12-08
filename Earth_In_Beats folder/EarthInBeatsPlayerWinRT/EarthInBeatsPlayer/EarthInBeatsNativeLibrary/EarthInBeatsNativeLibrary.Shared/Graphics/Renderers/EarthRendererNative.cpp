@@ -1,6 +1,7 @@
 #include "EarthRendererNative.h"
 #include "..\Helpers\H.h"
 #include "DxRenderingContext.h"
+#include "..\Helpers\ImageUtils.h"
 
 #include <fstream>
 
@@ -371,15 +372,33 @@ void EarthRendererNative::LoadModelTexture(const std::string &path) {
 	concurrency::critical_section::scoped_lock lk(this->dataCs);
 
 	HRESULT hr = S_OK;
+	auto sizeRT = dxDev->GetRendertargetSize();
+	ImageUtils imgUtils;
+
+
+
 
 	//////////////////////////////
 	D3D11_TEXTURE2D_DESC texDesc = { 0 };
 
+	texDesc.Width = (uint32_t)sizeRT.Width;
+	texDesc.Height = (uint32_t)sizeRT.Height;
+	texDesc.MipLevels = 1;
+	texDesc.ArraySize = 1;
+	texDesc.Format = DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT;
+	texDesc.SampleDesc.Count = 1;
+	texDesc.SampleDesc.Quality = 0;
+	texDesc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
+	texDesc.BindFlags =
+		D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE |
+		D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET;
+	texDesc.CPUAccessFlags = 0;
+	texDesc.MiscFlags = 0;
+
+	hr = d3dDev->CreateTexture2D(&texDesc, nullptr, this->texture.ReleaseAndGetAddressOf());
+	H::System::ThrowIfFailed(hr);
 
 
-	
-	//hr = d3dDev->CreateTexture2D();
-	HSystem::ThrowIfFailed(hr);
 }
 
 bool EarthRendererNative::GetEarthRotationEnabled(){
