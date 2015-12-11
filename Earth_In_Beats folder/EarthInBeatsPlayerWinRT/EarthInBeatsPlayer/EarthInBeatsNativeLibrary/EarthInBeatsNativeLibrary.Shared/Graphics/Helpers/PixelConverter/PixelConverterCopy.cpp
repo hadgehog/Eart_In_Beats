@@ -1,5 +1,7 @@
 #include "PixelConverterCopy.h"
 
+#include <iostream>
+
 PixelConverterCopy::PixelConverterCopy(uint32_t pixelByteSize)
 	: pixelByteSize(pixelByteSize){
 }

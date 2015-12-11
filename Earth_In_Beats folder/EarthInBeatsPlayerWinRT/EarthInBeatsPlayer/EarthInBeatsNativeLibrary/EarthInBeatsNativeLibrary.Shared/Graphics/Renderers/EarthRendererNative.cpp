@@ -9,15 +9,15 @@
 #include <assimp\scene.h>
 #include <assimp\postprocess.h>
 
-EarthRendererNative::EarthRendererNative() : initialized(false), modelLoaded(false), 
-	rotationAngle(0.0f), indexCount(0), earthRotationEnabled(false) {
+EarthRendererNative::EarthRendererNative() : initialized(false), modelLoaded(false),
+rotationAngle(0.0f), indexCount(0), earthRotationEnabled(false) {
 	DirectX::XMStoreFloat4x4(&this->projection, DirectX::XMMatrixIdentity());
 }
 
-EarthRendererNative::~EarthRendererNative(){
+EarthRendererNative::~EarthRendererNative() {
 }
 
-void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResources> &dx){
+void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResources> &dx) {
 	this->initializeTask = concurrency::create_task([=]() {
 		this->dx = dx;
 		auto dxDev = this->dx->Get();
@@ -105,20 +105,20 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 	});
 }
 
-void EarthRendererNative::Shutdown(){
+void EarthRendererNative::Shutdown() {
 	this->indexBuffer.Get()->Release();
 	this->vertexBuffer.Get()->Release();
 }
 
-void EarthRendererNative::CreateDeviceDependentResources(){
+void EarthRendererNative::CreateDeviceDependentResources() {
 
 }
 
-void EarthRendererNative::ReleaseDeviceDependentResources(){
+void EarthRendererNative::ReleaseDeviceDependentResources() {
 
 }
 
-void EarthRendererNative::CreateSizeDependentResources(){
+void EarthRendererNative::CreateSizeDependentResources() {
 	this->WaitForInitialization();
 
 	auto dxDev = this->dx->Get();
@@ -153,21 +153,21 @@ void EarthRendererNative::CreateSizeDependentResources(){
 	}
 }
 
-void EarthRendererNative::OnRenderThreadStart(){
+void EarthRendererNative::OnRenderThreadStart() {
 
 }
 
-void EarthRendererNative::OnRenderThreadEnd(){
+void EarthRendererNative::OnRenderThreadEnd() {
 
 }
 
-void EarthRendererNative::Update(const DX::StepTimer &timer){
+void EarthRendererNative::Update(const DX::StepTimer &timer) {
 	if (this->earthRotationEnabled) {
 		this->rotationAngle += (float)timer.GetElapsedSeconds() * 45.0f;
 	}
 }
 
-void EarthRendererNative::Render(){
+void EarthRendererNative::Render() {
 	this->WaitForInitialization();
 
 	auto dxDev = this->dx->Get();
@@ -226,19 +226,19 @@ void EarthRendererNative::Render(){
 	}
 }
 
-void EarthRendererNative::PointerPressed(Windows::UI::Input::PointerPoint ^ppt){
+void EarthRendererNative::PointerPressed(Windows::UI::Input::PointerPoint ^ppt) {
 	int s = 34;
 }
 
-void EarthRendererNative::PointerMoved(Windows::UI::Input::PointerPoint ^ppt){
+void EarthRendererNative::PointerMoved(Windows::UI::Input::PointerPoint ^ppt) {
 
 }
 
-void EarthRendererNative::PointerReleased(Windows::UI::Input::PointerPoint ^ppt){
+void EarthRendererNative::PointerReleased(Windows::UI::Input::PointerPoint ^ppt) {
 
 }
 
-void EarthRendererNative::LoadModel(const std::string &path){
+void EarthRendererNative::LoadModel(const std::string &path) {
 	this->WaitForInitialization();
 
 	auto dxDev = this->dx->Get();
@@ -257,40 +257,40 @@ void EarthRendererNative::LoadModel(const std::string &path){
 
 	scene = modelImporter.ReadFile(path, aiProcess_Triangulate | aiProcess_GenNormals);
 
-	if (scene){
+	if (scene) {
 		mesh = scene->mMeshes[0];
-		
-		if (mesh){
-			if (mesh->HasFaces()){
+
+		if (mesh) {
+			if (mesh->HasFaces()) {
 				faces = mesh->mFaces;
 				indicesNum = mesh->mNumFaces * 3;
 				materialIndices.resize(indicesNum);
 
-				for (size_t i = 0; i < mesh->mNumFaces; i++){
-					if (faces && faces[i].mNumIndices == 3){
-						for (size_t j = 0; j < 3; j++){
+				for (size_t i = 0; i < mesh->mNumFaces; i++) {
+					if (faces && faces[i].mNumIndices == 3) {
+						for (size_t j = 0; j < 3; j++) {
 							materialIndices[i * 3 + j] = faces[i].mIndices[j];
 						}
 					}
-					else{
+					else {
 						H::System::DebuggerBreak();
 					}
 				}
 			}
 
-			if (mesh->HasPositions()){			
+			if (mesh->HasPositions()) {
 				verticesNum = mesh->mNumVertices;
 
 				this->modelPoints.Vertex.resize(verticesNum);
 				this->modelPoints.Normal.resize(verticesNum);
 				this->modelPoints.TextureCoord.resize(verticesNum);
 
-				for (int i = 0; i < verticesNum; i++){
+				for (int i = 0; i < verticesNum; i++) {
 					this->modelPoints.Vertex[i] = DirectX::XMFLOAT3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
 				}
 
-				if (mesh->HasNormals()){
-					for (int i = 0; i < verticesNum; i++){
+				if (mesh->HasNormals()) {
+					for (int i = 0; i < verticesNum; i++) {
 						DirectX::XMVECTOR xvNormal = DirectX::XMLoadFloat3((DirectX::XMFLOAT3 *)&mesh->mNormals[i]);
 						xvNormal = DirectX::XMVector3Normalize(xvNormal);
 
@@ -299,7 +299,7 @@ void EarthRendererNative::LoadModel(const std::string &path){
 				}
 
 				if (mesh->HasTextureCoords(0)) {
-					for (int i = 0; i < verticesNum; i++){
+					for (int i = 0; i < verticesNum; i++) {
 						this->modelPoints.TextureCoord[i] = DirectX::XMFLOAT2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 					}
 				}
@@ -354,11 +354,11 @@ void EarthRendererNative::LoadModel(const std::string &path){
 
 			this->modelLoaded = true;
 		}
-		else{
+		else {
 			H::System::DebuggerBreak();
 		}
 	}
-	else{
+	else {
 		H::System::DebuggerBreak();
 	}
 }
@@ -377,21 +377,24 @@ void EarthRendererNative::LoadModelTexture(const std::wstring &path) {
 
 	Platform::String ^pathTmp = ref new Platform::String(path.c_str());
 	auto imgFile = H::System::PerformSync(Windows::ApplicationModel::Package::Current->InstalledLocation->GetFileAsync(pathTmp)).second;
-	auto imgStream = imgFile->OpenAsync(Windows::Storage::FileAccessMode::ReadWrite)->GetResults();
+	auto imgStream = H::System::PerformSync(imgFile->OpenAsync(Windows::Storage::FileAccessMode::Read)).second;
 	imgStream->Seek(0);
 
+	imgUtils.Initialize();
 	auto imgDecoder = imgUtils.CreateDecoder(imgStream);
 	auto imgDecoderFrame = imgUtils.CreateFrameForDecode(imgDecoder.Get());
 	auto imgFrameSize = imgUtils.GetFrameSize(imgDecoderFrame.Get());
+	auto frameByteSize = imgUtils.GetFrameByteSize(imgDecoderFrame.Get());
 
-	//////////////////////////////
+	std::vector<uint8_t> frameData(frameByteSize);
+	imgUtils.DecodePixels(imgDecoderFrame.Get(), frameByteSize, frameData.data());
+
 	D3D11_TEXTURE2D_DESC texDesc = { 0 };
-
-	texDesc.Width = (uint32_t)sizeRT.Width;	// img size
-	texDesc.Height = (uint32_t)sizeRT.Height;
+	texDesc.Width = imgFrameSize.x;
+	texDesc.Height = imgFrameSize.y;
 	texDesc.MipLevels = 1;
 	texDesc.ArraySize = 1;
-	texDesc.Format = DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT;
+	texDesc.Format = DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_UNORM;
 	texDesc.SampleDesc.Count = 1;
 	texDesc.SampleDesc.Quality = 0;
 	texDesc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
@@ -401,18 +404,24 @@ void EarthRendererNative::LoadModelTexture(const std::wstring &path) {
 	texDesc.CPUAccessFlags = 0;
 	texDesc.MiscFlags = 0;
 
-	hr = d3dDev->CreateTexture2D(&texDesc, nullptr, this->texture.ReleaseAndGetAddressOf());
+	D3D11_SUBRESOURCE_DATA textInitData;
+	ZeroMemory(&textInitData, sizeof(textInitData));
+	textInitData.pSysMem = frameData.data();
+	textInitData.SysMemPitch = imgFrameSize.x;
+	textInitData.SysMemSlicePitch = imgFrameSize.x * imgFrameSize.y;
+
+	hr = d3dDev->CreateTexture2D(&texDesc, &textInitData, this->texture.GetAddressOf());
 	H::System::ThrowIfFailed(hr);
 
 
 }
 
-bool EarthRendererNative::GetEarthRotationEnabled(){
+bool EarthRendererNative::GetEarthRotationEnabled() {
 	concurrency::critical_section::scoped_lock lk(this->externDataCs);
 	return this->earthRotationEnabled;
 }
 
-void EarthRendererNative::SetEarthRotationEnabled(bool v){
+void EarthRendererNative::SetEarthRotationEnabled(bool v) {
 	concurrency::critical_section::scoped_lock lk(this->externDataCs);
 	this->earthRotationEnabled = v;
 }
