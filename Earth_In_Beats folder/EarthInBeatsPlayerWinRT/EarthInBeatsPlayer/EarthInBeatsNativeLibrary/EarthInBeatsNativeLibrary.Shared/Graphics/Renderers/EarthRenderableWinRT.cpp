@@ -43,8 +43,7 @@ namespace EarthInBeatsNativeLibrary
 
 	Windows::Foundation::IAsyncAction ^EarthRenderableWinRT::LoadModelTexture(Platform::String ^path) {
 		return concurrency::create_async([=]() {
-			std::string strPath = H::Text::ConvertToUTF8(path);
-			this->nativeRenderer->LoadModelTexture(strPath);
+			this->nativeRenderer->LoadModelTexture(path->Data());
 		});
 	}
 

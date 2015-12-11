@@ -363,7 +363,7 @@ void EarthRendererNative::LoadModel(const std::string &path){
 	}
 }
 
-void EarthRendererNative::LoadModelTexture(const std::string &path) {
+void EarthRendererNative::LoadModelTexture(const std::wstring &path) {
 	this->WaitForInitialization();
 
 	auto dxDev = this->dx->Get();
@@ -375,13 +375,19 @@ void EarthRendererNative::LoadModelTexture(const std::string &path) {
 	auto sizeRT = dxDev->GetRendertargetSize();
 	ImageUtils imgUtils;
 
+	Platform::String ^pathTmp = ref new Platform::String(path.c_str());
+	auto imgFile = H::System::PerformSync(Windows::ApplicationModel::Package::Current->InstalledLocation->GetFileAsync(pathTmp)).second;
+	auto imgStream = imgFile->OpenAsync(Windows::Storage::FileAccessMode::ReadWrite)->GetResults();
+	imgStream->Seek(0);
 
-
+	auto imgDecoder = imgUtils.CreateDecoder(imgStream);
+	auto imgDecoderFrame = imgUtils.CreateFrameForDecode(imgDecoder.Get());
+	auto imgFrameSize = imgUtils.GetFrameSize(imgDecoderFrame.Get());
 
 	//////////////////////////////
 	D3D11_TEXTURE2D_DESC texDesc = { 0 };
 
-	texDesc.Width = (uint32_t)sizeRT.Width;
+	texDesc.Width = (uint32_t)sizeRT.Width;	// img size
 	texDesc.Height = (uint32_t)sizeRT.Height;
 	texDesc.MipLevels = 1;
 	texDesc.ArraySize = 1;

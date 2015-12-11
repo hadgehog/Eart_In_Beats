@@ -41,7 +41,7 @@ public:
 	virtual void PointerReleased(Windows::UI::Input::PointerPoint ^ppt) override;
 
 	void LoadModel(const std::string &path);
-	void LoadModelTexture(const std::string &path);
+	void LoadModelTexture(const std::wstring &path);
 
 	bool GetEarthRotationEnabled();
 	void SetEarthRotationEnabled(bool v);
