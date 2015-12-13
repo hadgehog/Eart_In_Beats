@@ -23,12 +23,18 @@ enum class ExifRotationFlag : uint16_t{
 	Rotate90 = 8,
 };
 
+struct WICTranslate{
+	WICPixelFormatGUID  wic;
+	DXGI_FORMAT         format;
+};
+
 class ImageUtils{
 private:
 	static std::unordered_map<GUID_WICPixelFormat, uint32_t, GUIDHash> WICPixelFormatBitSize;
 
 	static int StaticCtorTmp;
 	static int StaticCtor();
+
 public:
 	ImageUtils();
 	~ImageUtils();
@@ -123,8 +129,13 @@ public:
 		IWICBitmapSource *frame,
 		const WICRect *prc
 		) const;
+
+	DXGI_FORMAT WICToDXGI(const WICPixelFormatGUID &guid);
+
 private:
 	Microsoft::WRL::ComPtr<IWICImagingFactory2>	wicFactory;
+
+	static std::vector<WICTranslate> WICFormats;
 
 	static WICBitmapTransformOptions RotationFlipOptionsFromExif(ExifRotationFlag v);
 	static WICBitmapTransformOptions RotationFlipOptionsFromExifInversed(ExifRotationFlag v);

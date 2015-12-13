@@ -218,6 +218,7 @@ void EarthRendererNative::Render() {
 		d3dCtx->VSSetShader(this->vertexShader.Get(), 0, 0);
 		d3dCtx->VSSetConstantBuffers(0, 1, this->constantBuffer.GetAddressOf());
 
+		d3dCtx->PSSetShaderResources(0, 1, this->textureView.GetAddressOf());
 		d3dCtx->PSSetShader(this->pixelShader.Get(), 0, 0);
 
 		d3dCtx->UpdateSubresource(this->constantBuffer.Get(), 0, nullptr, &this->constantBufferData, 0, 0);
@@ -373,13 +374,13 @@ void EarthRendererNative::LoadModelTexture(const std::wstring &path) {
 
 	HRESULT hr = S_OK;
 	auto sizeRT = dxDev->GetRendertargetSize();
-	ImageUtils imgUtils;
 
 	Platform::String ^pathTmp = ref new Platform::String(path.c_str());
 	auto imgFile = H::System::PerformSync(Windows::ApplicationModel::Package::Current->InstalledLocation->GetFileAsync(pathTmp)).second;
 	auto imgStream = H::System::PerformSync(imgFile->OpenAsync(Windows::Storage::FileAccessMode::Read)).second;
 	imgStream->Seek(0);
 
+	ImageUtils imgUtils;
 	imgUtils.Initialize();
 	auto imgDecoder = imgUtils.CreateDecoder(imgStream);
 	auto imgDecoderFrame = imgUtils.CreateFrameForDecode(imgDecoder.Get());
@@ -394,7 +395,7 @@ void EarthRendererNative::LoadModelTexture(const std::wstring &path) {
 	texDesc.Height = imgFrameSize.y;
 	texDesc.MipLevels = 1;
 	texDesc.ArraySize = 1;
-	texDesc.Format = DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_UNORM;
+	texDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
 	texDesc.SampleDesc.Count = 1;
 	texDesc.SampleDesc.Quality = 0;
 	texDesc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
@@ -407,12 +408,22 @@ void EarthRendererNative::LoadModelTexture(const std::wstring &path) {
 	D3D11_SUBRESOURCE_DATA textInitData;
 	ZeroMemory(&textInitData, sizeof(textInitData));
 	textInitData.pSysMem = frameData.data();
-	textInitData.SysMemPitch = imgFrameSize.x;
-	textInitData.SysMemSlicePitch = imgFrameSize.x * imgFrameSize.y;
+	textInitData.SysMemPitch = imgFrameSize.x * 4;
 
 	hr = d3dDev->CreateTexture2D(&texDesc, &textInitData, this->texture.GetAddressOf());
 	H::System::ThrowIfFailed(hr);
 
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+	ZeroMemory(&srvDesc, sizeof(srvDesc));
+	srvDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MipLevels = 1;
+
+	hr = d3dDev->CreateShaderResourceView(this->texture.Get(), &srvDesc, this->textureView.GetAddressOf());
+	H::System::ThrowIfFailed(hr);
+}
+
+void EarthRendererNative::LoadBackgroundTexture(const std::wstring &path){
 
 }
 

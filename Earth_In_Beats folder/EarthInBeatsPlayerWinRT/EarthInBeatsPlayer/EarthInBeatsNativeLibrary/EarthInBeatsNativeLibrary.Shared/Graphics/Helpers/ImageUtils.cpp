@@ -4,9 +4,43 @@
 
 std::unordered_map<GUID_WICPixelFormat, uint32_t, GUIDHash> ImageUtils::WICPixelFormatBitSize;
 
+std::vector<WICTranslate> ImageUtils::WICFormats =
+{
+	{ GUID_WICPixelFormat128bppRGBAFloat,       DXGI_FORMAT_R32G32B32A32_FLOAT },
+	
+	{ GUID_WICPixelFormat64bppRGBAHalf,         DXGI_FORMAT_R16G16B16A16_FLOAT },
+	{ GUID_WICPixelFormat64bppRGBA,             DXGI_FORMAT_R16G16B16A16_UNORM },
+
+	{ GUID_WICPixelFormat32bppRGBA,             DXGI_FORMAT_R8G8B8A8_UNORM },
+	{ GUID_WICPixelFormat32bppBGRA,             DXGI_FORMAT_B8G8R8A8_UNORM }, // DXGI 1.1
+	{ GUID_WICPixelFormat32bppBGR,              DXGI_FORMAT_B8G8R8X8_UNORM }, // DXGI 1.1
+
+	{ GUID_WICPixelFormat32bppRGBA1010102XR,    DXGI_FORMAT_R10G10B10_XR_BIAS_A2_UNORM }, // DXGI 1.1
+	{ GUID_WICPixelFormat32bppRGBA1010102,      DXGI_FORMAT_R10G10B10A2_UNORM },
+	{ GUID_WICPixelFormat32bppRGBE,             DXGI_FORMAT_R9G9B9E5_SHAREDEXP },
+
+#ifdef DXGI_1_2_FORMATS
+
+	{ GUID_WICPixelFormat16bppBGRA5551,         DXGI_FORMAT_B5G5R5A1_UNORM },
+	{ GUID_WICPixelFormat16bppBGR565,           DXGI_FORMAT_B5G6R5_UNORM },
+
+#endif // DXGI_1_2_FORMATS
+
+	{ GUID_WICPixelFormat32bppGrayFloat,        DXGI_FORMAT_R32_FLOAT },
+	{ GUID_WICPixelFormat16bppGrayHalf,         DXGI_FORMAT_R16_FLOAT },
+	{ GUID_WICPixelFormat16bppGray,             DXGI_FORMAT_R16_UNORM },
+	{ GUID_WICPixelFormat8bppGray,              DXGI_FORMAT_R8_UNORM },
+
+	{ GUID_WICPixelFormat8bppAlpha,             DXGI_FORMAT_A8_UNORM },
+
+#if (_WIN32_WINNT >= 0x0602 /*_WIN32_WINNT_WIN8*/)
+	{ GUID_WICPixelFormat96bppRGBFloat,         DXGI_FORMAT_R32G32B32_FLOAT },
+#endif
+};
+
 int ImageUtils::StaticCtorTmp = ImageUtils::StaticCtor();
 
-int ImageUtils::StaticCtor(){
+int ImageUtils::StaticCtor() {
 
 	// TODO: add bit sizes for all formats
 	WICPixelFormatBitSize.insert(std::make_pair(GUID_WICPixelFormat32bppPBGRA, 32));
@@ -19,13 +53,13 @@ int ImageUtils::StaticCtor(){
 	return 0;
 }
 
-ImageUtils::ImageUtils(){
+ImageUtils::ImageUtils() {
 }
 
-ImageUtils::~ImageUtils(){
+ImageUtils::~ImageUtils() {
 }
 
-uint32_t ImageUtils::GetFrameCount(IWICBitmapDecoder *decoder) const{
+uint32_t ImageUtils::GetFrameCount(IWICBitmapDecoder *decoder) const {
 	HRESULT hr = S_OK;
 	uint32_t count = 0;
 
@@ -35,7 +69,7 @@ uint32_t ImageUtils::GetFrameCount(IWICBitmapDecoder *decoder) const{
 	return count;
 }
 
-uint32_t ImageUtils::GetPixelBitSize(IWICBitmapSource *frame) const{
+uint32_t ImageUtils::GetPixelBitSize(IWICBitmapSource *frame) const {
 	HRESULT hr = S_OK;
 	uint32_t pixelBitSize = 0;
 	GUID_WICPixelFormat pixelFormat;
@@ -44,25 +78,25 @@ uint32_t ImageUtils::GetPixelBitSize(IWICBitmapSource *frame) const{
 	H::System::ThrowIfFailed(hr);
 
 	auto finded = ImageUtils::WICPixelFormatBitSize.find(pixelFormat);
-	if (finded != ImageUtils::WICPixelFormatBitSize.end()){
+	if (finded != ImageUtils::WICPixelFormatBitSize.end()) {
 		pixelBitSize = finded->second;
 	}
 
 	return pixelBitSize;
 }
 
-uint32_t ImageUtils::GetPixelBitSize(const GUID_WICPixelFormat &fmt) const{
+uint32_t ImageUtils::GetPixelBitSize(const GUID_WICPixelFormat &fmt) const {
 	uint32_t pixelBitSize = 0;
 
 	auto finded = ImageUtils::WICPixelFormatBitSize.find(fmt);
-	if (finded != ImageUtils::WICPixelFormatBitSize.end()){
+	if (finded != ImageUtils::WICPixelFormatBitSize.end()) {
 		pixelBitSize = finded->second;
 	}
 
 	return pixelBitSize;
 }
 
-uint32_t ImageUtils::GetFrameStride(IWICBitmapSource *frame) const{
+uint32_t ImageUtils::GetFrameStride(IWICBitmapSource *frame) const {
 	uint32_t stride = 0;
 	auto frameSize = this->GetFrameSize(frame);
 	auto pixelBitSize = this->GetPixelBitSize(frame);
@@ -73,7 +107,7 @@ uint32_t ImageUtils::GetFrameStride(IWICBitmapSource *frame) const{
 	return stride;
 }
 
-uint32_t ImageUtils::GetFrameByteSize(IWICBitmapSource *frame) const{
+uint32_t ImageUtils::GetFrameByteSize(IWICBitmapSource *frame) const {
 	uint32_t byteSize = 0;
 	auto frameSize = ImageUtils::GetFrameSize(frame);
 	auto pixelBitSize = this->GetPixelBitSize(frame);
@@ -83,7 +117,7 @@ uint32_t ImageUtils::GetFrameByteSize(IWICBitmapSource *frame) const{
 	return byteSize;
 }
 
-DirectX::XMUINT2 ImageUtils::GetFrameSize(IWICBitmapSource *frame) const{
+DirectX::XMUINT2 ImageUtils::GetFrameSize(IWICBitmapSource *frame) const {
 	HRESULT hr = S_OK;
 	DirectX::XMUINT2 size;
 
@@ -93,7 +127,7 @@ DirectX::XMUINT2 ImageUtils::GetFrameSize(IWICBitmapSource *frame) const{
 	return size;
 }
 
-ExifRotationFlag ImageUtils::GetExifRotation(IWICBitmapFrameDecode *frame) const{
+ExifRotationFlag ImageUtils::GetExifRotation(IWICBitmapFrameDecode *frame) const {
 	HRESULT hr = S_OK;
 	ExifRotationFlag exifRotationFlag;
 	Microsoft::WRL::ComPtr<IWICMetadataQueryReader> mdReader;
@@ -110,40 +144,40 @@ ExifRotationFlag ImageUtils::GetExifRotation(IWICBitmapFrameDecode *frame) const
 	hr = mdReader->GetContainerFormat(&containerFormat);
 	H::System::ThrowIfFailed(hr);
 
-	if (containerFormat == GUID_ContainerFormatJpeg){
+	if (containerFormat == GUID_ContainerFormatJpeg) {
 		// https://msdn.microsoft.com/en-us/library/windows/desktop/ee719904%28v=vs.85%29.aspx
 		hr = mdReader->GetMetadataByName(L"/app1/ifd/{ushort=274}", &pv);
 		H::System::ThrowIfFailed(hr);
 
 		exifRotationFlag = static_cast<ExifRotationFlag>(pv.uiVal);
 	}
-	else{
+	else {
 		exifRotationFlag = ExifRotationFlag::NoTransform;
 	}
 
 	return exifRotationFlag;
 }
 
-WICBitmapTransformOptions ImageUtils::GetInversedRotationFlipOptions(ExifRotationFlag v) const{
+WICBitmapTransformOptions ImageUtils::GetInversedRotationFlipOptions(ExifRotationFlag v) const {
 	return ImageUtils::RotationFlipOptionsFromExifInversed(v);
 }
 
-WICBitmapTransformOptions ImageUtils::GetRotationFlipOptions(ExifRotationFlag v) const{
+WICBitmapTransformOptions ImageUtils::GetRotationFlipOptions(ExifRotationFlag v) const {
 	return ImageUtils::RotationFlipOptionsFromExif(v);
 }
 
-void ImageUtils::Initialize(){
+void ImageUtils::Initialize() {
 	H::System::ThrowIfFailed(
 		CoCreateInstance(
-		CLSID_WICImagingFactory2,
-		nullptr,
-		CLSCTX_INPROC_SERVER,
-		IID_PPV_ARGS(this->wicFactory.ReleaseAndGetAddressOf())
-		)
+			CLSID_WICImagingFactory2,
+			nullptr,
+			CLSCTX_INPROC_SERVER,
+			IID_PPV_ARGS(this->wicFactory.ReleaseAndGetAddressOf())
+			)
 		);
 }
 
-Microsoft::WRL::ComPtr<IWICBitmapDecoder> ImageUtils::CreateDecoder(Windows::Storage::Streams::IRandomAccessStream ^stream) const{
+Microsoft::WRL::ComPtr<IWICBitmapDecoder> ImageUtils::CreateDecoder(Windows::Storage::Streams::IRandomAccessStream ^stream) const {
 	HRESULT hr = S_OK;
 	Microsoft::WRL::ComPtr<IStream> istream;
 	Microsoft::WRL::ComPtr<IWICBitmapDecoder> decoder;
@@ -161,7 +195,7 @@ Microsoft::WRL::ComPtr<IWICBitmapDecoder> ImageUtils::CreateDecoder(Windows::Sto
 	return decoder;
 }
 
-Microsoft::WRL::ComPtr<IWICBitmapFrameDecode> ImageUtils::CreateFrameForDecode(IWICBitmapDecoder *decoder, uint32_t idx) const{
+Microsoft::WRL::ComPtr<IWICBitmapFrameDecode> ImageUtils::CreateFrameForDecode(IWICBitmapDecoder *decoder, uint32_t idx) const {
 	HRESULT hr = S_OK;
 	Microsoft::WRL::ComPtr<IWICBitmapFrameDecode> frame;
 
@@ -171,7 +205,7 @@ Microsoft::WRL::ComPtr<IWICBitmapFrameDecode> ImageUtils::CreateFrameForDecode(I
 	return frame;
 }
 
-void ImageUtils::DecodePixels(IWICBitmapSource *frame, uint32_t pixelsByteSize, void *pixels, const WICRect *rect) const{
+void ImageUtils::DecodePixels(IWICBitmapSource *frame, uint32_t pixelsByteSize, void *pixels, const WICRect *rect) const {
 	HRESULT hr = S_OK;
 	auto frameStride = this->GetFrameStride(frame);
 
@@ -179,7 +213,7 @@ void ImageUtils::DecodePixels(IWICBitmapSource *frame, uint32_t pixelsByteSize, 
 	H::System::ThrowIfFailed(hr);
 }
 
-Microsoft::WRL::ComPtr<IWICBitmap> ImageUtils::LoadToMemory(IWICBitmapSource *frame) const{
+Microsoft::WRL::ComPtr<IWICBitmap> ImageUtils::LoadToMemory(IWICBitmapSource *frame) const {
 	HRESULT hr = S_OK;
 	Microsoft::WRL::ComPtr<IWICBitmap> bitmap;
 
@@ -212,7 +246,7 @@ Microsoft::WRL::ComPtr<IWICBitmapEncoder> ImageUtils::CreateEncoder(
 	return encoder;
 }
 
-Microsoft::WRL::ComPtr<IWICBitmapFrameEncode> ImageUtils::CreateFrameForEncode(IWICBitmapEncoder *encoder){
+Microsoft::WRL::ComPtr<IWICBitmapFrameEncode> ImageUtils::CreateFrameForEncode(IWICBitmapEncoder *encoder) {
 	return this->CreateFrameForEncode(encoder, ImageUtilsEncodeNoOptions());
 }
 
@@ -268,19 +302,19 @@ void ImageUtils::EncodeFrame(
 	WICRect *rect) const
 {
 	HRESULT hr = S_OK;
-	
+
 	hr = encodeFrame->WriteSource(frame, rect);
 	H::System::ThrowIfFailed(hr);
 }
 
-void ImageUtils::EncodeCommit(IWICBitmapFrameEncode *encodeFrame) const{
+void ImageUtils::EncodeCommit(IWICBitmapFrameEncode *encodeFrame) const {
 	HRESULT hr = S_OK;
 
 	hr = encodeFrame->Commit();
 	H::System::ThrowIfFailed(hr);
 }
 
-void ImageUtils::EncodeCommit(IWICBitmapEncoder *encoder) const{
+void ImageUtils::EncodeCommit(IWICBitmapEncoder *encoder) const {
 	HRESULT hr = S_OK;
 
 	hr = encoder->Commit();
@@ -299,8 +333,8 @@ Microsoft::WRL::ComPtr<IWICFormatConverter> ImageUtils::ConvertPixelFormatInMemo
 	H::System::ThrowIfFailed(hr);
 
 	hr = transformedFrame->Initialize(tmpBitmap.Get(), destFmt,
-		WICBitmapDitherType::WICBitmapDitherTypeNone, 
-		nullptr, 0.f, 
+		WICBitmapDitherType::WICBitmapDitherTypeNone,
+		nullptr, 0.f,
 		WICBitmapPaletteType::WICBitmapPaletteTypeCustom);
 	H::System::ThrowIfFailed(hr);
 
@@ -342,7 +376,7 @@ Microsoft::WRL::ComPtr<IWICBitmapScaler> ImageUtils::Scale(
 
 	hr = transformedFrame->Initialize(frame, destSize.x, destSize.y, interpolationMode);
 	H::System::ThrowIfFailed(hr);
-	
+
 	return transformedFrame;
 }
 
@@ -387,7 +421,16 @@ Microsoft::WRL::ComPtr<IWICBitmapClipper> ImageUtils::Clip(
 	return transformedFrame;
 }
 
-WICBitmapTransformOptions ImageUtils::RotationFlipOptionsFromExif(ExifRotationFlag v){
+DXGI_FORMAT ImageUtils::WICToDXGI(const WICPixelFormatGUID &guid) {
+	for (size_t i = 0; i < WICFormats.size(); i++){
+		if (memcmp(&WICFormats[i].wic, &guid, sizeof(WICPixelFormatGUID)) == 0)
+			return WICFormats[i].format;
+	}
+
+	return DXGI_FORMAT_UNKNOWN;
+}
+
+WICBitmapTransformOptions ImageUtils::RotationFlipOptionsFromExif(ExifRotationFlag v) {
 	// http://www.csharphelper.com/howto_show_exif_orientations.png
 	// http://www.impulseadventure.com/photo/exif-orientation.html
 	// WICBitmapTransformOptions rotations is clock-wise
@@ -413,7 +456,7 @@ WICBitmapTransformOptions ImageUtils::RotationFlipOptionsFromExif(ExifRotationFl
 	return Opts[static_cast<uint16_t>(v) - 1];
 }
 
-WICBitmapTransformOptions ImageUtils::RotationFlipOptionsFromExifInversed(ExifRotationFlag v){
+WICBitmapTransformOptions ImageUtils::RotationFlipOptionsFromExifInversed(ExifRotationFlag v) {
 	// http://www.csharphelper.com/howto_show_exif_orientations.png
 	// http://www.impulseadventure.com/photo/exif-orientation.html
 	// WICBitmapTransformOptions rotations is clock-wise

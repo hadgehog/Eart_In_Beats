@@ -42,6 +42,7 @@ public:
 
 	void LoadModel(const std::string &path);
 	void LoadModelTexture(const std::wstring &path);
+	void LoadBackgroundTexture(const std::wstring &path);
 
 	bool GetEarthRotationEnabled();
 	void SetEarthRotationEnabled(bool v);

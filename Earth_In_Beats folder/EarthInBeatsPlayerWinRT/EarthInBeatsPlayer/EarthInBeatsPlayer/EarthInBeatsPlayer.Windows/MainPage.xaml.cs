@@ -65,7 +65,7 @@ namespace EarthInBeatsPlayer
             await Task.Run(async () =>
              {
                  string path = "Assets\\Earth.obj";
-                 string pathTex = "Assets\\earth.png";
+                 string pathTex = "Assets\\earth3.dds";
 
                  await this.earthRenderable.LoadModelTexture(pathTex);
                  await this.earthRenderable.Load3DModel(path);
@@ -304,6 +304,11 @@ namespace EarthInBeatsPlayer
                     this.playList = null;
                 }
             }
+        }
+
+        private void Pause_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
