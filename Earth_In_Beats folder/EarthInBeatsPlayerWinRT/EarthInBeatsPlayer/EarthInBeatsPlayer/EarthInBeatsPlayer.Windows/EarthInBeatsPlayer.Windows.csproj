@@ -137,6 +137,10 @@
     <Content Include="Assets\earth2.png" />
     <Content Include="Assets\earth3.dds" />
     <Content Include="Assets\earthBig.jpg" />
+    <Content Include="Assets\earthmap_2k.dds" />
+    <Content Include="Assets\earthmap_4k.dds" />
+    <Content Include="Assets\earthmap_8k.dds" />
+    <Content Include="Assets\earthmap_8k.jpg" />
     <Content Include="Assets\earth_clouds.jpg" />
     <Content Include="Assets\earth_clouds.png" />
     <Content Include="Assets\SmallLogo.scale-100.png" />

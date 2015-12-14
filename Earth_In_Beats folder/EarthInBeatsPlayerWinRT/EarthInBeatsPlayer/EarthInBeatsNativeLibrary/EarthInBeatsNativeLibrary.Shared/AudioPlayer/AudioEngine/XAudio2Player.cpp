@@ -121,6 +121,11 @@ void XAudio2Player::Play()
 	hr = this->sourceVoice->Start();
 }
 
+void XAudio2Player::Pause() {
+	HRESULT hr = S_OK;
+	
+}
+
 void XAudio2Player::Stop()
 {
 	HRESULT hr = S_OK;

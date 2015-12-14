@@ -33,6 +33,7 @@ public:
 	void SetPosition(const Int64Rational &position);
 	void SetAudioData(AudioReader *reader, Microsoft::WRL::ComPtr<IXAudio2> xAudio2);
 	void Play();
+	void Pause();
 	void Stop();
 	void Initialize(AudioReader *reader, Microsoft::WRL::ComPtr<IXAudio2> xAudio2, std::shared_ptr<AudioEvents> e);
 	void GoToNextSong();

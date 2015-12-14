@@ -206,6 +206,14 @@ void EarthRendererNative::Render() {
 				&stride,
 				&offset
 				);
+
+			d3dCtx->IASetVertexBuffers(
+				2,
+				1,
+				this->textureBuffer.GetAddressOf(),
+				&stride,
+				&offset
+				);
 		}
 
 		d3dCtx->IASetIndexBuffer(
@@ -356,8 +364,20 @@ void EarthRendererNative::LoadModel(const std::string &path) {
 			hr = d3dDev->CreateBuffer(&normalBufferDesc, &normalBufferData, this->normalBuffer.GetAddressOf());
 			HSystem::ThrowIfFailed(hr);
 
-			//Create texture buffer !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			//Create Texture Buffer 
+			D3D11_BUFFER_DESC textureBufferDesc = { 0 };
+			textureBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+			textureBufferDesc.ByteWidth = sizeof(DirectX::XMFLOAT2) * this->modelPoints.TextureCoord.size();
+			textureBufferDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+			textureBufferDesc.CPUAccessFlags = 0;
+			textureBufferDesc.MiscFlags = 0;
 
+			D3D11_SUBRESOURCE_DATA textureBufferData;
+			ZeroMemory(&textureBufferData, sizeof(textureBufferData));
+			textureBufferData.pSysMem = this->modelPoints.TextureCoord.data();
+
+			hr = d3dDev->CreateBuffer(&textureBufferDesc, &textureBufferData, this->textureBuffer.GetAddressOf());
+			HSystem::ThrowIfFailed(hr);
 
 			this->modelLoaded = true;
 		}
