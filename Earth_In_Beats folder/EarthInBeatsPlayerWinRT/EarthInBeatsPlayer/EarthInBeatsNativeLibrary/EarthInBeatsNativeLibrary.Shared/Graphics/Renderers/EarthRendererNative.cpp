@@ -10,7 +10,7 @@
 #include <assimp\postprocess.h>
 
 EarthRendererNative::EarthRendererNative() : initialized(false), modelLoaded(false),
-rotationAngle(0.0f), indexCount(0), earthRotationEnabled(false) {
+rotationAngle(0.0f), indexCount(0), earthRotationEnabled(false), textureSize(0, 0) {
 	DirectX::XMStoreFloat4x4(&this->projection, DirectX::XMMatrixIdentity());
 }
 
@@ -108,6 +108,8 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 void EarthRendererNative::Shutdown() {
 	this->indexBuffer.Get()->Release();
 	this->vertexBuffer.Get()->Release();
+	this->textureBuffer.Get()->Release();
+	this->constantBuffer.Get()->Release();
 }
 
 void EarthRendererNative::CreateDeviceDependentResources() {
@@ -219,6 +221,7 @@ void EarthRendererNative::Render() {
 		d3dCtx->VSSetConstantBuffers(0, 1, this->constantBuffer.GetAddressOf());
 
 		d3dCtx->PSSetShaderResources(0, 1, this->textureView.GetAddressOf());
+		d3dCtx->PSSetSamplers(0, 1, this->sampler.GetAddressOf());
 		d3dCtx->PSSetShader(this->pixelShader.Get(), 0, 0);
 
 		d3dCtx->UpdateSubresource(this->constantBuffer.Get(), 0, nullptr, &this->constantBufferData, 0, 0);
@@ -353,6 +356,9 @@ void EarthRendererNative::LoadModel(const std::string &path) {
 			hr = d3dDev->CreateBuffer(&normalBufferDesc, &normalBufferData, this->normalBuffer.GetAddressOf());
 			HSystem::ThrowIfFailed(hr);
 
+			//Create texture buffer !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 			this->modelLoaded = true;
 		}
 		else {
@@ -387,8 +393,24 @@ void EarthRendererNative::LoadModelTexture(const std::wstring &path) {
 	auto imgFrameSize = imgUtils.GetFrameSize(imgDecoderFrame.Get());
 	auto frameByteSize = imgUtils.GetFrameByteSize(imgDecoderFrame.Get());
 
-	std::vector<uint8_t> frameData(frameByteSize);
-	imgUtils.DecodePixels(imgDecoderFrame.Get(), frameByteSize, frameData.data());
+	Microsoft::WRL::ComPtr<IWICDdsDecoder> ddsDecoder;
+	Microsoft::WRL::ComPtr<IWICDdsFrameDecode> ddsFrame;
+
+	/*hr = imgDecoder.As(&ddsDecoder);
+	H::System::ThrowIfFailed(hr);
+
+	hr = imgDecoderFrame.As(&ddsFrame);
+	H::System::ThrowIfFailed(hr);
+
+	WICDdsParameters ddsParams;
+
+	hr = ddsDecoder->GetParameters(&ddsParams);
+	H::System::ThrowIfFailed(hr);*/
+
+	this->textureSize = DirectX::XMUINT2(imgFrameSize.x, imgFrameSize.y);
+
+	this->frameData.resize(frameByteSize);
+	imgUtils.DecodePixels(imgDecoderFrame.Get(), frameByteSize, this->frameData.data());
 
 	D3D11_TEXTURE2D_DESC texDesc = { 0 };
 	texDesc.Width = imgFrameSize.x;
@@ -407,7 +429,7 @@ void EarthRendererNative::LoadModelTexture(const std::wstring &path) {
 
 	D3D11_SUBRESOURCE_DATA textInitData;
 	ZeroMemory(&textInitData, sizeof(textInitData));
-	textInitData.pSysMem = frameData.data();
+	textInitData.pSysMem = this->frameData.data();
 	textInitData.SysMemPitch = imgFrameSize.x * 4;
 
 	hr = d3dDev->CreateTexture2D(&texDesc, &textInitData, this->texture.GetAddressOf());
@@ -415,7 +437,7 @@ void EarthRendererNative::LoadModelTexture(const std::wstring &path) {
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
 	ZeroMemory(&srvDesc, sizeof(srvDesc));
-	srvDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+	srvDesc.Format = texDesc.Format;
 	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MipLevels = 1;
 
