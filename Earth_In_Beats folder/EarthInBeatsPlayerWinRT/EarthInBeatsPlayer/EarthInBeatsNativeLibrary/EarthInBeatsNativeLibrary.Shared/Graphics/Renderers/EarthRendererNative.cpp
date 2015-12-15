@@ -207,6 +207,7 @@ void EarthRendererNative::Render() {
 				&offset
 				);
 
+			stride = sizeof(DirectX::XMFLOAT2);
 			d3dCtx->IASetVertexBuffers(
 				2,
 				1,
@@ -371,6 +372,8 @@ void EarthRendererNative::LoadModel(const std::string &path) {
 			textureBufferDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 			textureBufferDesc.CPUAccessFlags = 0;
 			textureBufferDesc.MiscFlags = 0;
+
+			std::reverse(std::begin(this->modelPoints.TextureCoord), std::end(this->modelPoints.TextureCoord));
 
 			D3D11_SUBRESOURCE_DATA textureBufferData;
 			ZeroMemory(&textureBufferData, sizeof(textureBufferData));
