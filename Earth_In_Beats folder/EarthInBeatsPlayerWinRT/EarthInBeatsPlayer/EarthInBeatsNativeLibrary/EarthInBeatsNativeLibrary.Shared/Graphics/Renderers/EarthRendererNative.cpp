@@ -137,6 +137,7 @@ void EarthRendererNative::CreateSizeDependentResources() {
 		auto outputSize = dxDev->GetOutputSize();
 		float aspectRatio = outputSize.Width / outputSize.Height;
 		float fovAngleY = 90.0f * DirectX::XM_PI / 180.0f;
+		float scale = (std::min)(outputSize.Width, outputSize.Height) / (std::max)(outputSize.Width, outputSize.Height);
 
 		DirectX::XMMATRIX perspectiveMatrix = DirectX::XMMatrixPerspectiveFovLH(
 			fovAngleY,
@@ -144,13 +145,13 @@ void EarthRendererNative::CreateSizeDependentResources() {
 			0.01f,
 			100.0f
 			);
-
+		DirectX::XMMATRIX orthoMatrix = DirectX::XMMatrixOrthographicLH(outputSize.Width / 50.0f, outputSize.Height / 50.0f, 0.1f, 100.0f);
 		DirectX::XMFLOAT4X4 orientation = dxDev->GetOrientationTransform3D();
 		DirectX::XMMATRIX orientationMatrix = XMLoadFloat4x4(&orientation);
 
 		DirectX::XMStoreFloat4x4(
 			&this->constantBufferData.projection,
-			XMMatrixTranspose(perspectiveMatrix * orientationMatrix)
+			XMMatrixTranspose(orthoMatrix * orientationMatrix)
 			);
 	}
 }
@@ -165,7 +166,7 @@ void EarthRendererNative::OnRenderThreadEnd() {
 
 void EarthRendererNative::Update(const DX::StepTimer &timer) {
 	if (this->earthRotationEnabled) {
-		this->rotationAngle += (float)timer.GetElapsedSeconds() * 45.0f;
+		this->rotationAngle += (float)timer.GetElapsedSeconds() * 30.0f;
 	}
 }
 
@@ -181,7 +182,7 @@ void EarthRendererNative::Render() {
 
 		DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixMultiplyTranspose(
 			DirectX::XMMatrixRotationRollPitchYaw(0.0f, DirectX::XMConvertToRadians(this->rotationAngle), 0.0f),
-			DirectX::XMMatrixTranslation(0, 0, 10));// DirectX::XMLoadFloat4x4(&dxDev->GetOrientationTransform3D());
+			DirectX::XMMatrixTranslation(0, 0, 10));
 
 		proj = DirectX::XMMatrixMultiply(proj, rotationMatrix);
 
@@ -373,7 +374,9 @@ void EarthRendererNative::LoadModel(const std::string &path) {
 			textureBufferDesc.CPUAccessFlags = 0;
 			textureBufferDesc.MiscFlags = 0;
 
-			std::reverse(std::begin(this->modelPoints.TextureCoord), std::end(this->modelPoints.TextureCoord));
+			for (auto &coord : this->modelPoints.TextureCoord) {
+				coord.y *= -1;
+			}
 
 			D3D11_SUBRESOURCE_DATA textureBufferData;
 			ZeroMemory(&textureBufferData, sizeof(textureBufferData));
@@ -468,7 +471,7 @@ void EarthRendererNative::LoadModelTexture(const std::wstring &path) {
 	H::System::ThrowIfFailed(hr);
 }
 
-void EarthRendererNative::LoadBackgroundTexture(const std::wstring &path){
+void EarthRendererNative::LoadBackgroundTexture(const std::wstring &path) {
 
 }
 
