@@ -145,7 +145,8 @@ void EarthRendererNative::CreateSizeDependentResources() {
 			0.01f,
 			100.0f
 			);
-		DirectX::XMMATRIX orthoMatrix = DirectX::XMMatrixOrthographicLH(outputSize.Width / 50.0f, outputSize.Height / 50.0f, 0.1f, 100.0f);
+		/*DirectX::XMMATRIX orthoMatrix = DirectX::XMMatrixOrthographicLH(outputSize.Width / 50.0f, outputSize.Height / 50.0f, 0.1f, 100.0f);*/
+		DirectX::XMMATRIX orthoMatrix = DirectX::XMMatrixOrthographicLH(aspectRatio * 20, 20, 0.1f, 100.0f);
 		DirectX::XMFLOAT4X4 orientation = dxDev->GetOrientationTransform3D();
 		DirectX::XMMATRIX orientationMatrix = XMLoadFloat4x4(&orientation);
 
@@ -180,13 +181,13 @@ void EarthRendererNative::Render() {
 	if (this->modelLoaded) {
 		DirectX::XMMATRIX proj = DirectX::XMLoadFloat4x4(&this->projection);
 
-		DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixMultiplyTranspose(
+		DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixMultiply(
 			DirectX::XMMatrixRotationRollPitchYaw(0.0f, DirectX::XMConvertToRadians(this->rotationAngle), 0.0f),
 			DirectX::XMMatrixTranslation(0, 0, 10));
 
-		proj = DirectX::XMMatrixMultiply(proj, rotationMatrix);
+		//proj = DirectX::XMMatrixMultiply(rotationMatrix, proj);
 
-		DirectX::XMStoreFloat4x4(&this->constantBufferData.model, proj);
+		DirectX::XMStoreFloat4x4(&this->constantBufferData.model, DirectX::XMMatrixTranspose(rotationMatrix));
 
 		{
 			UINT stride = sizeof(DirectX::XMFLOAT3);
