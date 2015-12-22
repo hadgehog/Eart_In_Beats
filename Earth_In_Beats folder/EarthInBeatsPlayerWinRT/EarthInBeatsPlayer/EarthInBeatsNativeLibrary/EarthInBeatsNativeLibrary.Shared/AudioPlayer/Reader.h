@@ -50,8 +50,8 @@ namespace EarthInBeatsNativeLibrary
 		void InitPlayer(IPlayList ^playList);
 		void Play();
 		void Pause();
-		void Next();
-		void Previous();
+		void Next(bool isPlayingNow);
+		void Previous(bool isPlayingNow);
 		void Rewinding(double setPosition);
 		property Windows::Foundation::TimeSpan Duration	{ Windows::Foundation::TimeSpan get(); }
 		void Volume(float setVolume);

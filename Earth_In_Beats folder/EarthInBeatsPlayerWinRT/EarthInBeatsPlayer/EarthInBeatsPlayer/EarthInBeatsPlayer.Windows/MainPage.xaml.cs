@@ -34,6 +34,7 @@ namespace EarthInBeatsPlayer
         CreatingPlaylist playList;
         Windows.UI.Core.CoreDispatcher dispatcher;
         bool updateProgress = true;
+        bool isPlayingNow = false;
 
         EarthInBeatsNativeLibrary.Renderer renderer;
         EarthInBeatsNativeLibrary.EarthRenderableWinRT earthRenderable;
@@ -173,6 +174,7 @@ namespace EarthInBeatsPlayer
                 this.ResetProgress();
                 this.IncreaseProgress();
                 this.earthRenderable.EarthRotationEnabled = true;
+                this.isPlayingNow = true;
             }
         }
 
@@ -184,6 +186,7 @@ namespace EarthInBeatsPlayer
                 this.player.Stop();
                 this.ResetProgress();
                 this.sliderProgress.Value = 0;
+                this.isPlayingNow = false;
             }
         }
 
@@ -191,7 +194,7 @@ namespace EarthInBeatsPlayer
         {
             if (this.player != null)
             {
-                this.player.Next();
+                this.player.Next(this.isPlayingNow);
             }
         }
 
@@ -199,7 +202,7 @@ namespace EarthInBeatsPlayer
         {
             if (this.player != null)
             {
-                this.player.Previous();
+                this.player.Previous(this.isPlayingNow);
             }
         }
 
@@ -312,6 +315,7 @@ namespace EarthInBeatsPlayer
                 this.earthRenderable.EarthRotationEnabled = false;
                 this.player.Pause();
                 this.ResetProgress();
+                this.isPlayingNow = false;
             }
         }
     }

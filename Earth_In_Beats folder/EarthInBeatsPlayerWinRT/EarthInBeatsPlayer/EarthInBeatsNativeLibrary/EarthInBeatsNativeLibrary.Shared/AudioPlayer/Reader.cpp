@@ -36,7 +36,7 @@ void Reader::InitPlayer(IPlayList ^playList)
 
 	this->currentPlayList = playList;
 	this->currentPlayList->SortPlaylist();
-	this->FindGlobalDuration();	
+	this->FindGlobalDuration();
 
 	for (uint16_t i = 0; i < this->currentPlayList->GetPlayListLength(); i++)
 	{
@@ -95,7 +95,7 @@ void Reader::Pause() {
 	}
 }
 
-void Reader::Next(){
+void Reader::Next(bool isPlayingNow) {
 	if (this->currentPlayerNum < (int)playersList.size() - 1)
 	{
 		if (this->playersList[this->currentPlayerNum])
@@ -107,12 +107,15 @@ void Reader::Next(){
 
 			this->playersList[this->currentPlayerNum]->SetPosition(pos);
 			this->currentPlayerNum++;
-			this->playersList[this->currentPlayerNum]->Play();
+
+			if (isPlayingNow) {
+				this->playersList[this->currentPlayerNum]->Play();
+			}
 		}
 	}
 }
 
-void Reader::Previous(){
+void Reader::Previous(bool isPlayingNow) {
 	if (this->currentPlayerNum - 1 >= 0)
 	{
 		if (this->playersList[this->currentPlayerNum - 1])
@@ -124,13 +127,16 @@ void Reader::Previous(){
 
 			this->playersList[this->currentPlayerNum]->SetPosition(pos);
 			this->currentPlayerNum--;
-			this->playersList[this->currentPlayerNum]->Play();
+
+			if (isPlayingNow) {
+				this->playersList[this->currentPlayerNum]->Play();
+			}
 		}
 	}
 }
 
 void Reader::Rewinding(double setPosition)
-{	
+{
 	if (this->playersList[this->currentPlayerNum])
 	{
 		DoubleRational tmpPos(static_cast<double>(setPosition), DoubleRational::Unit::SEC);
