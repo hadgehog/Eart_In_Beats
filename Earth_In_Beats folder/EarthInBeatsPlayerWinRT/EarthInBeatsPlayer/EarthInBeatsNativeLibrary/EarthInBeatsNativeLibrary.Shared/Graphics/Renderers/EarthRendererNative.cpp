@@ -139,14 +139,8 @@ void EarthRendererNative::CreateSizeDependentResources() {
 		float fovAngleY = 90.0f * DirectX::XM_PI / 180.0f;
 		float scale = (std::min)(outputSize.Width, outputSize.Height) / (std::max)(outputSize.Width, outputSize.Height);
 
-		DirectX::XMMATRIX perspectiveMatrix = DirectX::XMMatrixPerspectiveFovLH(
-			fovAngleY,
-			aspectRatio,
-			0.01f,
-			100.0f
-			);
-		/*DirectX::XMMATRIX orthoMatrix = DirectX::XMMatrixOrthographicLH(outputSize.Width / 50.0f, outputSize.Height / 50.0f, 0.1f, 100.0f);*/
-		DirectX::XMMATRIX orthoMatrix = DirectX::XMMatrixOrthographicLH(aspectRatio * 20, 20, 0.1f, 100.0f);
+		DirectX::XMMATRIX perspectiveMatrix = DirectX::XMMatrixPerspectiveFovLH(fovAngleY, aspectRatio, 0.01f, 100.0f);
+		DirectX::XMMATRIX orthoMatrix = DirectX::XMMatrixOrthographicLH(aspectRatio * 15.0f, 15.0f, 0.1f, 100.0f);
 		DirectX::XMFLOAT4X4 orientation = dxDev->GetOrientationTransform3D();
 		DirectX::XMMATRIX orientationMatrix = XMLoadFloat4x4(&orientation);
 

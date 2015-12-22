@@ -24,6 +24,7 @@ void SourceVoiceDeleter::operator()(IXAudio2SourceVoice *obj)
 XAudio2Player::XAudio2Player()
 {
 	this->currentPosition = 0;
+	this->stopped = false;
 }
 
 XAudio2Player::~XAudio2Player()
@@ -112,29 +113,33 @@ void XAudio2Player::SetAudioData(AudioReader *reader, Microsoft::WRL::ComPtr<IXA
 	//hr = this->sourceVoice->Start();
 }
 
-void XAudio2Player::Play()
-{
+void XAudio2Player::Play() {
 	HRESULT hr = S_OK;
 
-	this->stopped = false;
-	this->SubmitBuffer();
-	hr = this->sourceVoice->Start();
+	if (this->sourceVoice) {
+		this->stopped = false;
+		this->SubmitBuffer();
+		hr = this->sourceVoice->Start();
+	}
 }
 
 void XAudio2Player::Pause() {
 	HRESULT hr = S_OK;
 
-	hr = this->sourceVoice->Stop();
-	this->reader->SetPosition(this->currentPosition);
-	this->stopped = true;
+	if (this->sourceVoice) {
+		hr = this->sourceVoice->Stop();
+		//this->reader->SetPosition(this->currentPosition);	 // check is it need
+	}
 }
 
-void XAudio2Player::Stop()
-{
+void XAudio2Player::Stop() {
 	HRESULT hr = S_OK;
 
-	hr = this->sourceVoice->Stop();
-	this->stopped = true;
+	if (this->sourceVoice) {
+		hr = this->sourceVoice->Stop();
+		this->FlushSourceVoice();
+		this->stopped = true;
+	}
 }
 
 void XAudio2Player::Initialize(AudioReader *reader, Microsoft::WRL::ComPtr<IXAudio2> iXAudio2, std::shared_ptr<AudioEvents> e)
