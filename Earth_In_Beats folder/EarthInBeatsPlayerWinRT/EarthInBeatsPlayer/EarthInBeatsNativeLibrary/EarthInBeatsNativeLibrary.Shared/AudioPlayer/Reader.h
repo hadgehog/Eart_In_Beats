@@ -49,6 +49,7 @@ namespace EarthInBeatsNativeLibrary
 		virtual ~Reader();
 		void InitPlayer(IPlayList ^playList);
 		void Play();
+		void Pause();
 		void Next();
 		void Previous();
 		void Rewinding(double setPosition);
@@ -73,6 +74,7 @@ namespace EarthInBeatsNativeLibrary
 		std::mutex lockPlayList;
 		int currentPlayerNum = 0;
 		std::vector<Platform::String ^> tracksInfo;
+		bool isPauseOccurs;
 
 		int64_t FindSongDurationFromPlayList(int numSong);
 	};

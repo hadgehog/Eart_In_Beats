@@ -22,6 +22,7 @@ Reader::Reader()
 	//this->player = std::shared_ptr<XAudio2Player>(new XAudio2Player());
 	this->currentPlayerNum = 0;
 	this->globalDuration = 0;
+	this->isPauseOccurs = false;
 }
 
 Reader::~Reader()
@@ -69,9 +70,28 @@ void Reader::Play()
 {
 	if (this->playersList[this->currentPlayerNum])
 	{
-		this->playersList[this->currentPlayerNum]->Stop();
+		if (!this->isPauseOccurs) {
+			this->playersList[this->currentPlayerNum]->Stop();
+		}
 		//if needed always play from 0 position to do SetPosition(0)
 		this->playersList[this->currentPlayerNum]->Play();
+		this->isPauseOccurs = false;
+	}
+}
+
+void Reader::Pause() {
+	if (this->playersList[this->currentPlayerNum])
+	{
+		this->isPauseOccurs = true;
+		this->playersList[this->currentPlayerNum]->Pause();
+
+		/*auto currPos = this->playersList[this->currentPlayerNum]->GetCurrentPosition();
+
+		DoubleRational tmpPos(static_cast<double>(currPos), DoubleRational::Unit::SEC);
+		Int64Rational pos(static_cast<Int64Rational::Type>(tmpPos.Convert_cr(DoubleRational::Unit::HNS).value), Int64Rational::Unit::HNS);
+
+		this->playersList[this->currentPlayerNum]->SetPosition(pos);
+		this->playersList[this->currentPlayerNum]->Stop();*/
 	}
 }
 

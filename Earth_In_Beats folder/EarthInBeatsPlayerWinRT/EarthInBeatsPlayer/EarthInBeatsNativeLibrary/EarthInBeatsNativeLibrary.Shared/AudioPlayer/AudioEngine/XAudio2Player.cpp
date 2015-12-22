@@ -67,7 +67,7 @@ void XAudio2Player::SetPosition(const Int64Rational &position)
 			this->events->EndOfRewinding();
 	}
 
-		this->SubmitBuffer();	//
+	this->SubmitBuffer();	//
 }
 
 void XAudio2Player::FlushSourceVoice()
@@ -123,13 +123,18 @@ void XAudio2Player::Play()
 
 void XAudio2Player::Pause() {
 	HRESULT hr = S_OK;
-	
+
+	hr = this->sourceVoice->Stop();
+	this->reader->SetPosition(this->currentPosition);
+	this->stopped = true;
 }
 
 void XAudio2Player::Stop()
 {
 	HRESULT hr = S_OK;
+
 	hr = this->sourceVoice->Stop();
+	this->stopped = true;
 }
 
 void XAudio2Player::Initialize(AudioReader *reader, Microsoft::WRL::ComPtr<IXAudio2> iXAudio2, std::shared_ptr<AudioEvents> e)
@@ -147,7 +152,7 @@ void XAudio2Player::SubmitBuffer()
 		return;
 	}
 
-	if (this->notifiedRewinding==false)
+	if (this->notifiedRewinding == false)
 	{
 		std::unique_ptr<AudioSample> sample = std::unique_ptr<AudioSample>(this->reader->ReadAudioSample());
 
@@ -163,7 +168,7 @@ void XAudio2Player::SubmitBuffer()
 				hr = this->sourceVoice->SubmitSourceBuffer(&xbuffer);
 			});
 
-			
+
 			this->currentPosition = sample->GetSampleTime();
 			this->samples.push(std::move(sample));
 		}
@@ -191,7 +196,7 @@ void XAudio2Player::SubmitBuffer()
 		{
 			this->notifiedRewinding = false;
 			this->condVar.notify_all();
-		}	
+		}
 	}
 }
 

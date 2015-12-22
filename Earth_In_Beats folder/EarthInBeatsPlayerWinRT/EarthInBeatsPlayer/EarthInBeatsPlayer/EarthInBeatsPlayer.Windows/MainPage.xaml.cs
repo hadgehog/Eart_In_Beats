@@ -178,13 +178,12 @@ namespace EarthInBeatsPlayer
 
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
-            this.sliderProgress.Value = 0;
-
             if (this.player != null)
             {
                 this.earthRenderable.EarthRotationEnabled = false;
                 this.player.Stop();
                 this.ResetProgress();
+                this.sliderProgress.Value = 0;
             }
         }
 
@@ -308,7 +307,12 @@ namespace EarthInBeatsPlayer
 
         private void Pause_Click(object sender, RoutedEventArgs e)
         {
-
+            if (this.player != null)
+            {
+                this.earthRenderable.EarthRotationEnabled = false;
+                this.player.Pause();
+                this.ResetProgress();
+            }
         }
     }
 }

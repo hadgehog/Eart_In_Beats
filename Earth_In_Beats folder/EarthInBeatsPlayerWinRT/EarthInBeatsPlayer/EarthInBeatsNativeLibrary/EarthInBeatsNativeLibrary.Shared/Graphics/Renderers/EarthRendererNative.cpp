@@ -166,7 +166,7 @@ void EarthRendererNative::OnRenderThreadEnd() {
 
 void EarthRendererNative::Update(const DX::StepTimer &timer) {
 	if (this->earthRotationEnabled) {
-		this->rotationAngle += (float)timer.GetElapsedSeconds() * 30.0f;
+		this->rotationAngle += (float)timer.GetElapsedSeconds() * 35.0f;
 	}
 }
 
@@ -375,6 +375,7 @@ void EarthRendererNative::LoadModel(const std::string &path) {
 			textureBufferDesc.MiscFlags = 0;
 
 			for (auto &coord : this->modelPoints.TextureCoord) {
+				coord.x *= -1;
 				coord.y *= -1;
 			}
 
