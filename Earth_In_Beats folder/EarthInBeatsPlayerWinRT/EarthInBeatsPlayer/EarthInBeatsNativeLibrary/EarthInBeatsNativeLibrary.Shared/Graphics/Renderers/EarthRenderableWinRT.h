@@ -14,6 +14,7 @@ namespace EarthInBeatsNativeLibrary
 
 		Windows::Foundation::IAsyncAction ^Load3DModel(Platform::String ^path);
 		Windows::Foundation::IAsyncAction ^LoadModelTexture(Platform::String ^path);
+		Windows::Foundation::IAsyncAction ^LoadBackgroundTexture(Platform::String ^path);
 		
 		property bool EarthRotationEnabled {
 			bool get();

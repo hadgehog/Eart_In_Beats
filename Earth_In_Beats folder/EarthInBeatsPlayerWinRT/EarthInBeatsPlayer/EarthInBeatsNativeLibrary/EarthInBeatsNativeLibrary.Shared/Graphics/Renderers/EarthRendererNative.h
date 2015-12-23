@@ -68,7 +68,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> vertexBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> normalBuffer;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> textureBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> modelTextureBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> backgroundTextureBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> constantBuffer;
 
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> vertexShader;
@@ -82,13 +83,11 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState> rsState;
 
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> texture;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> textureView;
-	DirectX::XMUINT2 textureSize;
-	std::vector<uint8_t> frameData;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> modelTexture;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> modelTextureView;
 
-	std::vector<Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>> meshSRV;
-	std::vector<std::wstring> textureNameArray;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> backgroundTexture;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> backgroundTextureView;
 
 	VertexTextureNormal modelPoints;
 

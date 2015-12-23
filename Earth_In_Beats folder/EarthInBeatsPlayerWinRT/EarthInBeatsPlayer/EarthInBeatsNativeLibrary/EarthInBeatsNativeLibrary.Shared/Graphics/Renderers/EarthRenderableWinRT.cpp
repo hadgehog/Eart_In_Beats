@@ -47,6 +47,12 @@ namespace EarthInBeatsNativeLibrary
 		});
 	}
 
+	Windows::Foundation::IAsyncAction ^EarthRenderableWinRT::LoadBackgroundTexture(Platform::String ^path) {
+		return concurrency::create_async([=]() {
+			this->nativeRenderer->LoadBackgroundTexture(path->Data());
+		});
+	}
+
 	bool EarthRenderableWinRT::EarthRotationEnabled::get() {
 		return this->nativeRenderer->GetEarthRotationEnabled();
 	}
