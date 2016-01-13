@@ -17,7 +17,8 @@ namespace MediaData
     {
         private List<Track> trackList;
         private string infoAboutTracks = "";
-        StorageFolder folder;
+        List<IRandomAccessStream> streamsToSongs;
+        List<StorageFile> files;
 
         public CreatingPlaylist()
         {
@@ -28,39 +29,56 @@ namespace MediaData
             this.trackList = trackList;
         }
 
-        //global positions sets outside
-        public void CreatePlayList(List<string> songs)
+        //send a vector with song names
+        public void CreatePlayList(List<string> songs, List<IRandomAccessStream> streams, List<StorageFile> files)
         {
-            this.folder = FolderHelper.LatestFolder;
-
-            trackList = new List<Track>();
+            this.trackList = new List<Track>();
+            this.streamsToSongs = streams;
+            this.files = files;
 
             for (int i = 0; i < songs.Count; i++)
             {
-                AddTrackInPlayList(i + 1, songs[i]);
+                this.AddTrackInPlayList(i + 1, songs[i]);
+            }
+        }
+
+        public void AddTrack(List<string> songs, List<IRandomAccessStream> streams, List<StorageFile> files)
+        {
+            if (this.trackList != null)
+            {
+                foreach (var stream in streams)
+                {
+                    this.streamsToSongs.Add(stream);
+                }
+
+                foreach (var file in files)
+                {
+                    this.files.Add(file);
+                }
+
+                for (int i = 0; i < songs.Count; i++)
+                {
+                    this.AddTrackInPlayList(this.trackList.Count + i + 1, songs[i]);
+                }
             }
         }
 
         public virtual IRandomAccessStream GetStream(int trackNumber)
         {
-            var t = this.folder.GetFileAsync(trackList[trackNumber].GetName()).AsTask();
-            t.Wait();
-            StorageFile file = t.Result;
+            IRandomAccessStream stream = null;
 
-            var t2 = file.OpenAsync(FileAccessMode.Read).AsTask();
-            t2.Wait();
+            if (this.streamsToSongs.Count != 0)
+            {
+                stream = this.streamsToSongs[trackNumber];
+            }
 
-            return t2.Result;
+            return stream;
         }
 
         //return info about track
-        public virtual string GetInfoAboutTrack(int trackNumber)
+        public virtual string GetInfoAboutTrack(int songIndex)
         {
-            var t = this.folder.GetFileAsync(trackList[trackNumber].GetName()).AsTask();
-            t.Wait();
-            StorageFile file = t.Result;
-
-            StorageItemContentProperties contentProperties = file.Properties;
+            StorageItemContentProperties contentProperties = files[songIndex].Properties;
 
             var musicProperties = contentProperties.GetMusicPropertiesAsync().AsTask();
             musicProperties.Wait();
@@ -86,10 +104,10 @@ namespace MediaData
         private void AddTrackInPlayList(int trackNumber, string trackName)
         {
             var track = new Track(trackNumber, trackName);
-            trackList.Add(track);
+            this.trackList.Add(track);
         }
 
-        public ITrack GetTrack(int index)
+        public virtual ITrack GetTrack(int index)
         {
             return this.trackList[index];
         }

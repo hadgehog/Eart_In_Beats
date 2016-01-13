@@ -5,26 +5,33 @@
     xmlns:local="using:EarthInBeatsPlayer"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    mc:Ignorable="d">
 
-    <Grid>
-        <StackPanel Orientation="Horizontal">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <SwapChainPanel x:Name="swapChainPanel" ManipulationDelta="swapChainPanel_ManipulationDelta"/>
+        <RichTextBlock x:Name="DebugTextBlock"  TextWrapping="Wrap" TextAlignment="Left" Foreground="White" HorizontalAlignment="Left" Width="250" Margin="0,50,0,100" />
 
-            <Button Content="Create Playlist" Click="Create_Playlist_Button_Click" Width="150" Margin="30, 0, 0, 550"/>
-            <Button Content="Chose folder" Click="Folder_Button_Click" Width="150" Margin="20, 0, 0, 550"/>
-            <Button Content="p" Click="Previous_Button_Click" Margin="-340,0,0,400"/>
-            <Button Content="Play" Click="OpenButtonClick" Width="140" Margin="-220,0, 0, 400"/>
-            <Button Content="n" Click="Next_Button_Click" Margin="-70, 0, 0, 400"/>
-            <Button Content="Stop" Click="Button_Click" Margin="-245, 0, 0, 300"/>
-
-            <Slider Width="210" x:Name="sliderVolume" HorizontalAlignment="Center" Margin="-375,460,0,130" ValueChanged="Slider1_ValueChanged"/>
-            <Slider Width="380" x:Name="sliderProgress" PointerPressed="sliderProgress_PointerPressed" PointerReleased="sliderProgress_PointerReleased" Margin="-380, 520, 0, 70"/>
-
-            <Button Content="Exit" Click="Button_Click_1" Margin="-110,580,0,0"/>
-
-            <RichTextBlock x:Name="DebugTextBlock"  TextWrapping="Wrap" Foreground="White" Margin="-250,218,-30,205" Width="228" />
-
+        <StackPanel Height="100" VerticalAlignment="Top">
+            <Slider x:Name="sliderVolume" ValueChanged="Slider1_ValueChanged" VerticalAlignment="Center" Margin="19,0,19,0" />
+        </StackPanel>
+        <StackPanel Height="100" VerticalAlignment="Bottom">
+            <Slider x:Name="sliderProgress" PointerPressed="sliderProgress_PointerPressed" PointerReleased="sliderProgress_PointerReleased" VerticalAlignment="Center" Margin="19,0,19,0"/>
         </StackPanel>
     </Grid>
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton x:Name="Previous" Label="Previous" Icon="Previous" Click="Previous_Click"/>
+            <AppBarButton x:Name="Play" Label="Play" Icon="Play" Click="Play_Click"/>
+            <AppBarButton x:Name="Pause" Label="Pause" Icon="Pause" Click="Pause_Click" />
+            <AppBarButton x:Name="Stop" Label="Stop" Icon="Stop" Click="Stop_Click"/>
+            <AppBarButton x:Name="Next" Label="Next" Icon="Next" Click="Next_Click"/>
+
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="Playlist" Label="Create playlist" Icon="MusicInfo" Click="Playlist_Click"/>
+                <AppBarButton x:Name="ClearPlaylist" Label="Clear playlist" Icon="Clear" Click="ClearPlaylist_Click"/>
+                <AppBarButton x:Name="Exit" Label="Exit" Icon="Cancel" Click="Exit_Click"/>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

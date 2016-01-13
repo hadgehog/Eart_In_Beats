@@ -5,7 +5,6 @@ cbuffer Cbuffer0 : register(b0) {
 	matrix ColorMtrx;
 };
 
-// TODO add texture coord
 struct PsInput {
 	float4 pos : SV_POSITION;
 	float3 normal : NORMAL0;

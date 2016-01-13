@@ -4,14 +4,12 @@ cbuffer MVPConstantBuffer : register(b0){
 	matrix projection;
 };
 
-// TODO add texture coord
 struct VsInput{
 	float3 pos : POSITION;
 	float3 normal : NORMAL0;
 	float2 tex : TEXCOORD0;
 };
 
-// TODO add texture coord
 struct PsInput{
 	float4 pos : SV_POSITION;
 	float3 normal : NORMAL0;

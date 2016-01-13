@@ -150,6 +150,7 @@
     <Content Include="Assets\SmallLogo.scale-100.png" />
     <Content Include="Assets\space_background.dds" />
     <Content Include="Assets\space_background.jpg" />
+    <Content Include="Assets\space_background_mipmap.dds" />
     <Content Include="Assets\SplashScreen.png" />
     <Content Include="Assets\StoreLogo.scale-100.png" />
   </ItemGroup>

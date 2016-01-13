@@ -22,24 +22,29 @@ using Windows.Storage.Pickers;
 using Windows.Storage.AccessCache;
 using Windows.UI;
 using Windows.UI.Xaml.Documents;
+using Windows.Storage;
+using Windows.Storage.Streams;
+using Windows.ApplicationModel.Activation;
 
 namespace EarthInBeatsPlayer
-{ 
+{
     public sealed partial class MainPage : Page
     {
         Reader player;
         CreatingPlaylist playList;
         Windows.UI.Core.CoreDispatcher dispatcher;
         bool updateProgress = true;
-        List<string> songs;
-        bool needInitFoulder = true;
+        bool isPlayingNow = false;
+
+        EarthInBeatsNativeLibrary.Renderer renderer;
+        EarthInBeatsNativeLibrary.EarthRenderableWinRT earthRenderable;
 
         public MainPage()
         {
             this.InitializeComponent();
             this.NavigationCacheMode = NavigationCacheMode.Required;
-            sliderVolume.Value = 100;
-            sliderProgress.Value = 0;
+            this.sliderVolume.Value = 100;
+            this.sliderProgress.Value = 0;
 
             this.sliderProgress.PointerPressed += sliderProgress_PointerPressed;
             this.sliderProgress.PointerReleased += sliderProgress_PointerReleased;
@@ -50,113 +55,22 @@ namespace EarthInBeatsPlayer
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            await FolderHelper.InitStorages();
+            this.earthRenderable = new EarthInBeatsNativeLibrary.EarthRenderableWinRT();
+            this.renderer = new EarthInBeatsNativeLibrary.Renderer();
 
-            this.needInitFoulder = FolderHelper.LatestFolder == null;
+            this.renderer.Initialize(Window.Current.CoreWindow, this.swapChainPanel, this.earthRenderable);
+            this.renderer.BackgroundColor = Windows.UI.Colors.Black;
 
-            if (this.needInitFoulder)
-            {
-                WriteDebugMessage("Audio folder not found! Please select torrents folder.", Colors.Red);
-            }
-            else
-            {
-                WriteDebugMessage("Audio folder is: " + FolderHelper.LatestFolder.Path, Colors.Green);
-            }
-        }
+            WriteDebugMessage("To select songs press Win + Z", Colors.Yellow);
 
-        private async void Create_Playlist_Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (!this.needInitFoulder)
-            {
-                FileOpenPicker filePicker = new FileOpenPicker();
+            //await Task.Run(async () =>
+            //{
+            //    string path = "Assets\\Earth3.obj";
+            //    string pathTex = "Assets\\Earth_tex2.dds";
 
-                filePicker.ViewMode = PickerViewMode.List;
-                filePicker.SuggestedStartLocation = PickerLocationId.ComputerFolder;
-                filePicker.FileTypeFilter.Add(".mp3");
-                filePicker.FileTypeFilter.Add(".wav");
-                filePicker.FileTypeFilter.Add(".wma");
-                filePicker.FileTypeFilter.Add(".aac");
-                filePicker.FileTypeFilter.Add(".flac");
-                filePicker.FileTypeFilter.Add(".mp4");
-
-                var pickedFiles = await filePicker.PickMultipleFilesAsync();
-
-                if (pickedFiles != null)
-                {
-                    if (this.songs == null)
-                    {
-                        this.songs = new List<string>();
-                    }
-
-                    for (int i = 0; i < pickedFiles.Count; i++)
-                    {
-                        var file = pickedFiles[i];
-                        var path = file.Path;
-                        var name = file.Name;
-
-                        this.songs.Add(name);
-                    }
-
-                    if (this.player != null)
-                    {
-                        this.player.Stop();
-                        this.player.Dispose();
-                        GC.Collect();
-                    }
-
-                    //create playlist
-                    this.playList = new CreatingPlaylist();
-                    this.playList.CreatePlayList(this.songs);
-
-                    //init players list
-                    this.player = new Reader();
-                    this.player.InitPlayer(playList);
-
-                }
-            }
-            else
-            {
-                WriteDebugMessage("Audio folder not found! Please select torrents folder.", Colors.Red);
-            }
-        }
-
-        private void OpenButtonClick(object sender, RoutedEventArgs e)
-        {
-            //play
-            if (this.player != null)
-            {
-                sliderProgress.Value = 0;
-                this.player.Play();
-                this.ResetProgress();
-                this.IncreaseProgress();
-            }
-        }
-
-        private void Previous_Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.player != null)
-            {
-                this.player.Previous();
-            }
-        }
-
-        private void Next_Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.player != null)
-            {
-                this.player.Next();
-            }
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            sliderProgress.Value = 0;
-
-            if (this.player != null)
-            {
-                this.player.Stop();
-                this.ResetProgress();
-            }
+            //    await this.earthRenderable.LoadModelTexture(pathTex);
+            //    await this.earthRenderable.Load3DModel(path);
+            //});
         }
 
         private void Slider1_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
@@ -167,34 +81,23 @@ namespace EarthInBeatsPlayer
             }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            if (this.player != null)
-            {
-                this.player.Dispose();
-            }
-
-            GC.Collect();
-
-            Application.Current.Exit();
-        }
-
         private async void IncreaseProgress()
         {
-            dispatcher = CoreApplication.MainView.Dispatcher;
+            this.dispatcher = CoreApplication.MainView.Dispatcher;
 
-            while (this.player.CurrPos() <= this.player.Duration.Ticks)
+            while (this.player != null && this.playList != null && this.player.CurrPos() <= this.player.Duration.Ticks)
             {
-                await dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await this.dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     if (this.updateProgress && this.player != null)
                     {
                         var cur = this.player.CurrPos();
-                        sliderProgress.Value = (cur * 100.0) / (double)this.player.Duration.Ticks;
+                        this.sliderProgress.Value = (cur * 100.0) / (double)this.player.Duration.Ticks;
                     }
 
                 });
-                await Task.Delay(TimeSpan.FromSeconds(1));
+
+                await Task.Delay(TimeSpan.FromSeconds(1.0));
             }
         }
 
@@ -222,7 +125,7 @@ namespace EarthInBeatsPlayer
                 PointerPoint pt = e.GetCurrentPoint(this.sliderProgress);
                 var pos = pt.Position.X;
 
-                var rewind = (pos / this.sliderProgress.Width) * this.player.Duration.Ticks;
+                var rewind = (pos / this.sliderProgress.ActualWidth) * this.player.Duration.Ticks;
 
                 if (this.player != null)
                 {
@@ -233,35 +136,12 @@ namespace EarthInBeatsPlayer
             }
         }
 
-        private async void Folder_Button_Click(object sender, RoutedEventArgs e)
-        {
-            var fPiker = new FolderPicker();
-            fPiker.FileTypeFilter.Add("*");
-            var folder = await fPiker.PickSingleFolderAsync();
-
-            if (folder != null)
-            {
-                FolderHelper.AddStorage(folder);
-
-                this.needInitFoulder = FolderHelper.LatestFolder == null;
-
-                if (this.needInitFoulder)
-                {
-                    WriteDebugMessage("Audio folder not found! Please select torrents folder.", Colors.Red);
-                }
-                else
-                {
-                    WriteDebugMessage("Audio folder is: " + FolderHelper.LatestFolder.Path, Colors.Green);
-                }
-            }
-        }
-
         private void WriteDebugMessage(string msg)
         {
-            WriteDebugMessage(msg, Colors.White);
+            this.WriteDebugMessage(msg, Colors.White);
         }
 
-        private void WriteDebugMessage(string msg, Color color)
+        private void WriteDebugMessage(string msg, Color color, bool clear = false)
         {
             Run run = new Run();
             Paragraph p = new Paragraph();
@@ -272,7 +152,168 @@ namespace EarthInBeatsPlayer
 
             p.Inlines.Add(run);
 
+            if (clear)
+            {
+                this.DebugTextBlock.Blocks.Clear();
+            }
+
             this.DebugTextBlock.Blocks.Add(p);
+        }
+
+        private void swapChainPanel_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        {
+
+        }
+
+        private void Play_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.player != null)
+            {
+                this.sliderProgress.Value = 0;
+                this.player.Play();
+                this.ResetProgress();
+                this.IncreaseProgress();
+                this.earthRenderable.EarthRotationEnabled = true;
+                this.isPlayingNow = true;
+            }
+        }
+
+        private void Stop_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.player != null)
+            {
+                this.earthRenderable.EarthRotationEnabled = false;
+                this.player.Stop();
+                this.ResetProgress();
+                this.sliderProgress.Value = 0;
+                this.isPlayingNow = false;
+            }
+        }
+
+        private void Next_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.player != null)
+            {
+                this.player.Next(this.isPlayingNow);
+            }
+        }
+
+        private void Previous_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.player != null)
+            {
+                this.player.Previous(this.isPlayingNow);
+            }
+        }
+
+        private async void Playlist_Click(object sender, RoutedEventArgs e)
+        {
+            FileOpenPicker filePicker = new FileOpenPicker();
+
+            filePicker.ViewMode = PickerViewMode.List;
+            filePicker.SuggestedStartLocation = PickerLocationId.MusicLibrary;
+
+            filePicker.FileTypeFilter.Add(".mp3");
+            filePicker.FileTypeFilter.Add(".wav");
+            filePicker.FileTypeFilter.Add(".wma");
+            filePicker.FileTypeFilter.Add(".aac");
+            filePicker.FileTypeFilter.Add(".flac");
+            filePicker.FileTypeFilter.Add(".mp4");
+
+            //TODO correct convertion to List !!!!
+            var pickedFilesTmp = await filePicker.PickMultipleFilesAsync();
+            List<StorageFile> pickedFiles = new List<StorageFile>(pickedFilesTmp);
+
+            if (pickedFiles != null && pickedFiles.Count != 0)
+            {
+
+                List<string> songs = new List<string>();
+                List<IRandomAccessStream> streams = new List<IRandomAccessStream>();
+
+                this.WriteDebugMessage("Chosen files:", Colors.Yellow);
+
+                for (int i = 0; i < pickedFiles.Count; i++)
+                {
+                    var file = pickedFiles[i];
+                    var path = file.Path;
+                    var name = file.Name;
+
+                    songs.Add(name);
+
+                    var stream = await file.OpenStreamForReadAsync();
+                    IRandomAccessStream resultStream = stream.AsRandomAccessStream();
+                    streams.Add(resultStream);
+
+                    this.WriteDebugMessage(name, Colors.LightGreen);
+                }
+
+                if (this.player == null)
+                {
+                    //create playlist
+                    this.playList = new CreatingPlaylist();
+                    this.playList.CreatePlayList(songs, streams, pickedFiles);
+
+                    //init players list
+                    this.player = new Reader();
+                    this.player.InitPlayer(this.playList);
+                }
+                else
+                {
+                    this.player.Stop();
+                    this.playList.AddTrack(songs, streams, pickedFiles);
+                    this.player.InitPlayer(this.playList);
+                }
+
+                this.WriteDebugMessage("Playlist successfully created.", Colors.Yellow);
+            }
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.player != null)
+            {
+                this.player.Dispose();
+            }
+
+            GC.Collect();
+
+            Application.Current.Exit();
+        }
+
+        private void ClearPlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.player != null)
+            {
+                if (this.playList != null)
+                {
+                    this.WriteDebugMessage("Playlist successfully cleaned.", Colors.Yellow, true);
+
+                    this.player.Stop();
+                    this.player.ClearPlayList();
+
+                    this.ResetProgress();
+
+                    this.sliderProgress.Value = 0.0;
+                    this.earthRenderable.EarthRotationEnabled = false;
+
+                    this.player.Dispose();
+                    GC.Collect();
+
+                    this.player = null;
+                    this.playList = null;
+                }
+            }
+        }
+
+        private void Pause_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.player != null)
+            {
+                this.earthRenderable.EarthRotationEnabled = false;
+                this.player.Pause();
+                this.ResetProgress();
+                this.isPlayingNow = false;
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 #include "..\Helpers\H.h"
 #include "DxRenderingContext.h"
 #include "..\Helpers\ImageUtils.h"
+#include "Vertex.h"
 
 #include <fstream>
 
@@ -10,7 +11,7 @@
 #include <assimp\postprocess.h>
 
 EarthRendererNative::EarthRendererNative() : initialized(false), modelLoaded(false),
-rotationAngle(0.0f), indexCount(0), earthRotationEnabled(false) 
+rotationAngle(0.0f), indexCount(0), earthRotationEnabled(false)
 {
 	DirectX::XMStoreFloat4x4(&this->projection, DirectX::XMMatrixIdentity());
 }
@@ -32,14 +33,18 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 		auto size = dxDev->GetLogicalSize();
 
 		// load Shaders from shader files
-		auto pixelShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\PixelShader.cso");
 		auto vertexShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\VertexShader.cso");
+		auto pixelShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\PixelShader.cso");
+		auto bgPixelShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\BackgroundEffectPs.cso");
+
+		hr = d3dDev->CreateVertexShader(vertexShaderData.data(), vertexShaderData.size(), NULL, this->vertexShader.GetAddressOf());
+		HSystem::ThrowIfFailed(hr);
 
 		hr = d3dDev->CreatePixelShader(pixelShaderData.data(), pixelShaderData.size(), NULL, this->pixelShader.GetAddressOf());
 		HSystem::ThrowIfFailed(hr);
 
-		hr = d3dDev->CreateVertexShader(vertexShaderData.data(), vertexShaderData.size(), NULL, this->vertexShader.GetAddressOf());
-		HSystem::ThrowIfFailed(hr);
+		//hr = d3dDev->CreatePixelShader(bgPixelShaderData.data(), bgPixelShaderData.size(), NULL, this->bgPixelShader.GetAddressOf());
+		//HSystem::ThrowIfFailed(hr);
 
 		// Describe the Sample State
 		D3D11_SAMPLER_DESC sampDesc;
@@ -100,8 +105,43 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 		hr = d3dDev->CreateRasterizerState(&rsDesc, this->rsState.GetAddressOf());
 		H::System::ThrowIfFailed(hr);
 
-		///////////////////// create buffer for background texture /////////////
+		// create buffer for background texture
+		Vertex backgroundTextureVertices[] = {
+			Vertex(-1.0f, -1.0f, -1.0f, 0.0f, 1.0f),
+			Vertex(-1.0f, 1.0f, -1.0f, 0.0f, 0.0f),
+			Vertex(1.0f, 1.0f, -1.0f, 1.0f, 0.0f),
+			Vertex(1.0f, -1.0f, -1.0f, 1.0f, 1.0f)
+		};
 
+		DWORD backgroundTextureIndices[] = {
+			0,  1,  2,
+			0,  2,  3
+		};
+
+		D3D11_BUFFER_DESC textureBufferDesc = { 0 };
+		textureBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+		textureBufferDesc.ByteWidth = sizeof(DWORD) * 12 * 3;
+		textureBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+		textureBufferDesc.CPUAccessFlags = 0;
+		textureBufferDesc.MiscFlags = 0;
+
+		D3D11_SUBRESOURCE_DATA textureBufferData;
+		ZeroMemory(&textureBufferData, sizeof(textureBufferData));
+		textureBufferData.pSysMem = backgroundTextureIndices;
+
+		hr = d3dDev->CreateBuffer(&textureBufferDesc, &textureBufferData, this->backgroundTextureBuffer.GetAddressOf());
+		HSystem::ThrowIfFailed(hr);
+
+		d3dCtx->IASetIndexBuffer(this->backgroundTextureBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+
+		D3D11_BUFFER_DESC vertexBufferDesc;
+		ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
+
+		vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+		vertexBufferDesc.ByteWidth = sizeof(Vertex) * 24;
+		vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		vertexBufferDesc.CPUAccessFlags = 0;
+		vertexBufferDesc.MiscFlags = 0;
 
 		std::unique_lock<std::mutex> lkInit(this->initializedMtx);
 		this->initialized = true;
@@ -236,6 +276,10 @@ void EarthRendererNative::Render() {
 		d3dCtx->UpdateSubresource(this->constantBuffer.Get(), 0, nullptr, &this->constantBufferData, 0, 0);
 
 		d3dCtx->DrawIndexed(this->indexCount, 0, 0);
+
+		// draw background
+		d3dCtx->PSSetShaderResources(0, 1, this->backgroundTextureView.GetAddressOf());		
+		d3dCtx->DrawIndexed(36, 0, 0);
 	}
 }
 
@@ -419,10 +463,10 @@ void EarthRendererNative::LoadModelTexture(const std::wstring &path) {
 	auto imgFrameSize = imgUtils.GetFrameSize(imgDecoderFrame.Get());
 	auto frameByteSize = imgUtils.GetFrameByteSize(imgDecoderFrame.Get());
 
-	Microsoft::WRL::ComPtr<IWICDdsDecoder> ddsDecoder;
+	/*Microsoft::WRL::ComPtr<IWICDdsDecoder> ddsDecoder;
 	Microsoft::WRL::ComPtr<IWICDdsFrameDecode> ddsFrame;
 
-	/*hr = imgDecoder.As(&ddsDecoder);
+	hr = imgDecoder.As(&ddsDecoder);
 	H::System::ThrowIfFailed(hr);
 
 	hr = imgDecoderFrame.As(&ddsFrame);
@@ -493,10 +537,10 @@ void EarthRendererNative::LoadBackgroundTexture(const std::wstring &path) {
 	auto imgFrameSize = imgUtils.GetFrameSize(imgDecoderFrame.Get());
 	auto frameByteSize = imgUtils.GetFrameByteSize(imgDecoderFrame.Get());
 
-	Microsoft::WRL::ComPtr<IWICDdsDecoder> ddsDecoder;
+	/*Microsoft::WRL::ComPtr<IWICDdsDecoder> ddsDecoder;
 	Microsoft::WRL::ComPtr<IWICDdsFrameDecode> ddsFrame;
 
-	/*hr = imgDecoder.As(&ddsDecoder);
+	hr = imgDecoder.As(&ddsDecoder);
 	H::System::ThrowIfFailed(hr);
 
 	hr = imgDecoderFrame.As(&ddsFrame);

@@ -106,9 +106,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Helpers\PixelConverter\PixelConverterCopy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Helpers\PixelConverter\PixelConverterFactory.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Helpers\PixelConverter\PixelConverterStd8Bit.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\Shaders\VertexShader.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\Shaders\PixelShader.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\Shaders\BackgroundEffectPs.hlsl" />
   </ItemGroup>
 </Project>

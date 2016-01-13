@@ -67,7 +67,9 @@ namespace EarthInBeatsPlayer
              {
                  string path = "Assets\\Earth3.obj";
                  string pathTex = "Assets\\Earth_tex2.dds";
+                 string bgTexPath = "Assets\\space_background.dds";
 
+                 await this.earthRenderable.LoadBackgroundTexture(bgTexPath);
                  await this.earthRenderable.LoadModelTexture(pathTex);
                  await this.earthRenderable.Load3DModel(path);
              });
