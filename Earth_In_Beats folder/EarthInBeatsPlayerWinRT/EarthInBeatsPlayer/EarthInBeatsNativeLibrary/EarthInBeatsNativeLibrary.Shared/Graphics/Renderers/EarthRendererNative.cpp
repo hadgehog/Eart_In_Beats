@@ -41,9 +41,6 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 		auto squareVertexShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\SquareVertexShader.cso");
 		auto squarePixelShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\SquarePixelShader.cso");
 
-		// not use now
-		//auto bgPixelShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\BackgroundEffectPs.cso");
-
 		// for 3d model
 		hr = d3dDev->CreateVertexShader(vertexShaderData.data(), vertexShaderData.size(), NULL, this->vertexShader.GetAddressOf());
 		HSystem::ThrowIfFailed(hr);
@@ -57,10 +54,6 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 
 		hr = d3dDev->CreatePixelShader(squarePixelShaderData.data(), squarePixelShaderData.size(), NULL, this->squarePixelShader.GetAddressOf());
 		HSystem::ThrowIfFailed(hr);
-
-		// not use now
-		//hr = d3dDev->CreatePixelShader(bgPixelShaderData.data(), bgPixelShaderData.size(), NULL, this->bgPixelShader.GetAddressOf());
-		//HSystem::ThrowIfFailed(hr);
 
 		// Describe the Sample State
 		D3D11_SAMPLER_DESC sampDesc;
@@ -225,7 +218,7 @@ void EarthRendererNative::Shutdown() {
 	this->squareIndexBuffer.Get()->Release();
 	this->squareVertBuffer.Get()->Release();
 	this->squareTextureBuffer.Get()->Release();
-	//this->bgConstantBuffer.Get()->Release();
+	this->bgConstantBuffer.Get()->Release();
 }
 
 void EarthRendererNative::CreateDeviceDependentResources() {
