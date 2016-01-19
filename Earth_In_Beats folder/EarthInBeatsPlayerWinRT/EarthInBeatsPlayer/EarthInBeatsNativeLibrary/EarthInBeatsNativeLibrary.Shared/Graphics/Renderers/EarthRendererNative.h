@@ -69,19 +69,26 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> indexBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> normalBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> modelTextureBuffer;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> backgroundTextureBuffer;
+
+	Microsoft::WRL::ComPtr<ID3D11Buffer> squareVertBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> squareIndexBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> backgroundTextureBuffer;	// not use now
+
 	Microsoft::WRL::ComPtr<ID3D11Buffer> constantBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> bgConstantBuffer;
 
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> vertexShader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixelShader;
+
+	Microsoft::WRL::ComPtr<ID3D11VertexShader> squareVertexShader;
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> squarePixelShader;
+
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> bgPixelShader;
 
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> matrixBuffer;
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayoutBackground;
 
-	Microsoft::WRL::ComPtr<ID3D11BlendState> blendState;
 	Microsoft::WRL::ComPtr<ID3D11SamplerState> sampler;
-
 	Microsoft::WRL::ComPtr<ID3D11RasterizerState> rsState;
 
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> modelTexture;
@@ -93,6 +100,7 @@ private:
 	VertexTextureNormal modelPoints;
 
 	EarthInBeatsNativeLibrary::MVPConstantBuffer constantBufferData;
+	ConstantBufferData bgConstantBufferData;
 
 	void WaitForInitialization();
 };

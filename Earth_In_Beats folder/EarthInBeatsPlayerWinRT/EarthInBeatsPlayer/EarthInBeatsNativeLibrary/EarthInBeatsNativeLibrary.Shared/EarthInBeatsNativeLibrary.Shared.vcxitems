@@ -135,6 +135,12 @@
       <FileType>Document</FileType>
       <ShaderModel>4.0_level_9_1</ShaderModel>
     </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\Shaders\SquarePixelShader.hlsl">
+      <ShaderType>Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\Shaders\SquareVertexShader.hlsl">
+      <ShaderType>Vertex</ShaderType>
+    </FxCompile>
     <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\Shaders\VertexShader.hlsl">
       <ShaderType>Vertex</ShaderType>
       <FileType>Document</FileType>

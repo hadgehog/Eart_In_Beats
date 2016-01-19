@@ -112,5 +112,7 @@
     <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\Shaders\VertexShader.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\Shaders\PixelShader.hlsl" />
     <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\Shaders\BackgroundEffectPs.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\Shaders\SquarePixelShader.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\Shaders\SquareVertexShader.hlsl" />
   </ItemGroup>
 </Project>

@@ -33,16 +33,32 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 		auto size = dxDev->GetLogicalSize();
 
 		// load Shaders from shader files
+		// for 3d model
 		auto vertexShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\VertexShader.cso");
 		auto pixelShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\PixelShader.cso");
-		auto bgPixelShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\BackgroundEffectPs.cso");
 
+		// for 2d background
+		auto squareVertexShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\SquareVertexShader.cso");
+		auto squarePixelShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\SquarePixelShader.cso");
+
+		// not use now
+		//auto bgPixelShaderData = HSystem::LoadPackageFile(L"EarthInBeatsNativeLibrary\\BackgroundEffectPs.cso");
+
+		// for 3d model
 		hr = d3dDev->CreateVertexShader(vertexShaderData.data(), vertexShaderData.size(), NULL, this->vertexShader.GetAddressOf());
 		HSystem::ThrowIfFailed(hr);
 
 		hr = d3dDev->CreatePixelShader(pixelShaderData.data(), pixelShaderData.size(), NULL, this->pixelShader.GetAddressOf());
 		HSystem::ThrowIfFailed(hr);
 
+		// for 2d background
+		hr = d3dDev->CreateVertexShader(squareVertexShaderData.data(), squareVertexShaderData.size(), NULL, this->squareVertexShader.GetAddressOf());
+		HSystem::ThrowIfFailed(hr);
+
+		hr = d3dDev->CreatePixelShader(squarePixelShaderData.data(), squarePixelShaderData.size(), NULL, this->squarePixelShader.GetAddressOf());
+		HSystem::ThrowIfFailed(hr);
+
+		// not use now
 		//hr = d3dDev->CreatePixelShader(bgPixelShaderData.data(), bgPixelShaderData.size(), NULL, this->bgPixelShader.GetAddressOf());
 		//HSystem::ThrowIfFailed(hr);
 
@@ -69,12 +85,25 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 2, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 		};
 
-		auto numElements = sizeof(layout) / sizeof(layout[0]);
+		D3D11_INPUT_ELEMENT_DESC layoutBg[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 2, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		};
 
+		auto numElements = sizeof(layout) / sizeof(layout[0]);
+		auto numElements2 = sizeof(layoutBg) / sizeof(layoutBg[0]);
+
+		// 3d model
 		hr = d3dDev->CreateInputLayout(layout, numElements, vertexShaderData.data(), vertexShaderData.size(), this->inputLayout.GetAddressOf());
 		HSystem::ThrowIfFailed(hr);
 
+		// 2d background
+		hr = d3dDev->CreateInputLayout(layoutBg, numElements2, squareVertexShaderData.data(), squareVertexShaderData.size(), this->inputLayoutBackground.GetAddressOf());
+		HSystem::ThrowIfFailed(hr);
+
 		d3dCtx->IASetInputLayout(this->inputLayout.Get());
+		d3dCtx->IASetInputLayout(this->inputLayoutBackground.Get());
 
 		d3dCtx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -90,7 +119,6 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 		HSystem::ThrowIfFailed(hr);
 
 		D3D11_RASTERIZER_DESC rsDesc;
-
 		rsDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
 		rsDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_FRONT;
 		rsDesc.FrontCounterClockwise = FALSE;
@@ -105,7 +133,7 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 		hr = d3dDev->CreateRasterizerState(&rsDesc, this->rsState.GetAddressOf());
 		H::System::ThrowIfFailed(hr);
 
-		// create buffer for background texture
+		// create index buffer, vertex buffer and texture buffer for render background texture
 		Vertex backgroundTextureVertices[] = {
 			Vertex(-1.0f, -1.0f, -1.0f, 0.0f, 1.0f),
 			Vertex(-1.0f, 1.0f, -1.0f, 0.0f, 0.0f),
@@ -118,30 +146,46 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 			0,  2,  3
 		};
 
-		D3D11_BUFFER_DESC textureBufferDesc = { 0 };
-		textureBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-		textureBufferDesc.ByteWidth = sizeof(DWORD) * 12 * 3;
-		textureBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-		textureBufferDesc.CPUAccessFlags = 0;
-		textureBufferDesc.MiscFlags = 0;
+		D3D11_BUFFER_DESC indexBufferDesc = { 0 };
+		indexBufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
+		indexBufferDesc.ByteWidth = sizeof(DWORD) * 6;
+		indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+		indexBufferDesc.CPUAccessFlags = 0;
+		indexBufferDesc.MiscFlags = 0;
+		indexBufferDesc.StructureByteStride = 0;
 
-		D3D11_SUBRESOURCE_DATA textureBufferData;
-		ZeroMemory(&textureBufferData, sizeof(textureBufferData));
-		textureBufferData.pSysMem = backgroundTextureIndices;
+		D3D11_SUBRESOURCE_DATA idxInitData;
+		ZeroMemory(&idxInitData, sizeof(idxInitData));
+		idxInitData.pSysMem = backgroundTextureIndices;
 
-		hr = d3dDev->CreateBuffer(&textureBufferDesc, &textureBufferData, this->backgroundTextureBuffer.GetAddressOf());
+		hr = d3dDev->CreateBuffer(&indexBufferDesc, &idxInitData, this->squareIndexBuffer.GetAddressOf());
 		HSystem::ThrowIfFailed(hr);
 
-		d3dCtx->IASetIndexBuffer(this->backgroundTextureBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-
-		D3D11_BUFFER_DESC vertexBufferDesc;
-		ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
-
-		vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-		vertexBufferDesc.ByteWidth = sizeof(Vertex) * 24;
+		D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
+		vertexBufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
+		vertexBufferDesc.ByteWidth = sizeof(Vertex) * 4;
 		vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		vertexBufferDesc.CPUAccessFlags = 0;
 		vertexBufferDesc.MiscFlags = 0;
+
+		D3D11_SUBRESOURCE_DATA vertexBufferData;
+		ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
+		vertexBufferData.pSysMem = backgroundTextureVertices;
+
+		hr = d3dDev->CreateBuffer(&vertexBufferDesc, &vertexBufferData, this->squareVertBuffer.GetAddressOf());
+		HSystem::ThrowIfFailed(hr);
+
+		/*D3D11_BUFFER_DESC cbbd;
+		ZeroMemory(&cbbd, sizeof(D3D11_BUFFER_DESC));
+
+		cbbd.Usage = D3D11_USAGE_DEFAULT;
+		cbbd.ByteWidth = sizeof(ConstantBufferData);
+		cbbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		cbbd.CPUAccessFlags = 0;
+		cbbd.MiscFlags = 0;
+
+		hr = d3dDev->CreateBuffer(&cbbd, NULL, this->bgConstantBuffer.GetAddressOf());
+		HSystem::ThrowIfFailed(hr);*/
 
 		std::unique_lock<std::mutex> lkInit(this->initializedMtx);
 		this->initialized = true;
@@ -154,6 +198,11 @@ void EarthRendererNative::Shutdown() {
 	this->vertexBuffer.Get()->Release();
 	this->modelTextureBuffer.Get()->Release();
 	this->constantBuffer.Get()->Release();
+
+	this->squareIndexBuffer.Get()->Release();
+	this->squareVertBuffer.Get()->Release();
+	this->backgroundTextureBuffer.Get()->Release();
+	this->bgConstantBuffer.Get()->Release();
 }
 
 void EarthRendererNative::CreateDeviceDependentResources() {
@@ -278,8 +327,28 @@ void EarthRendererNative::Render() {
 		d3dCtx->DrawIndexed(this->indexCount, 0, 0);
 
 		// draw background
-		d3dCtx->PSSetShaderResources(0, 1, this->backgroundTextureView.GetAddressOf());		
-		d3dCtx->DrawIndexed(36, 0, 0);
+		{
+			UINT stride2 = sizeof(Vertex);
+			UINT offset2 = 0;
+
+			d3dCtx->IASetIndexBuffer(this->squareIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+			d3dCtx->IASetVertexBuffers(0, 1, this->squareVertBuffer.GetAddressOf(), &stride2, &offset2);
+
+			d3dCtx->IASetInputLayout(this->inputLayoutBackground.Get());
+			d3dCtx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+			d3dCtx->VSSetShader(this->squareVertexShader.Get(), 0, 0);
+			d3dCtx->PSSetShader(this->squarePixelShader.Get(), 0, 0);
+
+			d3dCtx->VSSetConstantBuffers(0, 1, this->constantBuffer.GetAddressOf());
+
+			d3dCtx->PSSetShaderResources(0, 1, this->backgroundTextureView.GetAddressOf());
+			d3dCtx->PSSetSamplers(0, 1, this->sampler.GetAddressOf());
+
+			d3dCtx->UpdateSubresource(this->constantBuffer.Get(), 0, nullptr, &this->constantBufferData, 0, 0);
+
+			d3dCtx->DrawIndexed(6, 0, 0);
+		}
 	}
 }
 
