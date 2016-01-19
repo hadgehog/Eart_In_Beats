@@ -1,4 +1,3 @@
-4. add background texture!!!
 1. fix sliders size changing
 2. stop/begin rotating when rewinding and volume changing
 3. manipulate (gesture recognizer)

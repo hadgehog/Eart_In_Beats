@@ -2,8 +2,9 @@
 
 #include <DirectXMath.h>
 
-struct ConstantBufferData{
-	DirectX::XMFLOAT4X4 World;
-	DirectX::XMFLOAT4X4 View;
-	DirectX::XMFLOAT4X4 Projection;
+// Constant buffer used to send MVP matrices to the vertex shader
+struct ConstantBufferData {
+	DirectX::XMFLOAT4X4 model;
+	DirectX::XMFLOAT4X4 view;
+	DirectX::XMFLOAT4X4 projection;
 };

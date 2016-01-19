@@ -100,7 +100,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\VertexTextureNormal.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\GestureHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\ConstantBufferData.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\ShaderStructures.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\PsConstBufferData.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Helpers\PixelConverter\PixelConverter.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Helpers\PixelConverter\PixelConverterCopy.h" />

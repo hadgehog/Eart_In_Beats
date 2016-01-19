@@ -122,7 +122,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Renderers\VertexTextureNormal.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\ConstantBufferData.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\PsConstBufferData.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics\Shaders\ShaderStructures.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)Graphics\Shaders\BackgroundEffectPs.hlsl">

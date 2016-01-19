@@ -12,10 +12,6 @@ struct PsInput {
 
 float4 main(PsInput input) : SV_TARGET{
 	float4 color = tex.Sample(texSampler, input.tex);
-	color.x = 1.0f;
-	color.y = 0.0f;
-	color.z = 0.0f;
-	color.w = 1.0f;
 
 	return color;
 }

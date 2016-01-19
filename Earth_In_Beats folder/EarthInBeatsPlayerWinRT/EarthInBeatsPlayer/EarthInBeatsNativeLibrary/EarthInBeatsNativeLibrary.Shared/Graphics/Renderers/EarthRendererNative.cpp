@@ -88,7 +88,7 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 		D3D11_INPUT_ELEMENT_DESC layoutBg[] =
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 2, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 
 		auto numElements = sizeof(layout) / sizeof(layout[0]);
@@ -134,11 +134,18 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 		H::System::ThrowIfFailed(hr);
 
 		// create index buffer, vertex buffer and texture buffer for render background texture
-		Vertex backgroundTextureVertices[] = {
-			Vertex(-1.0f, -1.0f, -1.0f, 0.0f, 1.0f),
-			Vertex(-1.0f, 1.0f, -1.0f, 0.0f, 0.0f),
-			Vertex(1.0f, 1.0f, -1.0f, 1.0f, 0.0f),
-			Vertex(1.0f, -1.0f, -1.0f, 1.0f, 1.0f)
+		DirectX::XMFLOAT3 backgroundTexturePositions[] = {
+			DirectX::XMFLOAT3(-1.0f * 2, -1.0f, -1.0f),
+			DirectX::XMFLOAT3(-1.0f * 2, 1.0f, -1.0f),
+			DirectX::XMFLOAT3(1.0f * 2, 1.0f, -1.0f),
+			DirectX::XMFLOAT3(1.0f * 2, -1.0f, -1.0f)
+		};
+
+		DirectX::XMFLOAT2 backgroundTextureTexCoords[] = {
+			DirectX::XMFLOAT2(0.0f, 1.0f),
+			DirectX::XMFLOAT2(0.0f, 0.0f),
+			DirectX::XMFLOAT2(1.0f, 0.0f),
+			DirectX::XMFLOAT2(1.0f, 1.0f)
 		};
 
 		DWORD backgroundTextureIndices[] = {
@@ -146,6 +153,7 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 			0,  2,  3
 		};
 
+		// create Index buffer for background
 		D3D11_BUFFER_DESC indexBufferDesc = { 0 };
 		indexBufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
 		indexBufferDesc.ByteWidth = sizeof(DWORD) * 6;
@@ -161,31 +169,46 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 		hr = d3dDev->CreateBuffer(&indexBufferDesc, &idxInitData, this->squareIndexBuffer.GetAddressOf());
 		HSystem::ThrowIfFailed(hr);
 
+		// create Vertex buffer for background
 		D3D11_BUFFER_DESC vertexBufferDesc = { 0 };
 		vertexBufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
-		vertexBufferDesc.ByteWidth = sizeof(Vertex) * 4;
+		vertexBufferDesc.ByteWidth = sizeof(DirectX::XMFLOAT3) * 4;
 		vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		vertexBufferDesc.CPUAccessFlags = 0;
 		vertexBufferDesc.MiscFlags = 0;
 
 		D3D11_SUBRESOURCE_DATA vertexBufferData;
 		ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
-		vertexBufferData.pSysMem = backgroundTextureVertices;
+		vertexBufferData.pSysMem = backgroundTexturePositions;
 
 		hr = d3dDev->CreateBuffer(&vertexBufferDesc, &vertexBufferData, this->squareVertBuffer.GetAddressOf());
 		HSystem::ThrowIfFailed(hr);
 
-		/*D3D11_BUFFER_DESC cbbd;
-		ZeroMemory(&cbbd, sizeof(D3D11_BUFFER_DESC));
+		//Create Texture buffer for background
+		D3D11_BUFFER_DESC textureBufferDesc = { 0 };
+		textureBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+		textureBufferDesc.ByteWidth = sizeof(DirectX::XMFLOAT2) * 4;
+		textureBufferDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+		textureBufferDesc.CPUAccessFlags = 0;
+		textureBufferDesc.MiscFlags = 0;
 
-		cbbd.Usage = D3D11_USAGE_DEFAULT;
-		cbbd.ByteWidth = sizeof(ConstantBufferData);
-		cbbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		cbbd.CPUAccessFlags = 0;
-		cbbd.MiscFlags = 0;
+		D3D11_SUBRESOURCE_DATA textureBufferData;
+		ZeroMemory(&textureBufferData, sizeof(textureBufferData));
+		textureBufferData.pSysMem = backgroundTextureTexCoords;
 
-		hr = d3dDev->CreateBuffer(&cbbd, NULL, this->bgConstantBuffer.GetAddressOf());
-		HSystem::ThrowIfFailed(hr);*/
+		hr = d3dDev->CreateBuffer(&textureBufferDesc, &textureBufferData, this->squareTextureBuffer.GetAddressOf());
+		HSystem::ThrowIfFailed(hr);
+
+		// create Constant buffer for background
+		D3D11_BUFFER_DESC bgConstBuff = { 0 };
+		bgConstBuff.Usage = D3D11_USAGE_DEFAULT;
+		bgConstBuff.ByteWidth = sizeof(ConstantBufferData);
+		bgConstBuff.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		bgConstBuff.CPUAccessFlags = 0;
+		bgConstBuff.MiscFlags = 0;
+
+		hr = d3dDev->CreateBuffer(&bgConstBuff, nullptr, this->bgConstantBuffer.GetAddressOf());
+		HSystem::ThrowIfFailed(hr);
 
 		std::unique_lock<std::mutex> lkInit(this->initializedMtx);
 		this->initialized = true;
@@ -201,8 +224,8 @@ void EarthRendererNative::Shutdown() {
 
 	this->squareIndexBuffer.Get()->Release();
 	this->squareVertBuffer.Get()->Release();
-	this->backgroundTextureBuffer.Get()->Release();
-	this->bgConstantBuffer.Get()->Release();
+	this->squareTextureBuffer.Get()->Release();
+	//this->bgConstantBuffer.Get()->Release();
 }
 
 void EarthRendererNative::CreateDeviceDependentResources() {
@@ -232,7 +255,6 @@ void EarthRendererNative::CreateSizeDependentResources() {
 		float fovAngleY = 90.0f * DirectX::XM_PI / 180.0f;
 		float scale = (std::min)(outputSize.Width, outputSize.Height) / (std::max)(outputSize.Width, outputSize.Height);
 
-		DirectX::XMMATRIX perspectiveMatrix = DirectX::XMMatrixPerspectiveFovLH(fovAngleY, aspectRatio, 0.01f, 100.0f);
 		DirectX::XMMATRIX orthoMatrix = DirectX::XMMatrixOrthographicLH(aspectRatio * 15.0f, 15.0f, 0.1f, 100.0f);
 		DirectX::XMFLOAT4X4 orientation = dxDev->GetOrientationTransform3D();
 		DirectX::XMMATRIX orientationMatrix = XMLoadFloat4x4(&orientation);
@@ -240,6 +262,27 @@ void EarthRendererNative::CreateSizeDependentResources() {
 		DirectX::XMStoreFloat4x4(
 			&this->constantBufferData.projection,
 			XMMatrixTranspose(orthoMatrix * orientationMatrix)
+			);
+	}
+
+	// for background
+	DirectX::XMStoreFloat4x4(&this->bgConstantBufferData.model, DirectX::XMMatrixTranspose(DirectX::XMMatrixTranslation(0, 0, 2)));
+	DirectX::XMStoreFloat4x4(&this->bgConstantBufferData.view, DirectX::XMMatrixTranspose(view));
+	DirectX::XMStoreFloat4x4(&this->bgConstantBufferData.projection, DirectX::XMMatrixIdentity());
+
+	{
+		auto outputSize = dxDev->GetOutputSize();
+		float aspectRatio = outputSize.Width / outputSize.Height;
+		float fovAngleY = 90.0f * DirectX::XM_PI / 180.0f;
+		float scale = (std::min)(outputSize.Width, outputSize.Height) / (std::max)(outputSize.Width, outputSize.Height);
+
+		DirectX::XMMATRIX perspectiveMatrix = DirectX::XMMatrixPerspectiveFovLH(fovAngleY, aspectRatio, 0.01f, 100.0f);
+		DirectX::XMFLOAT4X4 orientation = dxDev->GetOrientationTransform3D();
+		DirectX::XMMATRIX orientationMatrix = XMLoadFloat4x4(&orientation);
+
+		DirectX::XMStoreFloat4x4(
+			&this->bgConstantBufferData.projection,
+			XMMatrixTranspose(perspectiveMatrix * orientationMatrix)
 			);
 	}
 }
@@ -266,13 +309,9 @@ void EarthRendererNative::Render() {
 	concurrency::critical_section::scoped_lock lk(this->dataCs);
 
 	if (this->modelLoaded) {
-		DirectX::XMMATRIX proj = DirectX::XMLoadFloat4x4(&this->projection);
-
 		DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixMultiply(
 			DirectX::XMMatrixRotationRollPitchYaw(0.0f, DirectX::XMConvertToRadians(this->rotationAngle), 0.0f),
 			DirectX::XMMatrixTranslation(0, 0, 10));
-
-		//proj = DirectX::XMMatrixMultiply(rotationMatrix, proj);
 
 		DirectX::XMStoreFloat4x4(&this->constantBufferData.model, DirectX::XMMatrixTranspose(rotationMatrix));
 
@@ -328,24 +367,28 @@ void EarthRendererNative::Render() {
 
 		// draw background
 		{
-			UINT stride2 = sizeof(Vertex);
-			UINT offset2 = 0;
+			{
+				UINT stride2 = sizeof(DirectX::XMFLOAT3);
+				UINT offset2 = 0;
 
-			d3dCtx->IASetIndexBuffer(this->squareIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-			d3dCtx->IASetVertexBuffers(0, 1, this->squareVertBuffer.GetAddressOf(), &stride2, &offset2);
+				d3dCtx->IASetIndexBuffer(this->squareIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+				d3dCtx->IASetVertexBuffers(0, 1, this->squareVertBuffer.GetAddressOf(), &stride2, &offset2);
+
+				stride2 = sizeof(DirectX::XMFLOAT2);
+				d3dCtx->IASetVertexBuffers(1, 1, this->squareTextureBuffer.GetAddressOf(), &stride2, &offset2);
+			}
 
 			d3dCtx->IASetInputLayout(this->inputLayoutBackground.Get());
-			d3dCtx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 			d3dCtx->VSSetShader(this->squareVertexShader.Get(), 0, 0);
 			d3dCtx->PSSetShader(this->squarePixelShader.Get(), 0, 0);
 
-			d3dCtx->VSSetConstantBuffers(0, 1, this->constantBuffer.GetAddressOf());
+			d3dCtx->VSSetConstantBuffers(0, 1, this->bgConstantBuffer.GetAddressOf());
 
 			d3dCtx->PSSetShaderResources(0, 1, this->backgroundTextureView.GetAddressOf());
 			d3dCtx->PSSetSamplers(0, 1, this->sampler.GetAddressOf());
 
-			d3dCtx->UpdateSubresource(this->constantBuffer.Get(), 0, nullptr, &this->constantBufferData, 0, 0);
+			d3dCtx->UpdateSubresource(this->bgConstantBuffer.Get(), 0, nullptr, &this->bgConstantBufferData, 0, 0);
 
 			d3dCtx->DrawIndexed(6, 0, 0);
 		}

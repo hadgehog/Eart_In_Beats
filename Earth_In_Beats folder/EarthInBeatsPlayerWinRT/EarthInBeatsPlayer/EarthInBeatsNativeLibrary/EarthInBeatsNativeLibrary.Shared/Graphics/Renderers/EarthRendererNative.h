@@ -5,8 +5,6 @@
 #include "VertexTextureNormal.h"
 #include "Graphics\Helpers\Thread\PPL\safe_task.h"
 #include "..\Shaders\ConstantBufferData.h"
-#include "..\Shaders\ShaderStructures.h"
-#include "..\Shaders\PsConstBufferData.h"
 
 #include <memory>
 #include <string>
@@ -72,7 +70,7 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer> squareVertBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> squareIndexBuffer;
-	Microsoft::WRL::ComPtr<ID3D11Buffer> backgroundTextureBuffer;	// not use now
+	Microsoft::WRL::ComPtr<ID3D11Buffer> squareTextureBuffer;
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer> constantBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> bgConstantBuffer;
@@ -99,7 +97,7 @@ private:
 
 	VertexTextureNormal modelPoints;
 
-	EarthInBeatsNativeLibrary::MVPConstantBuffer constantBufferData;
+	ConstantBufferData constantBufferData;
 	ConstantBufferData bgConstantBufferData;
 
 	void WaitForInitialization();
