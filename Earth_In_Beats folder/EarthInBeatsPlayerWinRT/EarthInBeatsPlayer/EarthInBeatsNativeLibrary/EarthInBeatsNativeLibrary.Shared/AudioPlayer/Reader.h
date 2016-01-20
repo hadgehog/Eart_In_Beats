@@ -5,6 +5,8 @@
 #include "AudioEngine\XAudio2Player.h"
 #include "AudioHelpers\InitMasterVoice.h"
 
+#include "..\Graphics\Renderers\EarthRenderableWinRT.h"
+
 #include <list>
 
 namespace EarthInBeatsNativeLibrary
@@ -47,7 +49,7 @@ namespace EarthInBeatsNativeLibrary
 	public:
 		Reader();
 		virtual ~Reader();
-		void InitPlayer(IPlayList ^playList);
+		void InitPlayer(IPlayList ^playList, EarthInBeatsNativeLibrary::EarthRenderableWinRT ^renderer);
 		void Play();
 		void Pause();
 		void Next(bool isPlayingNow);
@@ -65,7 +67,6 @@ namespace EarthInBeatsNativeLibrary
 		void EndOfPlayingTrack(int c);
 
 	private:
-		//std::shared_ptr<XAudio2Player> player;
 		Microsoft::WRL::ComPtr<IXAudio2> xAudio2;
 		IPlayList ^currentPlayList;
 		std::shared_ptr<AudioEvents> events;
@@ -75,6 +76,7 @@ namespace EarthInBeatsNativeLibrary
 		int currentPlayerNum = 0;
 		std::vector<Platform::String ^> tracksInfo;
 		bool isPauseOccurs;
+		EarthInBeatsNativeLibrary::EarthRenderableWinRT ^rendererPointer;
 
 		int64_t FindSongDurationFromPlayList(int numSong);
 	};

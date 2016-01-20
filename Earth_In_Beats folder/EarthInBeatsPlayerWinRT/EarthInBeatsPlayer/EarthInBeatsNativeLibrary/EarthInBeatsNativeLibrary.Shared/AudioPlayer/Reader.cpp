@@ -30,11 +30,12 @@ Reader::~Reader()
 
 }
 
-void Reader::InitPlayer(IPlayList ^playList)
+void Reader::InitPlayer(IPlayList ^playList, EarthInBeatsNativeLibrary::EarthRenderableWinRT ^renderer)
 {
 	this->playersList.clear();
 
 	this->currentPlayList = playList;
+	this->rendererPointer = renderer;
 	this->currentPlayList->SortPlaylist();
 	this->FindGlobalDuration();
 
@@ -229,6 +230,14 @@ void Reader::EndOfPlayingTrack(int c)	//start new player incrementing currentPla
 		{
 			this->playersList[this->currentPlayerNum]->Stop();
 			this->playersList[this->currentPlayerNum]->Play();
+		}
+	}
+	else 
+	{
+		this->currentPlayerNum--;
+
+		if (this->rendererPointer) {
+			this->rendererPointer->EarthRotationEnabled = false;
 		}
 	}
 }

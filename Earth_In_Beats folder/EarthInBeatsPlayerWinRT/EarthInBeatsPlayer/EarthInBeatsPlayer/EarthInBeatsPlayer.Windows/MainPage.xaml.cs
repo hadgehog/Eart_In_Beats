@@ -256,13 +256,13 @@ namespace EarthInBeatsPlayer
 
                     //init players list
                     this.player = new Reader();
-                    this.player.InitPlayer(this.playList);
+                    this.player.InitPlayer(this.playList, this.earthRenderable);
                 }
                 else
                 {
                     this.player.Stop();
                     this.playList.AddTrack(songs, streams, pickedFiles);
-                    this.player.InitPlayer(this.playList);
+                    this.player.InitPlayer(this.playList, this.earthRenderable);
                 }
 
                 this.WriteDebugMessage("Playlist successfully created.", Colors.Yellow);
@@ -319,6 +319,18 @@ namespace EarthInBeatsPlayer
                 this.ResetProgress();
                 this.isPlayingNow = false;
             }
+        }
+
+        private async void swapChainPanel_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var value = this.sliderVolume.Value;
+
+            this.sliderVolume.Value = 0;
+
+            await this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                this.sliderVolume.Value = value;
+            });
         }
     }
 }

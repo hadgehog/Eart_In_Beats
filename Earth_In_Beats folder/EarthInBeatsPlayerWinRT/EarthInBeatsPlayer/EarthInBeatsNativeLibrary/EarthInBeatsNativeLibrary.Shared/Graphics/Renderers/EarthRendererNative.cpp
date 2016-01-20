@@ -11,7 +11,7 @@
 #include <assimp\postprocess.h>
 
 EarthRendererNative::EarthRendererNative() : initialized(false), modelLoaded(false),
-rotationAngle(0.0f), indexCount(0), earthRotationEnabled(false)
+rotationAngle(250.0f), indexCount(0), earthRotationEnabled(false)
 {
 	DirectX::XMStoreFloat4x4(&this->projection, DirectX::XMMatrixIdentity());
 }
