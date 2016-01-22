@@ -26,4 +26,5 @@ public:
 	virtual void PointerPressed(Windows::UI::Input::PointerPoint ^ppt) = 0;
 	virtual void PointerMoved(Windows::UI::Input::PointerPoint ^ppt) = 0;
 	virtual void PointerReleased(Windows::UI::Input::PointerPoint ^ppt) = 0;
+	virtual void PointerWheelChanged(Windows::UI::Input::PointerPoint ^ppt) = 0;
 };

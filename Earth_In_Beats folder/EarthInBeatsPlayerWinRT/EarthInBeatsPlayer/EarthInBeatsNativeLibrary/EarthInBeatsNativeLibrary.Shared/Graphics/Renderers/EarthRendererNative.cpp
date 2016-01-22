@@ -203,6 +203,16 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 		hr = d3dDev->CreateBuffer(&bgConstBuff, nullptr, this->bgConstantBuffer.GetAddressOf());
 		HSystem::ThrowIfFailed(hr);
 
+		// initialize gesture recognizer
+		this->gestureHelper = ref new GestureHelper();
+
+		this->gestureHelper->MoveUpdated = [=](const DirectX::XMFLOAT2 &moveVec, const DirectX::XMFLOAT2 &newPos) { this->ProcessMove(moveVec, newPos); };
+		this->gestureHelper->ZoomUpdated = [=](float scale, float x, float y) { this->ProcessZoom(scale, x, y); };
+		this->gestureHelper->RotateUpdated = [=](float angle, float x, float y) {this->ProcessRotating(angle, x, y); };
+		this->gestureHelper->ManipulationStarted = [=](float x, float y) { this->ManipulationStarted(x, y); };
+		this->gestureHelper->ManipulationCompleted = [=](const DirectX::XMFLOAT2 &pos) { this->ManipulationCompleted(pos); };
+		this->gestureHelper->Tapped = [=](int tapCount, float x, float y) {this->ProcessTap(tapCount, x, y); };
+
 		std::unique_lock<std::mutex> lkInit(this->initializedMtx);
 		this->initialized = true;
 		this->inititalizedCv.notify_all();
@@ -389,15 +399,19 @@ void EarthRendererNative::Render() {
 }
 
 void EarthRendererNative::PointerPressed(Windows::UI::Input::PointerPoint ^ppt) {
-	int s = 34;
+	this->gestureHelper->ProcessPress(ppt);
 }
 
 void EarthRendererNative::PointerMoved(Windows::UI::Input::PointerPoint ^ppt) {
-
+	this->gestureHelper->ProcessMove(ppt);
 }
 
 void EarthRendererNative::PointerReleased(Windows::UI::Input::PointerPoint ^ppt) {
+	this->gestureHelper->ProcessRelease(ppt);
+}
 
+void EarthRendererNative::PointerWheelChanged(Windows::UI::Input::PointerPoint ^ppt){
+	// implement zoom
 }
 
 void EarthRendererNative::LoadModel(const std::string &path) {
@@ -733,4 +747,28 @@ void EarthRendererNative::WaitForInitialization() {
 	while (!this->initialized) {
 		this->inititalizedCv.wait(lk);
 	}
+}
+
+void EarthRendererNative::ProcessMove(const DirectX::XMFLOAT2 & moveVec, const DirectX::XMFLOAT2 & newPos){
+	int s = 34;
+}
+
+void EarthRendererNative::ProcessZoom(float scale, float x, float y){
+	int s = 3;
+}
+
+void EarthRendererNative::ProcessRotating(float angle, float x, float y){
+	int s = 3;
+}
+
+void EarthRendererNative::ManipulationStarted(float x, float y){
+	int s = 3;
+}
+
+void EarthRendererNative::ManipulationCompleted(const DirectX::XMFLOAT2 & pos){
+	int s = 3;
+}
+
+void EarthRendererNative::ProcessTap(int tapCount, float x, float y){
+	int s = 3;
 }

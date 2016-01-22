@@ -28,70 +28,6 @@ using Windows.UI.ApplicationSettings;
 
 namespace EarthInBeatsPlayer
 {
-    internal static class SettingsPage
-    {
-        public static void Initialise()
-        {
-            SettingsPane settingsPane = SettingsPane.GetForCurrentView();
-
-            settingsPane.CommandsRequested += (s, e) =>
-            {
-                SettingsCommand settingsCommand = new SettingsCommand(
-                  "SKINS_ID",
-                  "Settings",
-                  command =>
-                  {
-                      var flyout = new SettingsFlyout();
-                      flyout.Title = "Select skin";
-
-                      flyout.Content = new TextBlock()
-                      {
-                          Text = "Chose skin for your app",
-                          TextAlignment = Windows.UI.Xaml.TextAlignment.Left,
-                          TextWrapping = Windows.UI.Xaml.TextWrapping.Wrap,
-                          FontSize = 14
-                      };
-
-                      flyout.Show();
-                  }
-                );
-                e.Request.ApplicationCommands.Add(settingsCommand);
-            };
-        }
-    }
-
-    internal static class AboutPage
-    {
-        public static void Initialise()
-        {
-            SettingsPane settingsPane = SettingsPane.GetForCurrentView();
-
-            settingsPane.CommandsRequested += (s, e) =>
-            {
-                SettingsCommand settingsCommand = new SettingsCommand(
-                  "ABOUT_ID",
-                  "About",
-                  command =>
-                  {
-                      var flyout = new SettingsFlyout();
-                      flyout.Title = "About";
-
-                      flyout.Content = new TextBlock()
-                      {
-                          Text = "If you are living a bright life full of different kind of events, then this application is for you. #HashTagMaker will help you quickly and conveniently add hashtags to the description of your photos, videos and just posts on your social media. \r\n\r\n Version 0.0.0.1. \r\n\r\n Created by Vladyslav Koshyl. \r\n\r\n Support: \r\n vladislav.neznauskas@gmail.com ",
-                          TextAlignment = Windows.UI.Xaml.TextAlignment.Left,
-                          TextWrapping = Windows.UI.Xaml.TextWrapping.Wrap,
-                          FontSize = 14
-                      };
-
-                      flyout.Show();
-                  }
-                );
-                e.Request.ApplicationCommands.Add(settingsCommand);
-            };
-        }
-    }
-
     public sealed partial class MainPage : Page
     {
 
@@ -131,13 +67,56 @@ namespace EarthInBeatsPlayer
 
         private void OnSettingCharmOpen(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
         {
+            args.Request.ApplicationCommands.Add(new SettingsCommand("Equalizer", "Equalizer", (handler) => this.ShowEqualizerPanel()));
+            args.Request.ApplicationCommands.Add(new SettingsCommand("Setings", "Settings", (handler) => this.ShowSettingsPanel()));
+            args.Request.ApplicationCommands.Add(new SettingsCommand("Help", "Help", (handler) => this.ShowHelpPanel()));
             args.Request.ApplicationCommands.Add(new SettingsCommand("About", "About", (handler) => this.ShowAboutPanel()));
+            args.Request.ApplicationCommands.Add(new SettingsCommand("Exit", "Exit", (handler) => this.ExitApp()));
+        }
+
+        private void ShowEqualizerPanel()
+        {
+            Color backgroundColor = Colors.White;
+            Color headerBackgroundColor = Colors.DimGray;
+
+            SettingsFlyout settings = new SettingsFlyout();
+            settings.Content = new EqualizerControl();
+            settings.Title = "Equalizer";
+            settings.HeaderBackground = new SolidColorBrush(headerBackgroundColor);
+            settings.Background = new SolidColorBrush(backgroundColor);
+            settings.Show();
+        }
+
+        private void ShowSettingsPanel()
+        {
+            Color backgroundColor = Colors.White;
+            Color headerBackgroundColor = Colors.DimGray;
+
+            SettingsFlyout settings = new SettingsFlyout();
+            settings.Content = new SettingsControl();
+            settings.Title = "Settings";
+            settings.HeaderBackground = new SolidColorBrush(headerBackgroundColor);
+            settings.Background = new SolidColorBrush(backgroundColor);
+            settings.Show();
+        }
+
+        private void ShowHelpPanel()
+        {
+            Color backgroundColor = Colors.White;
+            Color headerBackgroundColor = Colors.DimGray;
+
+            SettingsFlyout settings = new SettingsFlyout();
+            settings.Content = new HelpControl();
+            settings.Title = "Help";
+            settings.HeaderBackground = new SolidColorBrush(headerBackgroundColor);
+            settings.Background = new SolidColorBrush(backgroundColor);
+            settings.Show();
         }
 
         private void ShowAboutPanel()
         {
             Color backgroundColor = Colors.White;
-            Color headerBackgroundColor = Colors.DimGray; //Color.FromArgb(200, 96, 169, 23);
+            Color headerBackgroundColor = Colors.DimGray;
 
             SettingsFlyout settings = new SettingsFlyout();
             settings.Content = new AboutControl();
@@ -414,7 +393,7 @@ namespace EarthInBeatsPlayer
             }
         }
 
-        private void Exit_Click(object sender, RoutedEventArgs e)
+        private void ExitApp()
         {
             if (this.player != null)
             {
@@ -424,6 +403,11 @@ namespace EarthInBeatsPlayer
             GC.Collect();
 
             Application.Current.Exit();
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            this.ExitApp();
         }
 
         private void ClearPlaylist_Click(object sender, RoutedEventArgs e)

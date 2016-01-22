@@ -5,6 +5,7 @@
 #include "VertexTextureNormal.h"
 #include "Graphics\Helpers\Thread\PPL\safe_task.h"
 #include "..\Shaders\ConstantBufferData.h"
+#include "GestureHelper.h"
 
 #include <memory>
 #include <string>
@@ -37,6 +38,7 @@ public:
 	virtual void PointerPressed(Windows::UI::Input::PointerPoint ^ppt) override;
 	virtual void PointerMoved(Windows::UI::Input::PointerPoint ^ppt) override;
 	virtual void PointerReleased(Windows::UI::Input::PointerPoint ^ppt) override;
+	virtual void PointerWheelChanged(Windows::UI::Input::PointerPoint ^ppt) override;
 
 	void LoadModel(const std::string &path);
 	void LoadModelTexture(const std::wstring &path);
@@ -109,6 +111,15 @@ private:
 	ConstantBufferData constantBufferData;
 	ConstantBufferData bgConstantBufferData;
 
+	GestureHelper ^gestureHelper;
+
 	void WaitForInitialization();
+
+	void ProcessMove(const DirectX::XMFLOAT2 &moveVec, const DirectX::XMFLOAT2 &newPos);
+	void ProcessZoom(float scale, float x, float y);
+	void ProcessRotating(float angle, float x, float y);
+	void ManipulationStarted(float x, float y);
+	void ManipulationCompleted(const DirectX::XMFLOAT2 &pos);
+	void ProcessTap(int tapCount, float x, float y);
 };
 

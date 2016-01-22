@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="EarthInBeatsPlayer.AboutControl"
+    x:Class="EarthInBeatsPlayer.SettingsControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:EarthInBeatsPlayer"
@@ -10,7 +10,8 @@
     d:DesignWidth="400">
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <TextBlock Text="LOL)))))))))))))" FontSize="40" VerticalAlignment="Top" />
-        <TextBlock Text="LOL)))))))))))))" FontSize="40" Margin="0,100,0,0" />
+        <TextBlock Text="fghjfghjghjqwertyuio" VerticalAlignment="Top"/>
+        <TextBlock Text="fghjfghjghjqwertyuio" Margin="0,100,0,0"/>
+        <TextBlock Text="fghjfghjghjqwertyuio" Margin="0,200,0,0"/>
     </Grid>
 </UserControl>
