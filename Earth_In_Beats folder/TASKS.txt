@@ -1,4 +1,3 @@
-2. stop/begin rotating when rewinding and volume changing
 3. manipulate (gesture recognizer)
 5. add normal splash screen
 6. add server part
@@ -8,3 +7,6 @@
 
 
 netsh wlan start hostednetwork
+
+
+во времявоспроизведения - не просто вращать землю, а передавать позицию песни. громкость - то же самое

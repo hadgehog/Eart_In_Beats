@@ -60,4 +60,24 @@ namespace EarthInBeatsNativeLibrary
 	void EarthRenderableWinRT::EarthRotationEnabled::set(bool v) {
 		this->nativeRenderer->SetEarthRotationEnabled(v);
 	}
+
+	void EarthRenderableWinRT::ResetRotationAngle() {
+		this->nativeRenderer->ResetRotationAngles();
+	}
+
+	float EarthRenderableWinRT::HorisontalRotationAngle::get() {
+		return this->nativeRenderer->GetHorisontalRotationAngle();
+	}
+
+	void EarthRenderableWinRT::HorisontalRotationAngle::set(float a) {
+		this->nativeRenderer->SetHorisontalRotationAngle(a);
+	}
+
+	float EarthRenderableWinRT::VericalRotationAngle::get() {
+		return this->nativeRenderer->GetVerticalRotationAngle();
+	}
+
+	void EarthRenderableWinRT::VericalRotationAngle::set(float a) {
+		this->nativeRenderer->SetVerticalRotationAngle(a);
+	}
 }

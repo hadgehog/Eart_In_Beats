@@ -45,6 +45,14 @@ public:
 	bool GetEarthRotationEnabled();
 	void SetEarthRotationEnabled(bool v);
 
+	void ResetRotationAngles();
+
+	float GetHorisontalRotationAngle();
+	void SetHorisontalRotationAngle(float angle);
+
+	float GetVerticalRotationAngle();
+	void SetVerticalRotationAngle(float angle);
+
 private:
 	std::shared_ptr<GuardedDeviceResources> dx;
 
@@ -57,7 +65,8 @@ private:
 	bool initialized;
 
 	bool modelLoaded;
-	float rotationAngle;
+	float rotationAngleHorizontal;	// rotating till song play or rewind
+	float rotationAngleVertical;	// rotating till change volume
 	bool earthRotationEnabled;
 	uint32_t indexCount;
 

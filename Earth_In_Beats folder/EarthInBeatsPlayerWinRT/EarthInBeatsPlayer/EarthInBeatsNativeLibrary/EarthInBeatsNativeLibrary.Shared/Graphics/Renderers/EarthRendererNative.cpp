@@ -11,7 +11,7 @@
 #include <assimp\postprocess.h>
 
 EarthRendererNative::EarthRendererNative() : initialized(false), modelLoaded(false),
-rotationAngle(250.0f), indexCount(0), earthRotationEnabled(false)
+rotationAngleHorizontal(250.0f), rotationAngleVertical(0.0f), indexCount(0), earthRotationEnabled(false)
 {
 	DirectX::XMStoreFloat4x4(&this->projection, DirectX::XMMatrixIdentity());
 }
@@ -290,7 +290,7 @@ void EarthRendererNative::OnRenderThreadEnd() {
 
 void EarthRendererNative::Update(const DX::StepTimer &timer) {
 	if (this->earthRotationEnabled) {
-		this->rotationAngle += (float)timer.GetElapsedSeconds() * 35.0f;
+		this->rotationAngleHorizontal += (float)timer.GetElapsedSeconds() * 35.0f;
 	}
 }
 
@@ -303,7 +303,7 @@ void EarthRendererNative::Render() {
 
 	if (this->modelLoaded) {
 		DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixMultiply(
-			DirectX::XMMatrixRotationRollPitchYaw(0.0f, DirectX::XMConvertToRadians(this->rotationAngle), 0.0f),
+			DirectX::XMMatrixRotationRollPitchYaw(0.0f, DirectX::XMConvertToRadians(this->rotationAngleHorizontal), DirectX::XMConvertToRadians(this->rotationAngleVertical)),
 			DirectX::XMMatrixTranslation(0, 0, 10));
 
 		DirectX::XMStoreFloat4x4(&this->constantBufferData.model, DirectX::XMMatrixTranspose(rotationMatrix));
@@ -701,6 +701,30 @@ bool EarthRendererNative::GetEarthRotationEnabled() {
 void EarthRendererNative::SetEarthRotationEnabled(bool v) {
 	concurrency::critical_section::scoped_lock lk(this->externDataCs);
 	this->earthRotationEnabled = v;
+}
+
+void EarthRendererNative::ResetRotationAngles() {
+	concurrency::critical_section::scoped_lock lk(this->externDataCs);
+	this->rotationAngleHorizontal = 250.0f;
+	this->rotationAngleVertical = 0.0f;
+}
+
+float EarthRendererNative::GetHorisontalRotationAngle(){
+	return this->rotationAngleHorizontal;
+}
+
+void EarthRendererNative::SetHorisontalRotationAngle(float angle){
+	concurrency::critical_section::scoped_lock lk(this->externDataCs);
+	this->rotationAngleHorizontal = angle;
+}
+
+float EarthRendererNative::GetVerticalRotationAngle(){
+	return this->rotationAngleVertical;
+}
+
+void EarthRendererNative::SetVerticalRotationAngle(float angle){
+	concurrency::critical_section::scoped_lock lk(this->externDataCs);
+	this->rotationAngleVertical = angle;
 }
 
 void EarthRendererNative::WaitForInitialization() {

@@ -238,6 +238,7 @@ void Reader::EndOfPlayingTrack(int c)	//start new player incrementing currentPla
 
 		if (this->rendererPointer) {
 			this->rendererPointer->EarthRotationEnabled = false;
+			this->rendererPointer->ResetRotationAngle();
 		}
 	}
 }

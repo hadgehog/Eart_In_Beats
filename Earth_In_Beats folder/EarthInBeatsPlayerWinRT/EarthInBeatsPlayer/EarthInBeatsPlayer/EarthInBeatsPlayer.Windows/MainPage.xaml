@@ -14,8 +14,10 @@
             <RichTextBlock x:Name="DebugTextBlock"  TextWrapping="Wrap" TextAlignment="Left" Foreground="White" HorizontalAlignment="Left" Width="250" Margin="0,50,0,100"/>
         </ScrollViewer>
 
-        <Slider x:Name="sliderVolume" ValueChanged="Slider1_ValueChanged" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="19,0,19,0"/>
-        <Slider x:Name="sliderProgress" PointerPressed="sliderProgress_PointerPressed" PointerReleased="sliderProgress_PointerReleased" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="19,0,19,0"/>
+        <Slider x:Name="sliderVolume" ValueChanged="Slider1_ValueChanged" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="19,0,19,0" 
+                ManipulationMode="TranslateRailsX" ManipulationStarted="SliderVolume_ManipulationStarted" ManipulationCompleted="SliderVolume_ManipulationCompleted"/>
+        <Slider x:Name="sliderProgress" PointerPressed="sliderProgress_PointerPressed" PointerReleased="sliderProgress_PointerReleased" VerticalAlignment="Bottom" 
+                HorizontalAlignment="Stretch" Margin="19,0,19,0" ValueChanged="sliderProgress_ValueChanged" ManipulationMode="All" ManipulationCompleted="sliderProgress_ManipulationCompleted"/>
     </Grid>
 
     <Page.BottomAppBar>

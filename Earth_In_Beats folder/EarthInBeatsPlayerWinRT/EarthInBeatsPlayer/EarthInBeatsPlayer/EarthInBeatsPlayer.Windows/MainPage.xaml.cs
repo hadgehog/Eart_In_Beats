@@ -24,9 +24,74 @@ using Windows.UI;
 using Windows.UI.Xaml.Documents;
 using Windows.Storage.Streams;
 using Windows.Storage;
+using Windows.UI.ApplicationSettings;
 
 namespace EarthInBeatsPlayer
 {
+    internal static class SettingsPage
+    {
+        public static void Initialise()
+        {
+            SettingsPane settingsPane = SettingsPane.GetForCurrentView();
+
+            settingsPane.CommandsRequested += (s, e) =>
+            {
+                SettingsCommand settingsCommand = new SettingsCommand(
+                  "SKINS_ID",
+                  "Settings",
+                  command =>
+                  {
+                      var flyout = new SettingsFlyout();
+                      flyout.Title = "Select skin";
+
+                      flyout.Content = new TextBlock()
+                      {
+                          Text = "Chose skin for your app",
+                          TextAlignment = Windows.UI.Xaml.TextAlignment.Left,
+                          TextWrapping = Windows.UI.Xaml.TextWrapping.Wrap,
+                          FontSize = 14
+                      };
+
+                      flyout.Show();
+                  }
+                );
+                e.Request.ApplicationCommands.Add(settingsCommand);
+            };
+        }
+    }
+
+    internal static class AboutPage
+    {
+        public static void Initialise()
+        {
+            SettingsPane settingsPane = SettingsPane.GetForCurrentView();
+
+            settingsPane.CommandsRequested += (s, e) =>
+            {
+                SettingsCommand settingsCommand = new SettingsCommand(
+                  "ABOUT_ID",
+                  "About",
+                  command =>
+                  {
+                      var flyout = new SettingsFlyout();
+                      flyout.Title = "About";
+
+                      flyout.Content = new TextBlock()
+                      {
+                          Text = "If you are living a bright life full of different kind of events, then this application is for you. #HashTagMaker will help you quickly and conveniently add hashtags to the description of your photos, videos and just posts on your social media. \r\n\r\n Version 0.0.0.1. \r\n\r\n Created by Vladyslav Koshyl. \r\n\r\n Support: \r\n vladislav.neznauskas@gmail.com ",
+                          TextAlignment = Windows.UI.Xaml.TextAlignment.Left,
+                          TextWrapping = Windows.UI.Xaml.TextWrapping.Wrap,
+                          FontSize = 14
+                      };
+
+                      flyout.Show();
+                  }
+                );
+                e.Request.ApplicationCommands.Add(settingsCommand);
+            };
+        }
+    }
+
     public sealed partial class MainPage : Page
     {
 
@@ -51,6 +116,66 @@ namespace EarthInBeatsPlayer
 
             this.sliderProgress.AddHandler(PointerPressedEvent, new PointerEventHandler(sliderProgress_PointerPressed), true);
             this.sliderProgress.AddHandler(PointerReleasedEvent, new PointerEventHandler(sliderProgress_PointerReleased), true);
+
+            this.sliderVolume.ManipulationStarted += SliderVolume_ManipulationStarted;
+            this.sliderVolume.ManipulationCompleted += SliderVolume_ManipulationCompleted;
+            this.sliderProgress.ManipulationCompleted += sliderProgress_ManipulationCompleted;
+
+            this.sliderVolume.AddHandler(ManipulationStartedEvent, new ManipulationStartedEventHandler(SliderVolume_ManipulationStarted), true);
+            this.sliderVolume.AddHandler(ManipulationCompletedEvent, new ManipulationCompletedEventHandler(SliderVolume_ManipulationCompleted), true);
+            this.sliderProgress.AddHandler(ManipulationCompletedEvent, new ManipulationCompletedEventHandler(sliderProgress_ManipulationCompleted), true);
+
+            SettingsPane.GetForCurrentView().CommandsRequested -= this.OnSettingCharmOpen;
+            SettingsPane.GetForCurrentView().CommandsRequested += this.OnSettingCharmOpen;
+        }
+
+        private void OnSettingCharmOpen(SettingsPane sender, SettingsPaneCommandsRequestedEventArgs args)
+        {
+            args.Request.ApplicationCommands.Add(new SettingsCommand("About", "About", (handler) => this.ShowAboutPanel()));
+        }
+
+        private void ShowAboutPanel()
+        {
+            Color backgroundColor = Colors.White;
+            Color headerBackgroundColor = Colors.DimGray; //Color.FromArgb(200, 96, 169, 23);
+
+            SettingsFlyout settings = new SettingsFlyout();
+            settings.Content = new AboutControl();
+            settings.Title = "About";
+            settings.HeaderBackground = new SolidColorBrush(headerBackgroundColor);
+            settings.Background = new SolidColorBrush(backgroundColor);
+            settings.Show();
+        }
+
+        private void SliderVolume_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
+        {
+            int s = 34;
+        }
+
+        private void SliderVolume_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
+        {
+            if (this.earthRenderable != null)
+            {
+                if (this.sliderVolume.Value > 50)
+                {
+                    for (int i = (int)this.sliderVolume.Value; i < 100; i++)
+                    {
+                        this.earthRenderable.VericalRotationAngle = (i / 100) * 360.0f;
+                    }
+                }
+                else
+                {
+                    for (int i = (int)this.sliderVolume.Value; i >= 0; --i)
+                    {
+                        if (i < 0)
+                        {
+                            break;
+                        }
+
+                        this.earthRenderable.VericalRotationAngle = (i / 100) * 360.0f;
+                    }
+                }
+            }
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -81,13 +206,18 @@ namespace EarthInBeatsPlayer
             {
                 this.player.Volume((float)e.NewValue / 100);
             }
+
+            if (this.earthRenderable != null)
+            {
+                this.earthRenderable.VericalRotationAngle = (float)((e.NewValue / 100.0f) * 360.0f);
+            }
         }
 
         private async void IncreaseProgress()
         {
             this.dispatcher = CoreApplication.MainView.Dispatcher;
 
-            while (this.player != null && this.playList != null && this.player.CurrPos() <= this.player.Duration.Ticks)
+            while (this.dispatcher != null && this.player != null && this.playList != null && this.player.CurrPos() <= this.player.Duration.Ticks)
             {
                 await this.dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
@@ -108,6 +238,7 @@ namespace EarthInBeatsPlayer
             if (this.dispatcher != null)
             {
                 this.dispatcher.StopProcessEvents();
+                this.dispatcher = null;
             }
         }
 
@@ -126,6 +257,11 @@ namespace EarthInBeatsPlayer
                 var id = e.Pointer.PointerId;
                 PointerPoint pt = e.GetCurrentPoint(this.sliderProgress);
                 var pos = pt.Position.X;
+
+                if (pos < 0)
+                {
+                    pos = 0.0;
+                }
 
                 var rewind = (pos / this.sliderProgress.ActualWidth) * this.player.Duration.Ticks;
 
@@ -172,6 +308,7 @@ namespace EarthInBeatsPlayer
             if (this.player != null)
             {
                 this.sliderProgress.Value = 0;
+                this.player.Volume((float)this.sliderVolume.Value / 100);
                 this.player.Play();
                 this.ResetProgress();
                 this.IncreaseProgress();
@@ -185,11 +322,15 @@ namespace EarthInBeatsPlayer
             if (this.player != null)
             {
                 this.earthRenderable.EarthRotationEnabled = false;
+                this.earthRenderable.ResetRotationAngle();
                 this.player.Stop();
                 this.ResetProgress();
                 this.sliderProgress.Value = 0;
                 this.isPlayingNow = false;
+                this.sliderProgress.Value = 0;
             }
+
+            this.sliderProgress.Value = 0;
         }
 
         private void Next_Click(object sender, RoutedEventArgs e)
@@ -331,6 +472,31 @@ namespace EarthInBeatsPlayer
             {
                 this.sliderVolume.Value = value;
             });
+        }
+
+        private void sliderProgress_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            if (this.earthRenderable != null && this.isPlayingNow && !this.updateProgress)
+            {
+                this.earthRenderable.EarthRotationEnabled = false;
+
+                if (e.NewValue > e.OldValue)
+                {
+                    this.earthRenderable.HorisontalRotationAngle += (float)(e.NewValue / 100.0f) * 30;
+                }
+                else
+                {
+                    this.earthRenderable.HorisontalRotationAngle -= (float)(e.NewValue / 100.0f) * 30;
+                }
+            }
+        }
+
+        private void sliderProgress_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
+        {
+            if (this.earthRenderable != null && this.isPlayingNow)
+            {
+                this.earthRenderable.EarthRotationEnabled = true;
+            }
         }
     }
 }

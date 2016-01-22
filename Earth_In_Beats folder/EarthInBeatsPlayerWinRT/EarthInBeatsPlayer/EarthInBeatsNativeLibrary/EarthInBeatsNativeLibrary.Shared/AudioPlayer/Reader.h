@@ -11,6 +11,8 @@
 
 namespace EarthInBeatsNativeLibrary
 {
+
+
 	public interface class ITrack
 	{
 	public:
@@ -76,7 +78,8 @@ namespace EarthInBeatsNativeLibrary
 		int currentPlayerNum = 0;
 		std::vector<Platform::String ^> tracksInfo;
 		bool isPauseOccurs;
-		EarthInBeatsNativeLibrary::EarthRenderableWinRT ^rendererPointer;
+		EarthInBeatsNativeLibrary::EarthRenderableWinRT ^rendererPointer;	// TODO: check if this pointer to an object needed except reseting model rotation.
+																			// if not needed - remove and add in this class event for EndPlaylist
 
 		int64_t FindSongDurationFromPlayList(int numSong);
 	};

@@ -15,10 +15,22 @@ namespace EarthInBeatsNativeLibrary
 		Windows::Foundation::IAsyncAction ^Load3DModel(Platform::String ^path);
 		Windows::Foundation::IAsyncAction ^LoadModelTexture(Platform::String ^path);
 		Windows::Foundation::IAsyncAction ^LoadBackgroundTexture(Platform::String ^path);
+
+		void ResetRotationAngle();
 		
 		property bool EarthRotationEnabled {
 			bool get();
 			void set(bool v);
+		}
+
+		property float HorisontalRotationAngle {
+			float get();
+			void set(float a);
+		}
+
+		property float VericalRotationAngle {
+			float get();
+			void set(float a);
 		}
 
 	private:
