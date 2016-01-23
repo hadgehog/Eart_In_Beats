@@ -162,6 +162,10 @@ void MainDraw::PointerReleased(PointerPoint ^ppt){
 	this->nativeRenderer->PointerReleased(ppt);
 }
 
+void MainDraw::PointerWheelChanged(Windows::UI::Input::PointerPoint ^ppt) {
+	this->nativeRenderer->PointerWheelChanged(ppt);
+}
+
 void MainDraw::OnDeviceLost(){
 	this->ReleaseDeviceDependentResources();
 }

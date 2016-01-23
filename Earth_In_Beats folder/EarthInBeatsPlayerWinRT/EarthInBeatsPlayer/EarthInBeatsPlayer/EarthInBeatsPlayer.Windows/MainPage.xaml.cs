@@ -425,6 +425,7 @@ namespace EarthInBeatsPlayer
 
                     this.sliderProgress.Value = 0.0;
                     this.earthRenderable.EarthRotationEnabled = false;
+                    this.earthRenderable.ResetRotationAngle();
 
                     this.player.Dispose();
                     GC.Collect();
@@ -466,11 +467,22 @@ namespace EarthInBeatsPlayer
 
                 if (e.NewValue > e.OldValue)
                 {
-                    this.earthRenderable.HorisontalRotationAngle += (float)(e.NewValue / 100.0f) * 30;
+                    this.earthRenderable.HorisontalRotationAngle += 15.0f;
                 }
                 else
                 {
-                    this.earthRenderable.HorisontalRotationAngle -= (float)(e.NewValue / 100.0f) * 30;
+                    this.earthRenderable.HorisontalRotationAngle -= 15.0f;
+                }
+            }
+            else if (!this.isPlayingNow)
+            {
+                if (e.NewValue > e.OldValue)
+                {
+                    this.earthRenderable.HorisontalRotationAngle += 15.0f;
+                }
+                else
+                {
+                    this.earthRenderable.HorisontalRotationAngle -= 15.0f;
                 }
             }
         }

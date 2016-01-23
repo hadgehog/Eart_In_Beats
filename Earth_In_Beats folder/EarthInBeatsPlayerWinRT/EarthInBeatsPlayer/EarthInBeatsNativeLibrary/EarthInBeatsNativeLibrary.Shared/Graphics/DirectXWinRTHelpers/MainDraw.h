@@ -32,6 +32,7 @@ public:
 	void PointerPressed(Windows::UI::Input::PointerPoint ^ppt);
 	void PointerMoved(Windows::UI::Input::PointerPoint ^ppt);
 	void PointerReleased(Windows::UI::Input::PointerPoint ^ppt);
+	void PointerWheelChanged(Windows::UI::Input::PointerPoint ^ppt);
 
 private:
 	std::shared_ptr<INativeRenderable> nativeRenderer;

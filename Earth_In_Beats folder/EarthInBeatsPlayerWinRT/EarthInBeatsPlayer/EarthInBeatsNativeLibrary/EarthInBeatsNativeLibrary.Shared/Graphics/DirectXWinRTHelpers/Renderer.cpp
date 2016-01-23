@@ -118,6 +118,7 @@ namespace EarthInBeatsNativeLibrary
 			this->coreInput->PointerPressed += ref new TypedEventHandler<Object^, PointerEventArgs^>(this, &Renderer::OnPointerPressed);
 			this->coreInput->PointerMoved += ref new TypedEventHandler<Object^, PointerEventArgs^>(this, &Renderer::OnPointerMoved);
 			this->coreInput->PointerReleased += ref new TypedEventHandler<Object^, PointerEventArgs^>(this, &Renderer::OnPointerReleased);
+			this->coreInput->PointerWheelChanged += ref new TypedEventHandler<Object^, PointerEventArgs^>(this, &Renderer::OnPointerWheelChanged);
 
 			// Begin processing input messages as they're delivered.
 			this->coreInput->Dispatcher->ProcessEvents(CoreProcessEventsOption::ProcessUntilQuit);
@@ -171,5 +172,10 @@ namespace EarthInBeatsNativeLibrary
 		this->pointerMoves = false;
 
 		this->main.PointerReleased(pt);
+	}
+	void Renderer::OnPointerWheelChanged(Platform::Object ^sender, Windows::UI::Core::PointerEventArgs ^e){
+		auto pt = e->CurrentPoint;
+
+		this->main.PointerWheelChanged(pt);
 	}
 }

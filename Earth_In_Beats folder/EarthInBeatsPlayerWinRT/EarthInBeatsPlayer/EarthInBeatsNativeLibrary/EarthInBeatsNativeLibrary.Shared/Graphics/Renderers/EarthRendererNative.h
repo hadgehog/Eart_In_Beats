@@ -15,6 +15,8 @@
 #include <mutex>
 #include <stdlib.h>
 #include <d3d11.h>
+#include <DirectXMath.h>
+#include <DirectXCollision.h>
 
 class EarthRendererNative : public INativeRenderable{
 public:
@@ -71,6 +73,7 @@ private:
 	float rotationAngleVertical;	// rotating till change volume
 	bool earthRotationEnabled;
 	uint32_t indexCount;
+	float scale;						// scaling model
 
 	DirectX::XMFLOAT4X4 projection;
 
@@ -112,6 +115,8 @@ private:
 	ConstantBufferData bgConstantBufferData;
 
 	GestureHelper ^gestureHelper;
+
+	DirectX::BoundingSphere physicSphere;
 
 	void WaitForInitialization();
 
