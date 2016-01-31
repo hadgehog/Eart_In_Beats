@@ -10,7 +10,7 @@
     d:DesignWidth="400">
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <TextBlock Text="LOL)))))))))))))" FontSize="40" VerticalAlignment="Top" />
-        <TextBlock Text="LOL)))))))))))))" FontSize="40" Margin="0,100,0,0" />
+        <TextBlock TextWrapping="Wrap" TextAlignment="Left" Text="If you wish to enjoy your favorite music with maximum comfort while travelling all over the world, finding the people who listen to the same music as you do in the different parts of the planet, then Earth in Beats Player is just a right thing you needed. Earth in Beats Player supports all the available music formats, has a simple and user-friendly interface and what's the most important - it will show everyone on the Globe who listens to the same track right now. You can manage your playlist by just scrolling the planet, create your own custom playlists and watch how the day follows the night while your favorite track rings. If you've seen someone listening to the same track as you do, just zoom that and, you may turn out be the neighbours :) 
+                                             Contacts:  vladislav.neznauskas@gmail.com" FontSize="20" VerticalAlignment="Top" />
     </Grid>
 </UserControl>

@@ -126,5 +126,9 @@ private:
 	void ManipulationStarted(float x, float y);
 	void ManipulationCompleted(const DirectX::XMFLOAT2 &pos);
 	void ProcessTap(int tapCount, float x, float y);
+
+	inline bool Intersect(const DirectX::XMVECTOR &rayDir, const DirectX::XMVECTOR &rayOrig,
+		const DirectX::XMVECTOR &earthPos, float earthRad,
+		DirectX::XMVECTOR hitPoint, float distance, DirectX::XMVECTOR normal);
 };
 

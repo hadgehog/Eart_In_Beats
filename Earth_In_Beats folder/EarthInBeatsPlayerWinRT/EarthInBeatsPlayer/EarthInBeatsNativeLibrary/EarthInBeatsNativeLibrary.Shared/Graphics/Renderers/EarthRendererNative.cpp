@@ -5,6 +5,9 @@
 #include "Vertex.h"
 
 #include <fstream>
+#include <cassert>
+#include <cstdint>
+#include <emmintrin.h>
 
 #include <assimp\Importer.hpp>
 #include <assimp\scene.h>
@@ -801,6 +804,13 @@ void EarthRendererNative::ManipulationStarted(float x, float y) {
 	
 	auto contain = this->physicSphere.Contains(point);
 
+	DirectX::XMVECTOR hitPoint, normal;
+	float distance;
+
+	//DirectX::XMVECTOR cameraPoint = DirectX::XMVectorSet();
+
+	//bool isTapOnEarth = this->Intersect();
+
 	int s = 34;
 }
 
@@ -810,4 +820,36 @@ void EarthRendererNative::ManipulationCompleted(const DirectX::XMFLOAT2 &pos) {
 
 void EarthRendererNative::ProcessTap(int tapCount, float x, float y) {
 	int s = 3;
+}
+
+inline bool EarthRendererNative::Intersect(const DirectX::XMVECTOR &rayDir, const DirectX::XMVECTOR &rayOrig,
+	const DirectX::XMVECTOR &earthPos, float earthRad,
+	DirectX::XMVECTOR hitPoint, float distance, DirectX::XMVECTOR normal)
+{
+	float a = DirectX::XMVector3Dot(rayDir, rayDir).m128_f32[0];
+	float b = DirectX::XMVector3Dot(rayDir, DirectX::XMVectorScale(DirectX::XMVectorSubtract(rayOrig, earthPos), 2.0f)).m128_f32[0];
+	float c = DirectX::XMVector3Dot(earthPos, earthPos).m128_f32[0] + DirectX::XMVector3Dot(rayOrig, rayOrig).m128_f32[0] - 
+		DirectX::XMVectorScale(DirectX::XMVector3Dot(rayOrig, earthPos), 2.0f).m128_f32[0] - earthRad * earthRad;
+	float D = b * b + (-4.0f) * a * c;
+
+	// If ray can not intersect then stop
+	if (D < 0) {
+		return false;
+	}
+
+	D = std::sqrtf(D);
+
+	// Ray can intersect the sphere, solve the closer hitpoint
+	float t = (-0.5f) * (b + D) / a;
+
+	if (t > 0.0f){
+		distance = std::sqrtf(a) * t;		
+		hitPoint = DirectX::XMVectorAdd(rayOrig, DirectX::operator *(rayDir, t));
+		normal = DirectX::XMVectorScale(DirectX::XMVectorSubtract(hitPoint, earthPos), 1.0f / earthRad);
+	}
+	else {
+		return false;
+	}
+
+	return true;
 }
