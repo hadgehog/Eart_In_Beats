@@ -23,5 +23,25 @@ namespace EarthInBeatsPlayer
         {
             this.InitializeComponent();
         }
+
+        private void EqualizerSliderBass_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+
+        }
+
+        private void EqualizerSliderMiddle_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+
+        }
+
+        private void EqualizerSliderHight_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+
+        }
+
+        private void EqualizerSliderLeftRight_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+
+        }
     }
 }

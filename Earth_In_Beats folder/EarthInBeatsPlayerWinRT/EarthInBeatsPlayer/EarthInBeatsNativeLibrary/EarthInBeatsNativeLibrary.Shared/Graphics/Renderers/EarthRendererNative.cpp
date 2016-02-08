@@ -796,20 +796,19 @@ void EarthRendererNative::ManipulationStarted(float x, float y) {
 
 	tmpPt = DirectX::XMVector3TransformCoord(tmpPt, proj);
 
-	DirectX::XMVECTOR point = DirectX::XMVectorSet(x, y, tmpPt.ZF, 1.0f);	// z = 1
+	DirectX::XMVECTOR tapPoint = DirectX::XMVectorSet(x, y, tmpPt.ZF, 1.0f);	// z = 1
+	DirectX::XMVECTOR direction = DirectX::XMVectorSet(0.0f, 0.0f, tmpPt.ZF, 1.0f);
+	DirectX::XMVECTOR earthPosition = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
 
-	point = DirectX::XMVector3Unproject(point, 0.0f, 0.0f, 
+	tapPoint = DirectX::XMVector3Unproject(tapPoint, 0.0f, 0.0f,
 		rtSize.Width, rtSize.Height, 0.0f, 1.0f, 
-		proj, DirectX::XMMatrixIdentity(), DirectX::XMMatrixIdentity());
-	
-	auto contain = this->physicSphere.Contains(point);
+		proj, DirectX::XMMatrixIdentity(), DirectX::XMMatrixIdentity());	// ray origin
 
-	DirectX::XMVECTOR hitPoint, normal;
-	float distance;
+	DirectX::XMVECTOR hitPoint = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+	DirectX::XMVECTOR normal = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+	float distance = 0.0f;
 
-	//DirectX::XMVECTOR cameraPoint = DirectX::XMVectorSet();
-
-	//bool isTapOnEarth = this->Intersect();
+	bool isIntersected = this->Intersect(direction, tapPoint, earthPosition, 10.0f, hitPoint, distance, normal);
 
 	int s = 34;
 }

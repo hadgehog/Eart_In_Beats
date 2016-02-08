@@ -8,8 +8,30 @@
     mc:Ignorable="d"
     d:DesignHeight="800"
     d:DesignWidth="400">
-    
+   
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
 
+        <StackPanel Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Orientation="Vertical">
+            <TextBlock Name="EqualizerBassTxtBx" HorizontalAlignment="Stretch" Text="Bass" FontSize="24"/>
+            <Slider Name="EqualizerSliderBass" HorizontalAlignment="Stretch" Value="50" Minimum="0" Maximum="100" StepFrequency="1" ValueChanged="EqualizerSliderBass_ValueChanged" />
+        </StackPanel>
+        <StackPanel Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Orientation="Vertical">
+            <TextBlock Name="EqualizerMiddleTxtBx" HorizontalAlignment="Stretch" Text="Middle" FontSize="24"/>
+            <Slider Name="EqualizerSliderMiddle" HorizontalAlignment="Stretch" Value="50" Minimum="0" Maximum="100" StepFrequency="1" ValueChanged="EqualizerSliderMiddle_ValueChanged" />
+        </StackPanel>
+        <StackPanel Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Orientation="Vertical">
+            <TextBlock Name="EqualizerHightTxtBx" HorizontalAlignment="Stretch" Text="Hight" FontSize="24"/>
+            <Slider Name="EqualizerSliderHight" HorizontalAlignment="Stretch" Value="50" Minimum="0" Maximum="100" StepFrequency="1" ValueChanged="EqualizerSliderHight_ValueChanged" />
+        </StackPanel>
+        <StackPanel Grid.Row="3" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Orientation="Vertical">
+            <TextBlock Name="EqualizerLeftRightTxtBx" HorizontalAlignment="Stretch" Text="Left right relation" FontSize="24"/>
+            <Slider Name="EqualizerSliderLeftRight" HorizontalAlignment="Stretch" Value="50" Minimum="0" Maximum="100" StepFrequency="1" ValueChanged="EqualizerSliderLeftRight_ValueChanged" />
+        </StackPanel>
     </Grid>
 </UserControl>

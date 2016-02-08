@@ -10,6 +10,10 @@
     d:DesignWidth="400">
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-
+        <StackPanel>
+            <TextBlock TextWrapping="Wrap" FontSize="18" VerticalAlignment="Top" Text="In order to create a playlist press 'Win'+'Z' or select App Commands in a pop-up menu. For additional settings, equalizer settings and more info select Settings in a pop-up menu. Use 'Play', 'Pause' and 'Stop' buttons for sound reproduction, 'Next' and 'Previous' for switching all the tracks between. Volume control is possible by slider or by rolling the planet up and down. For rewinding roll the planet to the left or and the right, or use the slider. For zooming use a mouse wheel."/>
+            <TextBlock TextWrapping="Wrap" FontSize="18" VerticalAlignment="Top" Text="It is the simple tutorial down below :)" Margin="0, 10, 0, 0"/>
+            <Image Name="TutorialImg" Source="Assets/tutorial.png" Stretch="UniformToFill" />
+        </StackPanel>
     </Grid>
 </UserControl>

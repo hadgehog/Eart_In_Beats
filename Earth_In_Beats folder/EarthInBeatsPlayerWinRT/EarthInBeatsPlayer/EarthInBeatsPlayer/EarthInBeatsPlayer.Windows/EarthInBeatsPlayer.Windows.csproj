@@ -165,6 +165,7 @@
     <Content Include="Assets\space_background_mipmap.dds" />
     <Content Include="Assets\SplashScreen.png" />
     <Content Include="Assets\StoreLogo.scale-100.png" />
+    <Content Include="Assets\tutorial.png" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="AboutControl.xaml">
