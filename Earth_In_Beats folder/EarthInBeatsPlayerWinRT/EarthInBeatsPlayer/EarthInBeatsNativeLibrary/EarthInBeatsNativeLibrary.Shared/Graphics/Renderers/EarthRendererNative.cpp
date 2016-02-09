@@ -792,23 +792,26 @@ void EarthRendererNative::ManipulationStarted(float x, float y) {
 	auto dxDev = this->dx->Get();
 	auto rtSize = dxDev->GetLogicalSize();
 	auto proj = DirectX::XMLoadFloat4x4(&this->projection);
-	auto tmpPt = DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 1.0f);
 
-	tmpPt = DirectX::XMVector3TransformCoord(tmpPt, proj);
+	DirectX::XMVECTOR tapPoint0 = DirectX::XMVectorSet(x, y, 0.0f, 1.0f);
+	DirectX::XMVECTOR tapPoint1 = DirectX::XMVectorSet(x, y, 1.0f, 1.0f);
+	DirectX::XMVECTOR direction = DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 1.0f);
+	DirectX::XMVECTOR earthPosition = DirectX::XMVectorSet(0.0f, 0.0f, 2.0f, 1.0f);	// not sure that its right, but its working :)
 
-	DirectX::XMVECTOR tapPoint = DirectX::XMVectorSet(x, y, tmpPt.ZF, 1.0f);	// z = 1
-	DirectX::XMVECTOR direction = DirectX::XMVectorSet(0.0f, 0.0f, tmpPt.ZF, 1.0f);
-	DirectX::XMVECTOR earthPosition = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-
-	tapPoint = DirectX::XMVector3Unproject(tapPoint, 0.0f, 0.0f,
-		rtSize.Width, rtSize.Height, 0.0f, 1.0f, 
+	tapPoint0 = DirectX::XMVector3Unproject(tapPoint0, 0.0f, 0.0f,
+		rtSize.Width, rtSize.Height, 0.0f, 1.0f,
 		proj, DirectX::XMMatrixIdentity(), DirectX::XMMatrixIdentity());	// ray origin
+	tapPoint1 = DirectX::XMVector3Unproject(tapPoint1, 0.0f, 0.0f,
+		rtSize.Width, rtSize.Height, 0.0f, 1.0f,
+		proj, DirectX::XMMatrixIdentity(), DirectX::XMMatrixIdentity());
+
+	direction = DirectX::XMVectorSubtract(tapPoint1, tapPoint0);			// ray direction
 
 	DirectX::XMVECTOR hitPoint = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
 	DirectX::XMVECTOR normal = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
 	float distance = 0.0f;
 
-	bool isIntersected = this->Intersect(direction, tapPoint, earthPosition, 10.0f, hitPoint, distance, normal);
+	bool isIntersected = this->Intersect(direction, tapPoint0, earthPosition, 0.5f, hitPoint, distance, normal);	// not sure that Earth radius is right, but its working :)
 
 	int s = 34;
 }
@@ -823,7 +826,7 @@ void EarthRendererNative::ProcessTap(int tapCount, float x, float y) {
 
 inline bool EarthRendererNative::Intersect(const DirectX::XMVECTOR &rayDir, const DirectX::XMVECTOR &rayOrig,
 	const DirectX::XMVECTOR &earthPos, float earthRad,
-	DirectX::XMVECTOR hitPoint, float distance, DirectX::XMVECTOR normal)
+	DirectX::XMVECTOR &hitPoint, float &distance, DirectX::XMVECTOR &normal)
 {
 	float a = DirectX::XMVector3Dot(rayDir, rayDir).m128_f32[0];
 	float b = DirectX::XMVector3Dot(rayDir, DirectX::XMVectorScale(DirectX::XMVectorSubtract(rayOrig, earthPos), 2.0f)).m128_f32[0];

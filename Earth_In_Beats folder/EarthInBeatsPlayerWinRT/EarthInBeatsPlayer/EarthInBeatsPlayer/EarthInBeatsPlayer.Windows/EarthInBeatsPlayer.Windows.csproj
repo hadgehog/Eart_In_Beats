@@ -144,25 +144,9 @@
     <Content Include="Assets\310_150.png" />
     <Content Include="Assets\50.png" />
     <Content Include="Assets\70.png" />
-    <Content Include="Assets\earth.jpg" />
-    <Content Include="Assets\earth.png" />
-    <Content Include="Assets\earth2.png" />
-    <Content Include="Assets\earth3.dds" />
-    <Content Include="Assets\earthBig.jpg" />
-    <Content Include="Assets\earthmap_2k.dds" />
-    <Content Include="Assets\earthmap_4k.dds" />
-    <Content Include="Assets\earthmap_8k.dds" />
-    <Content Include="Assets\earthmap_8k.jpg" />
-    <Content Include="Assets\earth_clouds.jpg" />
-    <Content Include="Assets\earth_clouds.png" />
-    <Content Include="Assets\Earth_tex.dds" />
-    <Content Include="Assets\Earth_tex.jpg" />
     <Content Include="Assets\Earth_tex2.dds" />
-    <Content Include="Assets\Earth_tex2.jpg" />
     <Content Include="Assets\SmallLogo.scale-100.png" />
     <Content Include="Assets\space_background.dds" />
-    <Content Include="Assets\space_background.jpg" />
-    <Content Include="Assets\space_background_mipmap.dds" />
     <Content Include="Assets\SplashScreen.png" />
     <Content Include="Assets\StoreLogo.scale-100.png" />
     <Content Include="Assets\tutorial.png" />
@@ -188,9 +172,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Assets\Earth.obj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Earth3.obj" />

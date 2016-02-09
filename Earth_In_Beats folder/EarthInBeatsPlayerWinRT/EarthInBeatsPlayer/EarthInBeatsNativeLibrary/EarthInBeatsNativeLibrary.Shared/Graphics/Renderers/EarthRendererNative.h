@@ -129,6 +129,6 @@ private:
 
 	inline bool Intersect(const DirectX::XMVECTOR &rayDir, const DirectX::XMVECTOR &rayOrig,
 		const DirectX::XMVECTOR &earthPos, float earthRad,
-		DirectX::XMVECTOR hitPoint, float distance, DirectX::XMVECTOR normal);
+		DirectX::XMVECTOR &hitPoint, float &distance, DirectX::XMVECTOR &normal);
 };
 
