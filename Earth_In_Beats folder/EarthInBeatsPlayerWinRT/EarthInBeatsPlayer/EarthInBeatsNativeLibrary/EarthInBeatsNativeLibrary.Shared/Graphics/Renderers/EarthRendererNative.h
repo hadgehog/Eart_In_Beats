@@ -116,7 +116,8 @@ private:
 
 	GestureHelper ^gestureHelper;
 
-	DirectX::BoundingSphere physicSphere;
+	bool tapOnSphere;
+	DirectX::XMVECTOR prevPoint;
 
 	void WaitForInitialization();
 

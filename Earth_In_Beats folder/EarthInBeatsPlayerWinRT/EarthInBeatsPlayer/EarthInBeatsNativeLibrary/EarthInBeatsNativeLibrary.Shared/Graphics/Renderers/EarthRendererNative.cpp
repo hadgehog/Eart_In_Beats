@@ -216,8 +216,8 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 		this->gestureHelper->ManipulationCompleted = [=](const DirectX::XMFLOAT2 &pos) { this->ManipulationCompleted(pos); };
 		this->gestureHelper->Tapped = [=](int tapCount, float x, float y) {this->ProcessTap(tapCount, x, y); };
 
-		// initialize physic sphere
-		this->physicSphere = DirectX::BoundingSphere(DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), 1.0f);	// radius 1 or 10 :)
+		this->tapOnSphere = false;
+		this->prevPoint = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
 
 		std::unique_lock<std::mutex> lkInit(this->initializedMtx);
 		this->initialized = true;
@@ -409,10 +409,12 @@ void EarthRendererNative::Render() {
 }
 
 void EarthRendererNative::PointerPressed(Windows::UI::Input::PointerPoint ^ppt) {
+	auto point = ppt->Position;
 	this->gestureHelper->ProcessPress(ppt);
 }
 
 void EarthRendererNative::PointerMoved(Windows::UI::Input::PointerPoint ^ppt) {
+	auto point = ppt->Position;
 	this->gestureHelper->ProcessMove(ppt);
 }
 
@@ -768,16 +770,54 @@ void EarthRendererNative::WaitForInitialization() {
 }
 
 void EarthRendererNative::ProcessMove(const DirectX::XMFLOAT2 &moveVec, const DirectX::XMFLOAT2 &newPos) {
-	Windows::Foundation::Size rtSize;
-	DirectX::XMMATRIX proj;
+	if (this->tapOnSphere) {
+		Windows::Foundation::Size rtSize;
+		DirectX::XMMATRIX proj;
 
-	{
-		auto dxDev = this->dx->Get();
-		rtSize = dxDev->GetLogicalSize();
-		proj = DirectX::XMLoadFloat4x4(&this->projection);
+		{
+			auto dxDev = this->dx->Get();
+			rtSize = dxDev->GetLogicalSize();
+			proj = DirectX::XMLoadFloat4x4(&this->projection);
+		}
+
+		DirectX::XMVECTOR earthPosition = DirectX::XMVectorSet(0.0f, 0.0f, 2.0f, 1.0f);
+		DirectX::XMVECTOR nextPoint = DirectX::XMVectorSet(newPos.x, newPos.y, 0.0f, 1.0f);
+
+		nextPoint = DirectX::XMVector3Unproject(nextPoint, 0.0f, 0.0f,
+			rtSize.Width, rtSize.Height, 0.0f, 1.0f,
+			proj, DirectX::XMMatrixIdentity(), DirectX::XMMatrixIdentity());
+
+		auto vectorFromPrevPointToCenter = DirectX::XMVectorSubtract(this->prevPoint, earthPosition);
+		auto vectorFromCurrPointToCenter = DirectX::XMVectorSubtract(nextPoint, earthPosition);
+		auto angleBetweenVectors = DirectX::XMVector3AngleBetweenVectors(vectorFromPrevPointToCenter, vectorFromCurrPointToCenter);
+
+		float angleInDeg = DirectX::XMConvertToDegrees(angleBetweenVectors.m128_f32[0]);
+
+		if (std::abs(this->prevPoint.m128_f32[0]) > std::abs(nextPoint.m128_f32[1]) || 
+			std::abs(nextPoint.m128_f32[0]) > std::abs(this->prevPoint.m128_f32[1]))
+		{
+			if (this->prevPoint.m128_f32[0] > nextPoint.m128_f32[0]) {
+				this->rotationAngleHorizontal += std::abs(angleInDeg) * 5;
+			}
+			else if (this->prevPoint.m128_f32[0] < nextPoint.m128_f32[0]) {
+				this->rotationAngleHorizontal -= std::abs(angleInDeg) * 5;
+			}
+		}
+
+		// vertical rotating works strange
+		/*if (std::abs(this->prevPoint.m128_f32[1]) > std::abs(nextPoint.m128_f32[0]) ||
+			std::abs(nextPoint.m128_f32[1]) > std::abs(this->prevPoint.m128_f32[0]))
+		{
+			if (this->prevPoint.m128_f32[1] > nextPoint.m128_f32[1]) {
+				this->rotationAngleVertical += std::abs(angleInDeg);
+			}
+			else if (this->prevPoint.m128_f32[1] < nextPoint.m128_f32[1]) {
+				this->rotationAngleVertical -= std::abs(angleInDeg);
+			}
+		}*/
+
+		this->prevPoint = nextPoint;
 	}
-
-
 }
 
 void EarthRendererNative::ProcessZoom(float scale, float x, float y) {
@@ -811,9 +851,8 @@ void EarthRendererNative::ManipulationStarted(float x, float y) {
 	DirectX::XMVECTOR normal = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
 	float distance = 0.0f;
 
-	bool isIntersected = this->Intersect(direction, tapPoint0, earthPosition, 0.5f, hitPoint, distance, normal);	// not sure that Earth radius is right, but its working :)
-
-	int s = 34;
+	this->tapOnSphere = this->Intersect(direction, tapPoint0, earthPosition, 0.5f, hitPoint, distance, normal);	// not sure that Earth radius is right, but its working :)
+	this->prevPoint = hitPoint;
 }
 
 void EarthRendererNative::ManipulationCompleted(const DirectX::XMFLOAT2 &pos) {
@@ -830,7 +869,7 @@ inline bool EarthRendererNative::Intersect(const DirectX::XMVECTOR &rayDir, cons
 {
 	float a = DirectX::XMVector3Dot(rayDir, rayDir).m128_f32[0];
 	float b = DirectX::XMVector3Dot(rayDir, DirectX::XMVectorScale(DirectX::XMVectorSubtract(rayOrig, earthPos), 2.0f)).m128_f32[0];
-	float c = DirectX::XMVector3Dot(earthPos, earthPos).m128_f32[0] + DirectX::XMVector3Dot(rayOrig, rayOrig).m128_f32[0] - 
+	float c = DirectX::XMVector3Dot(earthPos, earthPos).m128_f32[0] + DirectX::XMVector3Dot(rayOrig, rayOrig).m128_f32[0] -
 		DirectX::XMVectorScale(DirectX::XMVector3Dot(rayOrig, earthPos), 2.0f).m128_f32[0] - earthRad * earthRad;
 	float D = b * b + (-4.0f) * a * c;
 
@@ -844,8 +883,8 @@ inline bool EarthRendererNative::Intersect(const DirectX::XMVECTOR &rayDir, cons
 	// Ray can intersect the sphere, solve the closer hitpoint
 	float t = (-0.5f) * (b + D) / a;
 
-	if (t > 0.0f){
-		distance = std::sqrtf(a) * t;		
+	if (t > 0.0f) {
+		distance = std::sqrtf(a) * t;
 		hitPoint = DirectX::XMVectorAdd(rayOrig, DirectX::operator *(rayDir, t));
 		normal = DirectX::XMVectorScale(DirectX::XMVectorSubtract(hitPoint, earthPos), 1.0f / earthRad);
 	}

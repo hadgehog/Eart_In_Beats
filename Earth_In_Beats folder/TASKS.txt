@@ -1,9 +1,9 @@
-3. manipulate (gesture recognizer)
 5. add normal splash screen
 6. add server part
 7. move to WP
 8. rename to 3rd party
 9. освещение
+10. рельеф
 
 
 netsh wlan start hostednetwork
