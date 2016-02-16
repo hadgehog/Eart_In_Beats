@@ -793,9 +793,7 @@ void EarthRendererNative::ProcessMove(const DirectX::XMFLOAT2 &moveVec, const Di
 
 		float angleInDeg = DirectX::XMConvertToDegrees(angleBetweenVectors.m128_f32[0]);
 
-		if (std::abs(this->prevPoint.m128_f32[0]) > std::abs(nextPoint.m128_f32[1]) || 
-			std::abs(nextPoint.m128_f32[0]) > std::abs(this->prevPoint.m128_f32[1]))
-		{
+		if (std::abs(nextPoint.m128_f32[0]) > std::abs(this->prevPoint.m128_f32[1])) {
 			if (this->prevPoint.m128_f32[0] > nextPoint.m128_f32[0]) {
 				this->rotationAngleHorizontal += std::abs(angleInDeg) * 5;
 			}
@@ -804,17 +802,14 @@ void EarthRendererNative::ProcessMove(const DirectX::XMFLOAT2 &moveVec, const Di
 			}
 		}
 
-		// vertical rotating works strange
-		/*if (std::abs(this->prevPoint.m128_f32[1]) > std::abs(nextPoint.m128_f32[0]) ||
-			std::abs(nextPoint.m128_f32[1]) > std::abs(this->prevPoint.m128_f32[0]))
-		{
-			if (this->prevPoint.m128_f32[1] > nextPoint.m128_f32[1]) {
-				this->rotationAngleVertical += std::abs(angleInDeg);
-			}
-			else if (this->prevPoint.m128_f32[1] < nextPoint.m128_f32[1]) {
-				this->rotationAngleVertical -= std::abs(angleInDeg);
-			}
-		}*/
+		//else if (std::abs(nextPoint.m128_f32[1]) > std::abs(this->prevPoint.m128_f32[0])) {
+			//if (this->prevPoint.m128_f32[1] > nextPoint.m128_f32[1]) {
+			//	this->rotationAngleVertical += std::abs(angleInDeg);
+			//}
+			//else if (this->prevPoint.m128_f32[1] < nextPoint.m128_f32[1]) {
+			//	this->rotationAngleVertical -= std::abs(angleInDeg);
+			//}
+		//}
 
 		this->prevPoint = nextPoint;
 	}

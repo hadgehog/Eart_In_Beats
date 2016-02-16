@@ -15,7 +15,8 @@ GestureHelper::GestureHelper(){
 	this->recognizer = ref new GestureRecognizer();
 
 	this->recognizer->GestureSettings = GestureSettings::ManipulationScale | GestureSettings::ManipulationTranslateX |
-		GestureSettings::ManipulationTranslateY | GestureSettings::Tap | GestureSettings::ManipulationRotate | GestureSettings::DoubleTap;
+		GestureSettings::ManipulationTranslateY | GestureSettings::Tap | GestureSettings::ManipulationRotate | GestureSettings::DoubleTap |
+		GestureSettings::ManipulationTranslateInertia | GestureSettings::ManipulationRotateInertia;
 
 	this->recognizer->Tapped += ref new TypedEventHandler<GestureRecognizer ^, TappedEventArgs ^>(this, &GestureHelper::OnTapped);
 	this->recognizer->ManipulationStarted += ref new TypedEventHandler<GestureRecognizer ^, ManipulationStartedEventArgs ^>(this, &GestureHelper::OnManipulationStarted);
@@ -83,7 +84,7 @@ void GestureHelper::OnManipulationInertiaStarting(GestureRecognizer ^sender, Man
 		DirectX::XMFLOAT2 moveVec(e->Delta.Translation.X, e->Delta.Translation.Y);
 		DirectX::XMFLOAT2 newPos(e->Position.X, e->Position.Y);
 
-		sender->InertiaTranslationDeceleration = 0.02f;
+		sender->InertiaTranslationDeceleration = 0.2f;
 		this->MoveUpdated(moveVec, newPos);
 	}
 }
