@@ -1,3 +1,4 @@
+2. заменить плей/паузу на одну кнопку
 5. add normal splash screen
 6. add server part
 7. move to WP
@@ -7,3 +8,5 @@
 
 
 netsh wlan start hostednetwork
+
+сделать появление/исчезание слайдеров сверху и снизу по свайпам сверху и снизу

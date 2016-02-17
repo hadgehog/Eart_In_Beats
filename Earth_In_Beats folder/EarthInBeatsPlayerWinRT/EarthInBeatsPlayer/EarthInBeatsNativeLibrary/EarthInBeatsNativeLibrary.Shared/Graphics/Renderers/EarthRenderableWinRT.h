@@ -5,8 +5,12 @@
 
 namespace EarthInBeatsNativeLibrary
 {
+	public delegate void ShowSliders(bool);
+
 	public ref class EarthRenderableWinRT sealed : public IRenderable{
 	public:
+		event ShowSliders ^ShowSlidersEvent;
+
 		EarthRenderableWinRT();
 		virtual ~EarthRenderableWinRT();
 

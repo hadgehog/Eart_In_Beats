@@ -14,7 +14,8 @@
 #include <assimp\postprocess.h>
 
 EarthRendererNative::EarthRendererNative() : initialized(false), modelLoaded(false),
-rotationAngleHorizontal(250.0f), rotationAngleVertical(0.0f), indexCount(0), earthRotationEnabled(false), scale(1.3f)
+rotationAngleHorizontal(250.0f), rotationAngleVertical(0.0f), indexCount(0), 
+earthRotationEnabled(false), scale(1.3f), showSliders(false)
 {
 	DirectX::XMStoreFloat4x4(&this->projection, DirectX::XMMatrixIdentity());
 }
@@ -787,36 +788,26 @@ void EarthRendererNative::ProcessMove(const DirectX::XMFLOAT2 &moveVec, const Di
 			rtSize.Width, rtSize.Height, 0.0f, 1.0f,
 			proj, DirectX::XMMatrixIdentity(), DirectX::XMMatrixIdentity());
 
-		auto vectorFromPrevPointToCenter = DirectX::XMVectorSubtract(this->prevPoint, earthPosition);
-		auto vectorFromCurrPointToCenter = DirectX::XMVectorSubtract(nextPoint, earthPosition);
+		auto vectorFromPrevPointToCenter = DirectX::XMVectorSubtract(earthPosition, this->prevPoint);
+		auto vectorFromCurrPointToCenter = DirectX::XMVectorSubtract(earthPosition, nextPoint);
 		auto angleBetweenVectors = DirectX::XMVector3AngleBetweenVectors(vectorFromPrevPointToCenter, vectorFromCurrPointToCenter);
 
 		float angleInDeg = DirectX::XMConvertToDegrees(angleBetweenVectors.m128_f32[0]);
+		auto swapDirection = DirectX::XMVectorSubtract(nextPoint, this->prevPoint);
 
-		if (std::abs(nextPoint.m128_f32[0]) > std::abs(this->prevPoint.m128_f32[1])) {
-			if (this->prevPoint.m128_f32[0] > nextPoint.m128_f32[0]) {
-				this->rotationAngleHorizontal += std::abs(angleInDeg) * 5;
-			}
-			else if (this->prevPoint.m128_f32[0] < nextPoint.m128_f32[0]) {
-				this->rotationAngleHorizontal -= std::abs(angleInDeg) * 5;
-			}
+		if (std::abs(swapDirection.m128_f32[0]) > std::abs(swapDirection.m128_f32[1])) {
+			this->rotationAngleHorizontal -= swapDirection.m128_f32[0] * 100;
 		}
-
-		//else if (std::abs(nextPoint.m128_f32[1]) > std::abs(this->prevPoint.m128_f32[0])) {
-			//if (this->prevPoint.m128_f32[1] > nextPoint.m128_f32[1]) {
-			//	this->rotationAngleVertical += std::abs(angleInDeg);
-			//}
-			//else if (this->prevPoint.m128_f32[1] < nextPoint.m128_f32[1]) {
-			//	this->rotationAngleVertical -= std::abs(angleInDeg);
-			//}
-		//}
+		else if (std::abs(swapDirection.m128_f32[1]) > std::abs(swapDirection.m128_f32[0])) {
+			this->rotationAngleVertical -= swapDirection.m128_f32[1] * 100;
+		}
 
 		this->prevPoint = nextPoint;
 	}
 }
 
 void EarthRendererNative::ProcessZoom(float scale, float x, float y) {
-	this->scale *= scale;	// or +=
+	this->scale *= scale;
 }
 
 void EarthRendererNative::ProcessRotating(float angle, float x, float y) {
@@ -851,7 +842,10 @@ void EarthRendererNative::ManipulationStarted(float x, float y) {
 }
 
 void EarthRendererNative::ManipulationCompleted(const DirectX::XMFLOAT2 &pos) {
-	int s = 3;
+	if (this->tapOnSphere) {
+		this->showSliders = true;
+		this->tapOnSphere = false;
+	}
 }
 
 void EarthRendererNative::ProcessTap(int tapCount, float x, float y) {

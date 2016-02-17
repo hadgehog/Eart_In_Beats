@@ -84,7 +84,7 @@ void GestureHelper::OnManipulationInertiaStarting(GestureRecognizer ^sender, Man
 		DirectX::XMFLOAT2 moveVec(e->Delta.Translation.X, e->Delta.Translation.Y);
 		DirectX::XMFLOAT2 newPos(e->Position.X, e->Position.Y);
 
-		sender->InertiaTranslationDeceleration = 0.2f;
+		sender->InertiaTranslationDeceleration = 0.3f;
 		this->MoveUpdated(moveVec, newPos);
 	}
 }

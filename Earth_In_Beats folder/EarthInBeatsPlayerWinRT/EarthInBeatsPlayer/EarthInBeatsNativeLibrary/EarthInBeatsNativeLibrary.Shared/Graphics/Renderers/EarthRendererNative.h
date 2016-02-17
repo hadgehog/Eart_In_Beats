@@ -118,6 +118,7 @@ private:
 
 	bool tapOnSphere;
 	DirectX::XMVECTOR prevPoint;
+	bool showSliders;
 
 	void WaitForInitialization();
 
