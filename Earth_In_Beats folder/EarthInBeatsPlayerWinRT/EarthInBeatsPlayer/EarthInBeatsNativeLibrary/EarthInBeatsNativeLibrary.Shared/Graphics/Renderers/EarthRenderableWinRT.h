@@ -6,10 +6,14 @@
 namespace EarthInBeatsNativeLibrary
 {
 	public delegate void ShowSliders(bool);
+	public delegate void HorizontalManipulationsByEarth(float);
+	public delegate void VerticalManipulationsByEarth(float);
 
 	public ref class EarthRenderableWinRT sealed : public IRenderable{
 	public:
 		event ShowSliders ^ShowSlidersEvent;
+		event HorizontalManipulationsByEarth ^HorizontalManipulationEvent;
+		event HorizontalManipulationsByEarth ^VerticalManipulationEvent;
 
 		EarthRenderableWinRT();
 		virtual ~EarthRenderableWinRT();
@@ -35,6 +39,10 @@ namespace EarthInBeatsNativeLibrary
 		property float VericalRotationAngle {
 			float get();
 			void set(float a);
+		}
+
+		property bool ManipulationMode {
+			bool get();
 		}
 
 	private:

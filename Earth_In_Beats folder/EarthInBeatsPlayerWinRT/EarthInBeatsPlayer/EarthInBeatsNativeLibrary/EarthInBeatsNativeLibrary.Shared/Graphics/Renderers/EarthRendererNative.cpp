@@ -13,11 +13,19 @@
 #include <assimp\scene.h>
 #include <assimp\postprocess.h>
 
-EarthRendererNative::EarthRendererNative() : initialized(false), modelLoaded(false),
-rotationAngleHorizontal(250.0f), rotationAngleVertical(0.0f), indexCount(0), 
-earthRotationEnabled(false), scale(1.3f), showSliders(false)
+const float EarthRendererNative::HORIZONTAL_ROTATION_FACTOR = 35.0f;
+
+EarthRendererNative::EarthRendererNative() : 
+	initialized(false), modelLoaded(false), indexCount(0), 
+	earthRotationEnabled(false), scale(1.3f), showSliders(false),
+	rotationAngleHorizontal(0.0f), rotationAngleVertical(0.0f),
+	commonVerticalRotationAngle(0.0f), managingByEarthManipulations(false)
 {
 	DirectX::XMStoreFloat4x4(&this->projection, DirectX::XMMatrixIdentity());
+	this->matrixRotation = DirectX::XMMatrixRotationRollPitchYaw(0.0f, DirectX::XMConvertToRadians(250.0f), 0.0f);
+
+	this->tapTimer = std::make_unique<Timer>();
+	this->tapCount = 0;
 }
 
 EarthRendererNative::~EarthRendererNative() {
@@ -217,6 +225,10 @@ void EarthRendererNative::Initialize(const std::shared_ptr<GuardedDeviceResource
 		this->gestureHelper->ManipulationCompleted = [=](const DirectX::XMFLOAT2 &pos) { this->ManipulationCompleted(pos); };
 		this->gestureHelper->Tapped = [=](int tapCount, float x, float y) {this->ProcessTap(tapCount, x, y); };
 
+		/*this->showSlidersEvent;
+		this->horizontalManipulationChanged;
+		this->verticalManipulationChanged;*/
+
 		this->tapOnSphere = false;
 		this->prevPoint = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -255,6 +267,7 @@ void EarthRendererNative::CreateSizeDependentResources() {
 	auto size = dxDev->GetLogicalSize();
 	auto view = DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f), DirectX::XMVectorSet(0, 0, 10, 0), DirectX::g_XMIdentityR1);
 
+	// for model
 	DirectX::XMStoreFloat4x4(&this->constantBufferData.model, DirectX::XMMatrixTranspose(DirectX::XMMatrixTranslation(0, 0, 2)));
 	DirectX::XMStoreFloat4x4(&this->constantBufferData.view, DirectX::XMMatrixTranspose(view));
 	DirectX::XMStoreFloat4x4(&this->constantBufferData.projection, DirectX::XMMatrixIdentity());
@@ -263,7 +276,6 @@ void EarthRendererNative::CreateSizeDependentResources() {
 		auto outputSize = dxDev->GetOutputSize();
 		float aspectRatio = outputSize.Width / outputSize.Height;
 		float fovAngleY = 90.0f * DirectX::XM_PI / 180.0f;
-		float scale = (std::min)(outputSize.Width, outputSize.Height) / (std::max)(outputSize.Width, outputSize.Height);
 
 		DirectX::XMMATRIX orthoMatrix = DirectX::XMMatrixOrthographicLH(aspectRatio * 15.0f, 15.0f, 0.1f, 100.0f);
 		DirectX::XMFLOAT4X4 orientation = dxDev->GetOrientationTransform3D();
@@ -284,7 +296,6 @@ void EarthRendererNative::CreateSizeDependentResources() {
 		auto outputSize = dxDev->GetOutputSize();
 		float aspectRatio = outputSize.Width / outputSize.Height;
 		float fovAngleY = 90.0f * DirectX::XM_PI / 180.0f;
-		float scale = (std::min)(outputSize.Width, outputSize.Height) / (std::max)(outputSize.Width, outputSize.Height);
 
 		DirectX::XMMATRIX perspectiveMatrix = DirectX::XMMatrixPerspectiveFovLH(fovAngleY, aspectRatio, 0.01f, 100.0f);
 		DirectX::XMFLOAT4X4 orientation = dxDev->GetOrientationTransform3D();
@@ -306,8 +317,10 @@ void EarthRendererNative::OnRenderThreadEnd() {
 }
 
 void EarthRendererNative::Update(const DX::StepTimer &timer) {
+	// rotating till song playing
 	if (this->earthRotationEnabled) {
-		this->rotationAngleHorizontal += (float)timer.GetElapsedSeconds() * 35.0f;
+		float currentAngle = (float)timer.GetElapsedSeconds() * HORIZONTAL_ROTATION_FACTOR;
+		this->matrixRotation = DirectX::XMMatrixMultiply(this->matrixRotation, DirectX::XMMatrixRotationRollPitchYaw(0.0f, DirectX::XMConvertToRadians(currentAngle), 0.0f));
 	}
 }
 
@@ -319,9 +332,7 @@ void EarthRendererNative::Render() {
 	concurrency::critical_section::scoped_lock lk(this->dataCs);
 
 	if (this->modelLoaded) {
-		DirectX::XMMATRIX modelMatrix = DirectX::XMMatrixMultiply(
-			DirectX::XMMatrixRotationRollPitchYaw(0.0f, DirectX::XMConvertToRadians(this->rotationAngleHorizontal), DirectX::XMConvertToRadians(this->rotationAngleVertical)),
-			DirectX::XMMatrixTranslation(0, 0, 10));
+		DirectX::XMMATRIX modelMatrix = DirectX::XMMatrixMultiply(this->matrixRotation, DirectX::XMMatrixTranslation(0, 0, 10));
 
 		modelMatrix = DirectX::XMMatrixMultiply(
 			modelMatrix,
@@ -740,8 +751,13 @@ void EarthRendererNative::SetEarthRotationEnabled(bool v) {
 
 void EarthRendererNative::ResetRotationAngles() {
 	concurrency::critical_section::scoped_lock lk(this->externDataCs);
-	this->rotationAngleHorizontal = 250.0f;
+	// song state
+	this->rotationAngleHorizontal = 0.0f;
 	this->rotationAngleVertical = 0.0f;
+	this->commonVerticalRotationAngle = 0.0f;
+
+	// model state
+	this->matrixRotation = DirectX::XMMatrixRotationRollPitchYaw(0.0f, DirectX::XMConvertToRadians(250.0f), 0.0f);
 }
 
 float EarthRendererNative::GetHorisontalRotationAngle() {
@@ -750,7 +766,7 @@ float EarthRendererNative::GetHorisontalRotationAngle() {
 
 void EarthRendererNative::SetHorisontalRotationAngle(float angle) {
 	concurrency::critical_section::scoped_lock lk(this->externDataCs);
-	this->rotationAngleHorizontal = angle;
+	this->matrixRotation = DirectX::XMMatrixMultiply(this->matrixRotation, DirectX::XMMatrixRotationRollPitchYaw(0.0f, DirectX::XMConvertToRadians(angle), 0.0f));
 }
 
 float EarthRendererNative::GetVerticalRotationAngle() {
@@ -759,7 +775,11 @@ float EarthRendererNative::GetVerticalRotationAngle() {
 
 void EarthRendererNative::SetVerticalRotationAngle(float angle) {
 	concurrency::critical_section::scoped_lock lk(this->externDataCs);
-	this->rotationAngleVertical = angle;
+	this->matrixRotation = DirectX::XMMatrixMultiply(this->matrixRotation, DirectX::XMMatrixRotationRollPitchYaw(DirectX::XMConvertToRadians(angle), 0.0f, 0.0f));
+}
+
+bool EarthRendererNative::GetManipulationMode() {
+	return this->managingByEarthManipulations;
 }
 
 void EarthRendererNative::WaitForInitialization() {
@@ -795,14 +815,45 @@ void EarthRendererNative::ProcessMove(const DirectX::XMFLOAT2 &moveVec, const Di
 		float angleInDeg = DirectX::XMConvertToDegrees(angleBetweenVectors.m128_f32[0]);
 		auto swapDirection = DirectX::XMVectorSubtract(nextPoint, this->prevPoint);
 
+		this->rotationAngleHorizontal = 0.0f;
+		this->rotationAngleVertical = 0.0f;
+
 		if (std::abs(swapDirection.m128_f32[0]) > std::abs(swapDirection.m128_f32[1])) {
 			this->rotationAngleHorizontal -= swapDirection.m128_f32[0] * 100;
 		}
 		else if (std::abs(swapDirection.m128_f32[1]) > std::abs(swapDirection.m128_f32[0])) {
 			this->rotationAngleVertical -= swapDirection.m128_f32[1] * 100;
+			//this->commonVerticalRotationAngle -= swapDirection.m128_f32[1] * 100;
 		}
 
+		/*if (this->commonVerticalRotationAngle > 30.0f && swapDirection.m128_f32[1] < 0.0f) {
+			this->rotationAngleVertical = 0.0f;
+		}		
+		
+		if (this->commonVerticalRotationAngle < -30.0f && swapDirection.m128_f32[1] > 0.0f) {
+			this->rotationAngleVertical = 0.0f;
+		}*/
+		
+		this->matrixRotation = DirectX::XMMatrixMultiply(this->matrixRotation,
+			DirectX::XMMatrixRotationRollPitchYaw(
+				DirectX::XMConvertToRadians(-this->rotationAngleVertical),
+				DirectX::XMConvertToRadians(this->rotationAngleHorizontal),
+				0.0f));
+
 		this->prevPoint = nextPoint;
+
+		if (this->managingByEarthManipulations) {
+			if ((int)this->rotationAngleHorizontal) {
+				if (this->horizontalManipulationChanged) {
+					this->horizontalManipulationChanged(this->rotationAngleHorizontal);
+				}
+			}
+			else if ((int)this->rotationAngleVertical) {
+				if (this->verticalManipulationChanged) {
+					this->verticalManipulationChanged(this->rotationAngleVertical);
+				}
+			}
+		}
 	}
 }
 
@@ -845,11 +896,56 @@ void EarthRendererNative::ManipulationCompleted(const DirectX::XMFLOAT2 &pos) {
 	if (this->tapOnSphere) {
 		this->showSliders = true;
 		this->tapOnSphere = false;
+
+		if (this->showSlidersEvent) {
+			this->showSlidersEvent(this->showSliders);
+		}
+
+		this->showSliders = false;
 	}
 }
 
 void EarthRendererNative::ProcessTap(int tapCount, float x, float y) {
-	int s = 3;
+	auto dxDev = this->dx->Get();
+	auto rtSize = dxDev->GetLogicalSize();
+	auto proj = DirectX::XMLoadFloat4x4(&this->projection);
+
+	DirectX::XMVECTOR tapPoint0 = DirectX::XMVectorSet(x, y, 0.0f, 1.0f);
+	DirectX::XMVECTOR tapPoint1 = DirectX::XMVectorSet(x, y, 1.0f, 1.0f);
+	DirectX::XMVECTOR direction = DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 1.0f);
+	DirectX::XMVECTOR earthPosition = DirectX::XMVectorSet(0.0f, 0.0f, 2.0f, 1.0f);	// not sure that its right, but its working :)
+
+	tapPoint0 = DirectX::XMVector3Unproject(tapPoint0, 0.0f, 0.0f,
+		rtSize.Width, rtSize.Height, 0.0f, 1.0f,
+		proj, DirectX::XMMatrixIdentity(), DirectX::XMMatrixIdentity());	// ray origin
+	tapPoint1 = DirectX::XMVector3Unproject(tapPoint1, 0.0f, 0.0f,
+		rtSize.Width, rtSize.Height, 0.0f, 1.0f,
+		proj, DirectX::XMMatrixIdentity(), DirectX::XMMatrixIdentity());
+
+	direction = DirectX::XMVectorSubtract(tapPoint1, tapPoint0);			// ray direction
+
+	DirectX::XMVECTOR hitPoint = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+	DirectX::XMVECTOR normal = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+	float distance = 0.0f;
+
+	this->tapOnSphere = this->Intersect(direction, tapPoint0, earthPosition, 0.5f, hitPoint, distance, normal);	// not sure that Earth radius is right, but its working :)
+	this->prevPoint = hitPoint;
+
+	this->tapCount++;
+	this->tapTimer->destroy(this->tapTimerPeriod);
+
+	this->tapTimerPeriod = this->tapTimer->create(100, 0, [=]() {
+		int tapCountTmp = this->tapCount;
+
+		if (this->tapOnSphere && tapCountTmp == 2) {
+			this->managingByEarthManipulations = true;			
+		}
+		else {
+			this->managingByEarthManipulations = false;
+		}
+
+		this->tapCount = 0;
+	});
 }
 
 inline bool EarthRendererNative::Intersect(const DirectX::XMVECTOR &rayDir, const DirectX::XMVECTOR &rayOrig,

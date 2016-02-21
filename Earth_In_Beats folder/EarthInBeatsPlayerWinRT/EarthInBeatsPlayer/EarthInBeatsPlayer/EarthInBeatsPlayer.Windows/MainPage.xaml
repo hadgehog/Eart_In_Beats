@@ -24,8 +24,7 @@
         <!--<CommandBar Visibility="Visible" BorderBrush="White" IsOpen="True" IsSticky="True">-->
         <CommandBar>
             <AppBarButton x:Name="Previous" Label="Previous" Icon="Previous" Click="Previous_Click"/>
-            <AppBarButton x:Name="Play" Label="Play" Icon="Play" Click="Play_Click"/>
-            <AppBarButton x:Name="Pause" Label="Pause" Icon="Pause" Click="Pause_Click" />
+            <AppBarToggleButton x:Name="PlayPauseBtn" Label="Play/Pause" Icon="Play" Checked="PlayPauseBtn_Checked" Unchecked="PlayPauseBtn_Unchecked"/>
             <AppBarButton x:Name="Stop" Label="Stop" Icon="Stop" Click="Stop_Click"/>
             <AppBarButton x:Name="Next" Label="Next" Icon="Next" Click="Next_Click"/>
 

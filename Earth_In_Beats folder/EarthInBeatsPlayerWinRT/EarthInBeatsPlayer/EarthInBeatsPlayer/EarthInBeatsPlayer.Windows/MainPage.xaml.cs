@@ -177,6 +177,47 @@ namespace EarthInBeatsPlayer
                  await this.earthRenderable.LoadModelTexture(pathTex);
                  await this.earthRenderable.Load3DModel(path);
              });
+
+            this.earthRenderable.ShowSlidersEvent += EarthRenderable_ShowSlidersEvent;
+            this.earthRenderable.HorizontalManipulationEvent += EarthRenderable_HorizontalManipulationEvent;
+            this.earthRenderable.VerticalManipulationEvent += EarthRenderable_VerticalManipulationEvent;
+        }
+
+        private async void EarthRenderable_VerticalManipulationEvent(float __param0)
+        {
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                
+            });
+        }
+
+        private async void EarthRenderable_HorizontalManipulationEvent(float __param0)
+        {
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                if (this.earthRenderable != null)
+                {
+                    var progress1 = __param0;
+                    int s = 43;
+                }
+            });
+        }
+
+        private async void EarthRenderable_ShowSlidersEvent(bool __param0)
+        {
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                this.sliderProgress.Visibility = Visibility.Visible;
+                this.sliderVolume.Visibility = Visibility.Visible;
+            });
+
+            await Task.Delay(TimeSpan.FromSeconds(5.0));
+
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                this.sliderProgress.Visibility = Visibility.Collapsed;
+                this.sliderVolume.Visibility = Visibility.Collapsed;
+            });
         }
 
         private void Slider1_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
@@ -280,20 +321,6 @@ namespace EarthInBeatsPlayer
         private void swapChainPanel_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
 
-        }
-
-        private void Play_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.player != null)
-            {
-                this.sliderProgress.Value = 0;
-                this.player.Volume((float)this.sliderVolume.Value / 100);
-                this.player.Play();
-                this.ResetProgress();
-                this.IncreaseProgress();
-                this.earthRenderable.EarthRotationEnabled = true;
-                this.isPlayingNow = true;
-            }
         }
 
         private void Stop_Click(object sender, RoutedEventArgs e)
@@ -400,6 +427,13 @@ namespace EarthInBeatsPlayer
                 this.player.Dispose();
             }
 
+            if (this.earthRenderable != null)
+            {
+                this.earthRenderable.ShowSlidersEvent += EarthRenderable_ShowSlidersEvent;
+                this.earthRenderable.HorizontalManipulationEvent += EarthRenderable_HorizontalManipulationEvent;
+                this.earthRenderable.VerticalManipulationEvent += EarthRenderable_VerticalManipulationEvent;
+            }
+
             GC.Collect();
 
             Application.Current.Exit();
@@ -436,25 +470,13 @@ namespace EarthInBeatsPlayer
             }
         }
 
-        private void Pause_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.player != null)
-            {
-                this.earthRenderable.EarthRotationEnabled = false;
-                this.player.Pause();
-                this.ResetProgress();
-                this.isPlayingNow = false;
-            }
-        }
-
         private async void swapChainPanel_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             var value = this.sliderVolume.Value;
 
-            this.sliderVolume.Value = 0;
-
             await this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
+                this.sliderVolume.Value = 0;
                 this.sliderVolume.Value = value;
             });
         }
@@ -492,6 +514,41 @@ namespace EarthInBeatsPlayer
             if (this.earthRenderable != null && this.isPlayingNow)
             {
                 this.earthRenderable.EarthRotationEnabled = true;
+            }
+        }
+
+        private async void PlayPauseBtn_Checked(object sender, RoutedEventArgs e)
+        {
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                this.PlayPauseBtn.Icon = new SymbolIcon(Symbol.Pause);
+            });
+
+            if (this.player != null)
+            {
+                this.sliderProgress.Value = 0;
+                this.player.Volume((float)this.sliderVolume.Value / 100);
+                this.player.Play();
+                this.ResetProgress();
+                this.IncreaseProgress();
+                this.earthRenderable.EarthRotationEnabled = true;
+                this.isPlayingNow = true;
+            }
+        }
+
+        private async void PlayPauseBtn_Unchecked(object sender, RoutedEventArgs e)
+        {
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                this.PlayPauseBtn.Icon = new SymbolIcon(Symbol.Play);
+            });
+
+            if (this.player != null)
+            {
+                this.earthRenderable.EarthRotationEnabled = false;
+                this.player.Pause();
+                this.ResetProgress();
+                this.isPlayingNow = false;
             }
         }
     }

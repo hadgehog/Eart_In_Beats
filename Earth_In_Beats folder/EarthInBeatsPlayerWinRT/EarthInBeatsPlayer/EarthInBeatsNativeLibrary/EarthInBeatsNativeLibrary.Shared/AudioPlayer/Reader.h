@@ -11,8 +11,6 @@
 
 namespace EarthInBeatsNativeLibrary
 {
-
-
 	public interface class ITrack
 	{
 	public:

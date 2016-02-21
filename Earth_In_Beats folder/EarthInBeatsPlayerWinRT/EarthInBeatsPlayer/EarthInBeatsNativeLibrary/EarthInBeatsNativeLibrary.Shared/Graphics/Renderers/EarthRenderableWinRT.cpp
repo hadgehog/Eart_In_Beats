@@ -25,17 +25,35 @@ namespace EarthInBeatsNativeLibrary
 		this->nativeRenderer = std::make_shared<EarthRendererNative>();
 
 		this->rendererContainer->Set(nativeRenderer);
+
+		this->nativeRenderer->showSlidersEvent = [=](bool v) {
+			concurrency::create_async([=]() {
+				this->ShowSlidersEvent(v);
+			});
+		};
+
+		this->nativeRenderer->horizontalManipulationChanged = [=](float p) {
+			concurrency::create_async([=]() {
+				this->HorizontalManipulationEvent(p);
+			});
+		};
+
+		this->nativeRenderer->verticalManipulationChanged = [=](float p) {
+			concurrency::create_async([=]() {
+				this->VerticalManipulationEvent(p);
+			});
+		};
 	}
 
-	EarthRenderableWinRT::~EarthRenderableWinRT(){
+	EarthRenderableWinRT::~EarthRenderableWinRT() {
 	}
 
-	NativeRenderableContainer ^EarthRenderableWinRT::Get(){
+	NativeRenderableContainer ^EarthRenderableWinRT::Get() {
 		return this->rendererContainer;
 	}
 
-	Windows::Foundation::IAsyncAction ^EarthRenderableWinRT::Load3DModel(Platform::String ^path){
-		return concurrency::create_async([=](){
+	Windows::Foundation::IAsyncAction ^EarthRenderableWinRT::Load3DModel(Platform::String ^path) {
+		return concurrency::create_async([=]() {
 			std::string strPath = H::Text::ConvertToUTF8(path);
 			this->nativeRenderer->LoadModel(strPath);
 		});
@@ -79,5 +97,9 @@ namespace EarthInBeatsNativeLibrary
 
 	void EarthRenderableWinRT::VericalRotationAngle::set(float a) {
 		this->nativeRenderer->SetVerticalRotationAngle(a);
+	}
+
+	bool EarthRenderableWinRT::ManipulationMode::get() {
+		return this->nativeRenderer->GetManipulationMode();
 	}
 }

@@ -6,6 +6,7 @@
 #include "Graphics\Helpers\Thread\PPL\safe_task.h"
 #include "..\Shaders\ConstantBufferData.h"
 #include "GestureHelper.h"
+#include "Graphics\Helpers\Timer.h"
 
 #include <memory>
 #include <string>
@@ -22,6 +23,10 @@ class EarthRendererNative : public INativeRenderable{
 public:
 	EarthRendererNative();
 	~EarthRendererNative();
+
+	std::function<void(bool)>  showSlidersEvent;
+	std::function<void(float)> horizontalManipulationChanged;
+	std::function<void(float)> verticalManipulationChanged;
 
 	virtual void Initialize(const std::shared_ptr<GuardedDeviceResources> &dx) override;
 	void Shutdown() override;
@@ -51,11 +56,13 @@ public:
 
 	void ResetRotationAngles();
 
-	float GetHorisontalRotationAngle();
-	void SetHorisontalRotationAngle(float angle);
+	float GetHorisontalRotationAngle();				// for song managing
+	void SetHorisontalRotationAngle(float angle);	// for model rotating only, no influence on song
 
-	float GetVerticalRotationAngle();
-	void SetVerticalRotationAngle(float angle);
+	float GetVerticalRotationAngle();				// for song managing
+	void SetVerticalRotationAngle(float angle);		// for model rotating only, no influence on song
+
+	bool GetManipulationMode();
 
 private:
 	std::shared_ptr<GuardedDeviceResources> dx;
@@ -69,11 +76,24 @@ private:
 	bool initialized;
 
 	bool modelLoaded;
-	float rotationAngleHorizontal;	// rotating till song play or rewind
-	float rotationAngleVertical;	// rotating till change volume
 	bool earthRotationEnabled;
 	uint32_t indexCount;
-	float scale;						// scaling model
+	float scale;
+	std::unique_ptr<Timer> tapTimer;
+	uint64_t tapTimerPeriod;
+	int tapCount;
+	bool managingByEarthManipulations;				// enable possibility of manage song by earth manipulations
+	float rotationAngleHorizontal;					// rotating angle for set rewind position
+	float rotationAngleVertical;					// rotating angle for change volume
+	float commonVerticalRotationAngle;
+	static const float HORIZONTAL_ROTATION_FACTOR;	// rotating factor till song play (may be bigger or less, according to song speed)
+
+	GestureHelper ^gestureHelper;
+
+	bool tapOnSphere;
+	DirectX::XMVECTOR prevPoint;
+	DirectX::XMMATRIX matrixRotation;
+	bool showSliders;
 
 	DirectX::XMFLOAT4X4 projection;
 
@@ -113,12 +133,6 @@ private:
 
 	ConstantBufferData constantBufferData;
 	ConstantBufferData bgConstantBufferData;
-
-	GestureHelper ^gestureHelper;
-
-	bool tapOnSphere;
-	DirectX::XMVECTOR prevPoint;
-	bool showSliders;
 
 	void WaitForInitialization();
 
