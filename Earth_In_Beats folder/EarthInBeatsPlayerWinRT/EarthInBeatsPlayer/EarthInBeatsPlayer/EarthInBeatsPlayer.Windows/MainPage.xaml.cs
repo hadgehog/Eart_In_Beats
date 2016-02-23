@@ -195,10 +195,13 @@ namespace EarthInBeatsPlayer
         {
             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
-                if (this.earthRenderable != null)
+                if (this.earthRenderable != null )
                 {
-                    var progress1 = __param0;
-                    int s = 43;
+                    var progressFromEarth = Math.Abs(__param0);
+
+                    this.sliderProgress.Value = (progressFromEarth * 100.0) / 360.0;
+
+                    int s = 89;
                 }
             });
         }
