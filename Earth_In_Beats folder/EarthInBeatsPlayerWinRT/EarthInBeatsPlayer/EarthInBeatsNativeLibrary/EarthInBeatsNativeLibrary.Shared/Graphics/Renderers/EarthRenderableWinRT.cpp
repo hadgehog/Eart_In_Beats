@@ -83,8 +83,12 @@ namespace EarthInBeatsNativeLibrary
 		this->nativeRenderer->ResetRotationAngles();
 	}
 
+	void EarthRenderableWinRT::IsPlaylistCreated(bool play) {
+		this->nativeRenderer->SetPlayingMode(play);
+	}
+
 	float EarthRenderableWinRT::HorisontalRotationAngle::get() {
-		return this->nativeRenderer->GetHorisontalRotationAngle();
+		return -1.0f;	// no implemented
 	}
 
 	void EarthRenderableWinRT::HorisontalRotationAngle::set(float a) {
@@ -92,7 +96,7 @@ namespace EarthInBeatsNativeLibrary
 	}
 
 	float EarthRenderableWinRT::VericalRotationAngle::get() {
-		return this->nativeRenderer->GetVerticalRotationAngle();
+		return -1.0f;	// no implemented
 	}
 
 	void EarthRenderableWinRT::VericalRotationAngle::set(float a) {

@@ -56,13 +56,11 @@ public:
 
 	void ResetRotationAngles();
 
-	float GetHorisontalRotationAngle();				// for song managing
 	void SetHorisontalRotationAngle(float angle);	// for model rotating only, no influence on song
-
-	float GetVerticalRotationAngle();				// for song managing
 	void SetVerticalRotationAngle(float angle);		// for model rotating only, no influence on song
 
 	bool GetManipulationMode();
+	void SetPlayingMode(bool v);
 
 private:
 	std::shared_ptr<GuardedDeviceResources> dx;
@@ -83,9 +81,11 @@ private:
 	uint64_t tapTimerPeriod;
 	int tapCount;
 	bool managingByEarthManipulations;				// enable possibility of manage song by earth manipulations
-	float rotationAngleHorizontal;					// rotating angle for set rewind position
-	float rotationAngleVertical;					// rotating angle for change volume
-	float commonVerticalRotationAngle;
+	float rotationAngleHorizontal;					// for model rotating only, no influence on song
+	float rotationAngleVertical;					// for model rotating only, no influence on song
+	float angleForRewinding;						// rotating angle for set rewind position
+	float angleForVolumeChange;						// rotating angle for change volume
+	bool isSongPlayingNow;
 	static const float HORIZONTAL_ROTATION_FACTOR;	// rotating factor till song play (may be bigger or less, according to song speed)
 
 	GestureHelper ^gestureHelper;

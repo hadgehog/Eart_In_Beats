@@ -18,8 +18,8 @@ const float EarthRendererNative::HORIZONTAL_ROTATION_FACTOR = 35.0f;
 EarthRendererNative::EarthRendererNative() :
 	initialized(false), modelLoaded(false), indexCount(0),
 	earthRotationEnabled(false), scale(1.3f), showSliders(false),
-	rotationAngleHorizontal(0.0f), rotationAngleVertical(0.0f),
-	commonVerticalRotationAngle(0.0f), managingByEarthManipulations(false)
+	rotationAngleHorizontal(0.0f), rotationAngleVertical(0.0f), isSongPlayingNow(false),
+	managingByEarthManipulations(false), angleForRewinding(0.0f), angleForVolumeChange(0.0f)
 {
 	DirectX::XMStoreFloat4x4(&this->projection, DirectX::XMMatrixIdentity());
 	this->matrixRotation = DirectX::XMMatrixRotationRollPitchYaw(0.0f, DirectX::XMConvertToRadians(250.0f), 0.0f);
@@ -754,14 +754,11 @@ void EarthRendererNative::ResetRotationAngles() {
 	// song state
 	this->rotationAngleHorizontal = 0.0f;
 	this->rotationAngleVertical = 0.0f;
-	this->commonVerticalRotationAngle = 0.0f;
+	this->angleForRewinding = 0.0f;
+	this->angleForVolumeChange = 0.0f;
 
 	// model state
 	this->matrixRotation = DirectX::XMMatrixRotationRollPitchYaw(0.0f, DirectX::XMConvertToRadians(250.0f), 0.0f);
-}
-
-float EarthRendererNative::GetHorisontalRotationAngle() {
-	return this->rotationAngleHorizontal;
 }
 
 void EarthRendererNative::SetHorisontalRotationAngle(float angle) {
@@ -769,10 +766,7 @@ void EarthRendererNative::SetHorisontalRotationAngle(float angle) {
 	this->matrixRotation = DirectX::XMMatrixMultiply(this->matrixRotation, DirectX::XMMatrixRotationRollPitchYaw(0.0f, DirectX::XMConvertToRadians(angle), 0.0f));
 }
 
-float EarthRendererNative::GetVerticalRotationAngle() {
-	return this->rotationAngleVertical;
-}
-
+////////// CRASHES WHEN START!!!!
 void EarthRendererNative::SetVerticalRotationAngle(float angle) {
 	concurrency::critical_section::scoped_lock lk(this->externDataCs);
 	this->matrixRotation = DirectX::XMMatrixMultiply(this->matrixRotation, DirectX::XMMatrixRotationRollPitchYaw(DirectX::XMConvertToRadians(angle), 0.0f, 0.0f));
@@ -780,6 +774,11 @@ void EarthRendererNative::SetVerticalRotationAngle(float angle) {
 
 bool EarthRendererNative::GetManipulationMode() {
 	return this->managingByEarthManipulations;
+}
+
+void EarthRendererNative::SetPlayingMode(bool v){
+	concurrency::critical_section::scoped_lock lk(this->externDataCs);
+	this->isSongPlayingNow = v;
 }
 
 void EarthRendererNative::WaitForInitialization() {
@@ -815,83 +814,50 @@ void EarthRendererNative::ProcessMove(const DirectX::XMFLOAT2 &moveVec, const Di
 		float angleInDeg = DirectX::XMConvertToDegrees(angleBetweenVectors.m128_f32[0]);
 		auto swapDirection = DirectX::XMVectorSubtract(nextPoint, this->prevPoint);
 
-		this->rotationAngleHorizontal = 0.0f;
-		this->rotationAngleVertical = 0.0f;
-
 		if (std::abs(swapDirection.m128_f32[0]) > std::abs(swapDirection.m128_f32[1])) {
 			this->rotationAngleHorizontal -= swapDirection.m128_f32[0] * 100;
+
+			if (this->managingByEarthManipulations && (this->rotationAngleHorizontal > -360.0f && this->rotationAngleHorizontal < 0.0f)) {
+				this->angleForRewinding -= swapDirection.m128_f32[0] * 100;
+			}
 		}
-		else {//if (std::abs(swapDirection.m128_f32[1]) >= std::abs(swapDirection.m128_f32[0])) {
-			if (std::abs(this->commonVerticalRotationAngle) < 30.0f) {
-				this->rotationAngleVertical -= swapDirection.m128_f32[1] * 100;
-			}
+		else if (std::abs(swapDirection.m128_f32[1]) > std::abs(swapDirection.m128_f32[0])) {
+			this->rotationAngleVertical -= swapDirection.m128_f32[1] * 100;
 
-			this->commonVerticalRotationAngle -= swapDirection.m128_f32[1] * 100;
-
-			/*float k = 1.0f;
-			float nextVAngle = this->commonVerticalRotationAngle - swapDirection.m128_f32[1] * 100;
-
-			if (nextVAngle > 30.0f) {
-				k = 30.0f / nextVAngle;
+			if (this->managingByEarthManipulations) {
+				this->angleForVolumeChange -= swapDirection.m128_f32[1] * 100;
 			}
-			else if (nextVAngle < -30.0f) {
-				k = -30.0f / nextVAngle;
-			}
-			else if (std::abs(nextVAngle) == 30.0f) {
-				k = 0.0f;
-			}
-
-			this->rotationAngleVertical -= swapDirection.m128_f32[1] * 100 * k;
-			this->commonVerticalRotationAngle -= swapDirection.m128_f32[1] * 100 * k;*/
 		}
 
-		//if (this->commonVerticalRotationAngle > 30.0f && swapDirection.m128_f32[1] <= 0.0f) {
-		//	this->rotationAngleVertical *= 30.0f / this->commonVerticalRotationAngle;
-		//	this->commonVerticalRotationAngle = 30.0f;
-		//	/*this->rotationAngleVertical = 0.0f;*/
-		//}		
-		//
-		//if (this->commonVerticalRotationAngle < -30.0f && swapDirection.m128_f32[1] >= 0.0f) {
-		//	this->rotationAngleVertical *= -30.0f / this->commonVerticalRotationAngle;
-		//	this->commonVerticalRotationAngle = -30.0f;
-		//	//this->rotationAngleVertical = 0.0f;
-		//}
-
-		if (this->commonVerticalRotationAngle > 30.0f) {
-			this->commonVerticalRotationAngle = 30.0f;
-			this->rotationAngleVertical = 0.0f;
+		if (this->rotationAngleVertical > 30.0f) {
+			this->rotationAngleVertical = 30.0f;
 		}
-		if (this->commonVerticalRotationAngle < -30.0f) {
-			this->commonVerticalRotationAngle = -30.0f;
-			this->rotationAngleVertical = 0.0f;
+		if (this->rotationAngleVertical < -30.0f) {
+			this->rotationAngleVertical = -30.0f;
 		}
 
-		//auto preRotate = DirectX::XMMatrixRotationRollPitchYaw(0.0f, DirectX::XMConvertToRadians(250.0f), 0.0f);
+		if (this->managingByEarthManipulations) {
+			if (this->rotationAngleHorizontal < -360.0f) {
+				this->rotationAngleHorizontal = -360.0f;
+			}
+			if (this->rotationAngleHorizontal > 0.0f) {
+				this->rotationAngleHorizontal = 0.0f;
+			}
+		}
 
-		this->matrixRotation = DirectX::XMMatrixMultiply(this->matrixRotation,
-			DirectX::XMMatrixRotationRollPitchYaw(
-				DirectX::XMConvertToRadians(-this->rotationAngleVertical),
-				DirectX::XMConvertToRadians(this->rotationAngleHorizontal),
-				0.0f));
+		auto preRotate = DirectX::XMMatrixRotationRollPitchYaw(0.0f, DirectX::XMConvertToRadians(250.0f), 0.0f);
 
-		/*this->matrixRotation = DirectX::XMMatrixMultiply(this->matrixRotation,
-			DirectX::XMMatrixRotationRollPitchYaw(
-				DirectX::XMConvertToRadians(-this->rotationAngleVertical),
-				DirectX::XMConvertToRadians(this->rotationAngleHorizontal),
-				0.0f));*/
+		this->matrixRotation = DirectX::XMMatrixMultiply(preRotate, DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(this->rotationAngleHorizontal)));
+		this->matrixRotation = DirectX::XMMatrixMultiply(this->matrixRotation, DirectX::XMMatrixRotationX(DirectX::XMConvertToRadians(-this->rotationAngleVertical)));
 
 		this->prevPoint = nextPoint;
 
 		if (this->managingByEarthManipulations) {
-			if ((int)this->rotationAngleHorizontal) {
-				if (this->horizontalManipulationChanged) {
-					this->horizontalManipulationChanged(this->rotationAngleHorizontal);
-				}
+			if (this->horizontalManipulationChanged) {
+				this->horizontalManipulationChanged(this->angleForRewinding);
 			}
-			else if ((int)this->rotationAngleVertical) {
-				if (this->verticalManipulationChanged) {
-					this->verticalManipulationChanged(this->rotationAngleVertical);
-				}
+			if (this->verticalManipulationChanged) {
+				this->verticalManipulationChanged(this->angleForVolumeChange);
 			}
 		}
 	}
@@ -937,9 +903,9 @@ void EarthRendererNative::ManipulationCompleted(const DirectX::XMFLOAT2 &pos) {
 		this->showSliders = true;
 		this->tapOnSphere = false;
 
-		if (this->showSlidersEvent) {
+		/*if (this->showSlidersEvent) {
 			this->showSlidersEvent(this->showSliders);
-		}
+		}*/
 
 		this->showSliders = false;
 	}
@@ -977,11 +943,14 @@ void EarthRendererNative::ProcessTap(int tapCount, float x, float y) {
 	this->tapTimerPeriod = this->tapTimer->create(100, 0, [=]() {
 		int tapCountTmp = this->tapCount;
 
-		if (this->tapOnSphere && tapCountTmp == 2) {
+		if (this->tapOnSphere && tapCountTmp == 2 && this->isSongPlayingNow) {
 			this->managingByEarthManipulations = true;
 		}
 		else {
 			this->managingByEarthManipulations = false;
+
+			this->angleForRewinding = 0.0f;
+			this->angleForVolumeChange = 0.0f;
 		}
 
 		this->tapCount = 0;

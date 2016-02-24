@@ -45,6 +45,8 @@ namespace EarthInBeatsNativeLibrary
 			bool get();
 		}
 
+		void IsPlaylistCreated(bool play);
+
 	private:
 		NativeRenderableContainer ^rendererContainer;
 		std::shared_ptr<EarthRendererNative> nativeRenderer;

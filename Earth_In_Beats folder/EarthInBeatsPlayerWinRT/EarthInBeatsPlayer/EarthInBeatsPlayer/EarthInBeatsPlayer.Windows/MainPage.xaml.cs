@@ -178,6 +178,8 @@ namespace EarthInBeatsPlayer
                  await this.earthRenderable.Load3DModel(path);
              });
 
+            this.earthRenderable.IsPlaylistCreated(false);
+
             this.earthRenderable.ShowSlidersEvent += EarthRenderable_ShowSlidersEvent;
             this.earthRenderable.HorizontalManipulationEvent += EarthRenderable_HorizontalManipulationEvent;
             this.earthRenderable.VerticalManipulationEvent += EarthRenderable_VerticalManipulationEvent;
@@ -415,10 +417,14 @@ namespace EarthInBeatsPlayer
                     this.player.InitPlayer(this.playList, this.earthRenderable);
                 }
 
+                this.earthRenderable.IsPlaylistCreated(true);
+
                 this.WriteDebugMessage("Playlist successfully created.", Colors.Yellow);
             }
             else
             {
+                this.earthRenderable.IsPlaylistCreated(false);
+
                 this.WriteDebugMessage("Wrong chosen files! Chosen files = NULL!!!", Colors.Red);
             }
         }
@@ -486,28 +492,31 @@ namespace EarthInBeatsPlayer
 
         private void sliderProgress_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
-            if (this.earthRenderable != null && this.isPlayingNow && !this.updateProgress)
+            if(this.earthRenderable != null && !this.earthRenderable.ManipulationMode)
             {
-                this.earthRenderable.EarthRotationEnabled = false;
+                if (this.isPlayingNow && !this.updateProgress)
+                {
+                    this.earthRenderable.EarthRotationEnabled = false;
 
-                if (e.NewValue > e.OldValue)
-                {
-                    this.earthRenderable.HorisontalRotationAngle += 15.0f;
+                    if (e.NewValue > e.OldValue)
+                    {
+                        this.earthRenderable.HorisontalRotationAngle += 15.0f;
+                    }
+                    else
+                    {
+                        this.earthRenderable.HorisontalRotationAngle -= 15.0f;
+                    }
                 }
-                else
+                else if (!this.isPlayingNow)
                 {
-                    this.earthRenderable.HorisontalRotationAngle -= 15.0f;
-                }
-            }
-            else if (!this.isPlayingNow)
-            {
-                if (e.NewValue > e.OldValue)
-                {
-                    this.earthRenderable.HorisontalRotationAngle += 15.0f;
-                }
-                else
-                {
-                    this.earthRenderable.HorisontalRotationAngle -= 15.0f;
+                    if (e.NewValue > e.OldValue)
+                    {
+                        this.earthRenderable.HorisontalRotationAngle += 15.0f;
+                    }
+                    else
+                    {
+                        this.earthRenderable.HorisontalRotationAngle -= 15.0f;
+                    }
                 }
             }
         }
@@ -536,6 +545,8 @@ namespace EarthInBeatsPlayer
                 this.IncreaseProgress();
                 this.earthRenderable.EarthRotationEnabled = true;
                 this.isPlayingNow = true;
+
+                this.earthRenderable.IsPlaylistCreated(true);
             }
         }
 
