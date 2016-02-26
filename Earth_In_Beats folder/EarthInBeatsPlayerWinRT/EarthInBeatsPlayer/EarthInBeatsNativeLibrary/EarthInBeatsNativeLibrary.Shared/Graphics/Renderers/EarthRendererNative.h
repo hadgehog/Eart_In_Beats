@@ -87,6 +87,8 @@ private:
 	float angleForVolumeChange;						// rotating angle for change volume
 	bool isSongPlayingNow;
 	static const float HORIZONTAL_ROTATION_FACTOR;	// rotating factor till song play (may be bigger or less, according to song speed)
+	float HORIZONTAL_ANGLE_LIMITER_TOP;
+	float HORIZONTAL_ANGLE_LIMITER_BOTTOM;
 
 	GestureHelper ^gestureHelper;
 

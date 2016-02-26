@@ -26,6 +26,8 @@ EarthRendererNative::EarthRendererNative() :
 
 	this->tapTimer = std::make_unique<Timer>();
 	this->tapCount = 0;
+	this->HORIZONTAL_ANGLE_LIMITER_TOP = 0.0f;
+	this->HORIZONTAL_ANGLE_LIMITER_BOTTOM = 0.0f;
 }
 
 EarthRendererNative::~EarthRendererNative() {
@@ -317,6 +319,7 @@ void EarthRendererNative::OnRenderThreadEnd() {
 }
 
 void EarthRendererNative::Update(const DX::StepTimer &timer) {
+	concurrency::critical_section::scoped_lock lk(this->dataCs);
 	// rotating till song playing
 	if (this->earthRotationEnabled) {
 		float currentAngle = (float)timer.GetElapsedSeconds() * HORIZONTAL_ROTATION_FACTOR;
@@ -776,7 +779,7 @@ bool EarthRendererNative::GetManipulationMode() {
 	return this->managingByEarthManipulations;
 }
 
-void EarthRendererNative::SetPlayingMode(bool v){
+void EarthRendererNative::SetPlayingMode(bool v) {
 	concurrency::critical_section::scoped_lock lk(this->externDataCs);
 	this->isSongPlayingNow = v;
 }
@@ -814,35 +817,54 @@ void EarthRendererNative::ProcessMove(const DirectX::XMFLOAT2 &moveVec, const Di
 		float angleInDeg = DirectX::XMConvertToDegrees(angleBetweenVectors.m128_f32[0]);
 		auto swapDirection = DirectX::XMVectorSubtract(nextPoint, this->prevPoint);
 
-		if (std::abs(swapDirection.m128_f32[0]) > std::abs(swapDirection.m128_f32[1])) {
-			this->rotationAngleHorizontal -= swapDirection.m128_f32[0] * 100;
-
-			if (this->managingByEarthManipulations && (this->rotationAngleHorizontal > -360.0f && this->rotationAngleHorizontal < 0.0f)) {
-				this->angleForRewinding -= swapDirection.m128_f32[0] * 100;
-			}
-		}
-		else if (std::abs(swapDirection.m128_f32[1]) > std::abs(swapDirection.m128_f32[0])) {
-			this->rotationAngleVertical -= swapDirection.m128_f32[1] * 100;
-
-			if (this->managingByEarthManipulations) {
-				this->angleForVolumeChange -= swapDirection.m128_f32[1] * 100;
-			}
-		}
-
-		if (this->rotationAngleVertical > 30.0f) {
-			this->rotationAngleVertical = 30.0f;
-		}
-		if (this->rotationAngleVertical < -30.0f) {
-			this->rotationAngleVertical = -30.0f;
-		}
-
 		if (this->managingByEarthManipulations) {
-			if (this->rotationAngleHorizontal < -360.0f) {
-				this->rotationAngleHorizontal = -360.0f;
+			this->angleForRewinding -= swapDirection.m128_f32[0] * 100;
+			this->angleForVolumeChange -= swapDirection.m128_f32[1] * 100;
+
+			if (std::abs(swapDirection.m128_f32[0]) > std::abs(swapDirection.m128_f32[1])) {
+				this->rotationAngleHorizontal -= swapDirection.m128_f32[0] * 100;
 			}
-			if (this->rotationAngleHorizontal > 0.0f) {
-				this->rotationAngleHorizontal = 0.0f;
+			else if (std::abs(swapDirection.m128_f32[1]) > std::abs(swapDirection.m128_f32[0])) {
+				this->rotationAngleVertical -= swapDirection.m128_f32[1] * 100;
 			}
+
+			if (this->rotationAngleHorizontal > 0) {
+				if (this->rotationAngleHorizontal > this->HORIZONTAL_ANGLE_LIMITER_TOP) {
+					this->angleForRewinding = 360.0f;
+					this->rotationAngleHorizontal = this->HORIZONTAL_ANGLE_LIMITER_TOP;
+				}
+				if (this->rotationAngleHorizontal < this->HORIZONTAL_ANGLE_LIMITER_BOTTOM) {
+					this->angleForRewinding = 0.0f;
+					this->rotationAngleHorizontal = this->HORIZONTAL_ANGLE_LIMITER_BOTTOM;
+				}
+			}
+			else {
+				if (this->rotationAngleHorizontal < this->HORIZONTAL_ANGLE_LIMITER_TOP) {
+					this->angleForRewinding = -360.0f;
+					this->rotationAngleHorizontal = this->HORIZONTAL_ANGLE_LIMITER_TOP;
+				}
+				if (this->rotationAngleHorizontal > this->HORIZONTAL_ANGLE_LIMITER_BOTTOM) {
+					this->angleForRewinding = 0.0f;
+					this->rotationAngleHorizontal = this->HORIZONTAL_ANGLE_LIMITER_BOTTOM;
+				}
+			}
+		}
+		else {
+			if (std::abs(swapDirection.m128_f32[0]) > std::abs(swapDirection.m128_f32[1])) {
+				this->rotationAngleHorizontal -= swapDirection.m128_f32[0] * 100;
+			}
+			else if (std::abs(swapDirection.m128_f32[1]) > std::abs(swapDirection.m128_f32[0])) {
+				this->rotationAngleVertical -= swapDirection.m128_f32[1] * 100;
+			}
+		}
+
+		if (this->rotationAngleVertical > 45.0f) {
+			this->rotationAngleVertical = 45.0f;
+			this->angleForVolumeChange = 55.0f;
+		}
+		if (this->rotationAngleVertical < -45.0f) {
+			this->rotationAngleVertical = -45.0f;
+			this->angleForVolumeChange = 0.0f;
 		}
 
 		auto preRotate = DirectX::XMMatrixRotationRollPitchYaw(0.0f, DirectX::XMConvertToRadians(250.0f), 0.0f);
@@ -945,12 +967,11 @@ void EarthRendererNative::ProcessTap(int tapCount, float x, float y) {
 
 		if (this->tapOnSphere && tapCountTmp == 2 && this->isSongPlayingNow) {
 			this->managingByEarthManipulations = true;
+			this->HORIZONTAL_ANGLE_LIMITER_BOTTOM = this->rotationAngleHorizontal;
+			this->HORIZONTAL_ANGLE_LIMITER_TOP = (this->rotationAngleHorizontal >= 0.0f) ? (this->rotationAngleHorizontal + 360.0f) : (this->rotationAngleHorizontal - 360.0f);
 		}
 		else {
 			this->managingByEarthManipulations = false;
-
-			this->angleForRewinding = 0.0f;
-			this->angleForVolumeChange = 0.0f;
 		}
 
 		this->tapCount = 0;

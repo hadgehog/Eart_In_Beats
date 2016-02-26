@@ -189,7 +189,14 @@ namespace EarthInBeatsPlayer
         {
             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
-                
+                if (this.earthRenderable != null)
+                {
+                    var volumeFromEarth = Math.Abs(__param0);
+
+                    this.sliderVolume.Value = (volumeFromEarth * 100.0) / 55.0;
+
+                    int s = 89;
+                }
             });
         }
 
@@ -197,7 +204,7 @@ namespace EarthInBeatsPlayer
         {
             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
-                if (this.earthRenderable != null )
+                if (this.earthRenderable != null)
                 {
                     var progressFromEarth = Math.Abs(__param0);
 
@@ -230,11 +237,12 @@ namespace EarthInBeatsPlayer
             if (this.player != null)
             {
                 this.player.Volume((float)e.NewValue / 100);
-            }
 
-            if (this.earthRenderable != null)
-            {
-                this.earthRenderable.VericalRotationAngle = (float)((e.NewValue / 100.0f) * 360.0f);
+
+                if (this.earthRenderable != null)
+                {
+                    this.earthRenderable.VericalRotationAngle = (float)((e.NewValue / 100.0f) * 360.0f);
+                }
             }
         }
 
@@ -492,7 +500,7 @@ namespace EarthInBeatsPlayer
 
         private void sliderProgress_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
-            if(this.earthRenderable != null && !this.earthRenderable.ManipulationMode)
+            if (this.earthRenderable != null && !this.earthRenderable.ManipulationMode && this.player != null)
             {
                 if (this.isPlayingNow && !this.updateProgress)
                 {
