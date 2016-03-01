@@ -15,9 +15,9 @@
         </ScrollViewer>
 
         <Slider x:Name="sliderVolume" ValueChanged="Slider1_ValueChanged" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="19,0,19,0" 
-                ManipulationMode="TranslateRailsX" ManipulationStarted="SliderVolume_ManipulationStarted" ManipulationCompleted="SliderVolume_ManipulationCompleted" Visibility="Visible"/>
+                ManipulationMode="TranslateRailsX" ManipulationStarted="SliderVolume_ManipulationStarted" ManipulationCompleted="SliderVolume_ManipulationCompleted" Visibility="Collapsed"/>
         <Slider x:Name="sliderProgress" PointerPressed="sliderProgress_PointerPressed" PointerReleased="sliderProgress_PointerReleased" VerticalAlignment="Bottom" 
-                HorizontalAlignment="Stretch" Margin="19,0,19,0" ValueChanged="sliderProgress_ValueChanged" ManipulationMode="All" ManipulationCompleted="sliderProgress_ManipulationCompleted" Visibility="Visible"/>
+                HorizontalAlignment="Stretch" Margin="19,0,19,0" ValueChanged="sliderProgress_ValueChanged" ManipulationMode="All" ManipulationCompleted="sliderProgress_ManipulationCompleted" Visibility="Collapsed"/>
     </Grid>
 
     <Page.BottomAppBar>

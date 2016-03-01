@@ -26,9 +26,15 @@ namespace EarthInBeatsNativeLibrary
 
 		this->rendererContainer->Set(nativeRenderer);
 
-		this->nativeRenderer->showSlidersEvent = [=](bool v) {
+		this->nativeRenderer->onManipulationsStarted = [=]() {
 			concurrency::create_async([=]() {
-				this->ShowSlidersEvent(v);
+				this->StartManipulationsEvent();
+			});
+		};
+
+		this->nativeRenderer->onManipulationsEnded = [=]() {
+			concurrency::create_async([=]() {
+				this->EndManipulationsEvent();
 			});
 		};
 

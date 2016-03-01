@@ -40,6 +40,9 @@ namespace EarthInBeatsPlayer
         EarthInBeatsNativeLibrary.Renderer renderer;
         EarthInBeatsNativeLibrary.EarthRenderableWinRT earthRenderable;
 
+        System.Diagnostics.Stopwatch timer = new System.Diagnostics.Stopwatch();
+        const int CONTROLS_VISIBILITY_TIME = 10000;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -180,56 +183,84 @@ namespace EarthInBeatsPlayer
 
             this.earthRenderable.IsPlaylistCreated(false);
 
-            this.earthRenderable.ShowSlidersEvent += EarthRenderable_ShowSlidersEvent;
+            this.earthRenderable.StartManipulationsEvent += EarthRenderable_StartManipulationsEvent;
+            this.earthRenderable.EndManipulationsEvent += EarthRenderable_EndManipulationsEvent;
             this.earthRenderable.HorizontalManipulationEvent += EarthRenderable_HorizontalManipulationEvent;
             this.earthRenderable.VerticalManipulationEvent += EarthRenderable_VerticalManipulationEvent;
         }
 
-        private async void EarthRenderable_VerticalManipulationEvent(float __param0)
+        private async void EarthRenderable_StartManipulationsEvent()
         {
             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
-                if (this.earthRenderable != null)
-                {
-                    var volumeFromEarth = Math.Abs(__param0);
-
-                    this.sliderVolume.Value = (volumeFromEarth * 100.0) / 55.0;
-
-                    int s = 89;
-                }
-            });
-        }
-
-        private async void EarthRenderable_HorizontalManipulationEvent(float __param0)
-        {
-            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-            {
-                if (this.earthRenderable != null)
-                {
-                    var progressFromEarth = Math.Abs(__param0);
-
-                    this.sliderProgress.Value = (progressFromEarth * 100.0) / 360.0;
-
-                    int s = 89;
-                }
-            });
-        }
-
-        private async void EarthRenderable_ShowSlidersEvent(bool __param0)
-        {
-            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-            {
+                //this.WriteDebugMessage("Earth manipulation started:", Colors.Green);
                 this.sliderProgress.Visibility = Visibility.Visible;
                 this.sliderVolume.Visibility = Visibility.Visible;
             });
+        }
 
-            await Task.Delay(TimeSpan.FromSeconds(5.0));
+        private async void EarthRenderable_EndManipulationsEvent()
+        {
+            this.timer.Stop();
+            this.timer.Start();
+
+            var curTime = this.timer.ElapsedMilliseconds;
+
+            //await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            //{
+            //    this.WriteDebugMessage("Earth manipulation completed:", Colors.Green);
+            //});
+
+            while (curTime < CONTROLS_VISIBILITY_TIME)
+            {
+                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    this.sliderProgress.Visibility = Visibility.Visible;
+                    this.sliderVolume.Visibility = Visibility.Visible;
+                });
+
+                await Task.Delay(TimeSpan.FromSeconds(1.0));
+
+                curTime = this.timer.ElapsedMilliseconds;
+            }
+
+            this.timer.Stop();
 
             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 this.sliderProgress.Visibility = Visibility.Collapsed;
                 this.sliderVolume.Visibility = Visibility.Collapsed;
             });
+        }
+
+        private async void EarthRenderable_VerticalManipulationEvent(float __param0)
+        {
+            //await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            //{
+            //    if (this.earthRenderable != null)
+            //    {
+            //        var volumeFromEarth = Math.Abs(__param0);
+
+            //        this.sliderVolume.Value = (volumeFromEarth * 100.0) / 55.0;
+
+            //        int s = 89;
+            //    }
+            //});
+        }
+
+        private async void EarthRenderable_HorizontalManipulationEvent(float __param0)
+        {
+            //await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            //{
+            //    if (this.earthRenderable != null)
+            //    {
+            //        var progressFromEarth = Math.Abs(__param0);
+
+            //        this.sliderProgress.Value = (progressFromEarth * 100.0) / 360.0;
+
+            //        int s = 89;
+            //    }
+            //});
         }
 
         private void Slider1_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
@@ -446,7 +477,8 @@ namespace EarthInBeatsPlayer
 
             if (this.earthRenderable != null)
             {
-                this.earthRenderable.ShowSlidersEvent += EarthRenderable_ShowSlidersEvent;
+                this.earthRenderable.StartManipulationsEvent -= EarthRenderable_StartManipulationsEvent;
+                this.earthRenderable.EndManipulationsEvent -= EarthRenderable_EndManipulationsEvent;
                 this.earthRenderable.HorizontalManipulationEvent += EarthRenderable_HorizontalManipulationEvent;
                 this.earthRenderable.VerticalManipulationEvent += EarthRenderable_VerticalManipulationEvent;
             }

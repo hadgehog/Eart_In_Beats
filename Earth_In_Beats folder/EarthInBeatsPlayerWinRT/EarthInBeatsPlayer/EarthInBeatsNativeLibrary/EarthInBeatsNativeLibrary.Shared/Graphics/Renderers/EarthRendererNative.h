@@ -24,7 +24,8 @@ public:
 	EarthRendererNative();
 	~EarthRendererNative();
 
-	std::function<void(bool)>  showSlidersEvent;
+	std::function<void()> onManipulationsStarted;
+	std::function<void()> onManipulationsEnded;
 	std::function<void(float)> horizontalManipulationChanged;
 	std::function<void(float)> verticalManipulationChanged;
 
@@ -95,7 +96,6 @@ private:
 	bool tapOnSphere;
 	DirectX::XMVECTOR prevPoint;
 	DirectX::XMMATRIX matrixRotation;
-	bool showSliders;
 
 	DirectX::XMFLOAT4X4 projection;
 

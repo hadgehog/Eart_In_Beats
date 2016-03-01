@@ -17,7 +17,7 @@ const float EarthRendererNative::HORIZONTAL_ROTATION_FACTOR = 35.0f;
 
 EarthRendererNative::EarthRendererNative() :
 	initialized(false), modelLoaded(false), indexCount(0),
-	earthRotationEnabled(false), scale(1.3f), showSliders(false),
+	earthRotationEnabled(false), scale(1.3f),
 	rotationAngleHorizontal(0.0f), rotationAngleVertical(0.0f), isSongPlayingNow(false),
 	managingByEarthManipulations(false), angleForRewinding(0.0f), angleForVolumeChange(0.0f)
 {
@@ -918,18 +918,21 @@ void EarthRendererNative::ManipulationStarted(float x, float y) {
 
 	this->tapOnSphere = this->Intersect(direction, tapPoint0, earthPosition, 0.5f, hitPoint, distance, normal);	// not sure that Earth radius is right, but its working :)
 	this->prevPoint = hitPoint;
+
+	if (this->managingByEarthManipulations) {
+		if (this->onManipulationsStarted) {
+			this->onManipulationsStarted();
+		}
+	}
 }
 
 void EarthRendererNative::ManipulationCompleted(const DirectX::XMFLOAT2 &pos) {
-	if (this->tapOnSphere) {
-		this->showSliders = true;
-		this->tapOnSphere = false;
+	this->tapOnSphere = false;
 
-		/*if (this->showSlidersEvent) {
-			this->showSlidersEvent(this->showSliders);
-		}*/
-
-		this->showSliders = false;
+	if (this->managingByEarthManipulations) {
+		if (this->onManipulationsEnded) {
+			this->onManipulationsEnded();
+		}
 	}
 }
 
