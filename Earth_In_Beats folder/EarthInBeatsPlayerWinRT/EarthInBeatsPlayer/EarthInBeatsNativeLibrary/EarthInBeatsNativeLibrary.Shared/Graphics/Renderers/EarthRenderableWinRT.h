@@ -5,6 +5,8 @@
 
 namespace EarthInBeatsNativeLibrary
 {
+	public delegate void TapAppeared();
+	public delegate void DoubletapAppeared();
 	public delegate void EarthManipulationStarted();
 	public delegate void EarthManipulationEnded();
 	public delegate void HorizontalManipulationsByEarth(float);
@@ -12,6 +14,8 @@ namespace EarthInBeatsNativeLibrary
 
 	public ref class EarthRenderableWinRT sealed : public IRenderable{
 	public:
+		event EarthManipulationStarted ^TapAppearedEvent;
+		event EarthManipulationEnded ^DoubletapAppearedEvent;
 		event EarthManipulationStarted ^StartManipulationsEvent;
 		event EarthManipulationEnded ^EndManipulationsEvent;
 		event HorizontalManipulationsByEarth ^HorizontalManipulationEvent;

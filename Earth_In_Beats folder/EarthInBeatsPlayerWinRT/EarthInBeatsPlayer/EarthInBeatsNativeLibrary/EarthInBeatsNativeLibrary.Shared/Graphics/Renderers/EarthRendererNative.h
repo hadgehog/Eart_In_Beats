@@ -24,6 +24,8 @@ public:
 	EarthRendererNative();
 	~EarthRendererNative();
 
+	std::function<void()> onProcessTap;
+	std::function<void()> onProcessDoubleTap;
 	std::function<void()> onManipulationsStarted;
 	std::function<void()> onManipulationsEnded;
 	std::function<void(float)> horizontalManipulationChanged;
@@ -63,6 +65,9 @@ public:
 	bool GetManipulationMode();
 	void SetPlayingMode(bool v);
 
+	void SetSongDuration(double duration);
+	void SetSongCurrentPosition(double pos);
+
 private:
 	std::shared_ptr<GuardedDeviceResources> dx;
 
@@ -94,8 +99,8 @@ private:
 	GestureHelper ^gestureHelper;
 
 	bool tapOnSphere;
-	DirectX::XMVECTOR prevPoint;
-	DirectX::XMMATRIX matrixRotation;
+	DirectX::XMFLOAT4 prevPoint;
+	DirectX::XMFLOAT4X4 matrixRotation;
 
 	DirectX::XMFLOAT4X4 projection;
 

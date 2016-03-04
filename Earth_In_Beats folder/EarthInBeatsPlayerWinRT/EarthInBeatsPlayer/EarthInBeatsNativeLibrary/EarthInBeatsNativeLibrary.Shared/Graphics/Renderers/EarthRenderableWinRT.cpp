@@ -49,6 +49,18 @@ namespace EarthInBeatsNativeLibrary
 				this->VerticalManipulationEvent(p);
 			});
 		};
+
+		this->nativeRenderer->onProcessTap = [=]() {
+			concurrency::create_async([=]() {
+				this->TapAppearedEvent();
+			});
+		};
+
+		this->nativeRenderer->onProcessDoubleTap = [=]() {
+			concurrency::create_async([=]() {
+				this->DoubletapAppearedEvent();
+			});
+		};
 	}
 
 	EarthRenderableWinRT::~EarthRenderableWinRT() {

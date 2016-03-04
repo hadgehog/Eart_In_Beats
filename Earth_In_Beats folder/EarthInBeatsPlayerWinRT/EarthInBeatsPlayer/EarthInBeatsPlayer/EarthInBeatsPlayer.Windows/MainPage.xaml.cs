@@ -187,6 +187,18 @@ namespace EarthInBeatsPlayer
             this.earthRenderable.EndManipulationsEvent += EarthRenderable_EndManipulationsEvent;
             this.earthRenderable.HorizontalManipulationEvent += EarthRenderable_HorizontalManipulationEvent;
             this.earthRenderable.VerticalManipulationEvent += EarthRenderable_VerticalManipulationEvent;
+            this.earthRenderable.TapAppearedEvent += EarthRenderable_TapAppearedEvent;
+            this.earthRenderable.DoubletapAppearedEvent += EarthRenderable_DoubletapAppearedEvent;
+        }
+
+        private void EarthRenderable_DoubletapAppearedEvent()
+        {
+            
+        }
+
+        private void EarthRenderable_TapAppearedEvent()
+        {
+            
         }
 
         private async void EarthRenderable_StartManipulationsEvent()
@@ -268,12 +280,11 @@ namespace EarthInBeatsPlayer
             if (this.player != null)
             {
                 this.player.Volume((float)e.NewValue / 100);
+            }
 
-
-                if (this.earthRenderable != null)
-                {
-                    this.earthRenderable.VericalRotationAngle = (float)((e.NewValue / 100.0f) * 360.0f);
-                }
+            if (this.earthRenderable != null)
+            {
+                this.earthRenderable.VericalRotationAngle = (float)((e.NewValue / 100.0f) * 360.0f);
             }
         }
 
@@ -479,8 +490,10 @@ namespace EarthInBeatsPlayer
             {
                 this.earthRenderable.StartManipulationsEvent -= EarthRenderable_StartManipulationsEvent;
                 this.earthRenderable.EndManipulationsEvent -= EarthRenderable_EndManipulationsEvent;
-                this.earthRenderable.HorizontalManipulationEvent += EarthRenderable_HorizontalManipulationEvent;
-                this.earthRenderable.VerticalManipulationEvent += EarthRenderable_VerticalManipulationEvent;
+                this.earthRenderable.HorizontalManipulationEvent -= EarthRenderable_HorizontalManipulationEvent;
+                this.earthRenderable.VerticalManipulationEvent -= EarthRenderable_VerticalManipulationEvent;
+                this.earthRenderable.TapAppearedEvent -= EarthRenderable_TapAppearedEvent;
+                this.earthRenderable.DoubletapAppearedEvent -= EarthRenderable_DoubletapAppearedEvent;
             }
 
             GC.Collect();
