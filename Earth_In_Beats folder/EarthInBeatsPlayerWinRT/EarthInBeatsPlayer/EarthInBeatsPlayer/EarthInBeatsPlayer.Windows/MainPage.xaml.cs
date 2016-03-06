@@ -30,12 +30,12 @@ namespace EarthInBeatsPlayer
 {
     public sealed partial class MainPage : Page
     {
-
         Reader player;
         CreatingPlaylist playList;
         Windows.UI.Core.CoreDispatcher dispatcher;
         bool updateProgress = true;
         bool isPlayingNow = false;
+        bool earthManipulationsStarted = false;
 
         EarthInBeatsNativeLibrary.Renderer renderer;
         EarthInBeatsNativeLibrary.EarthRenderableWinRT earthRenderable;
@@ -191,21 +191,33 @@ namespace EarthInBeatsPlayer
             this.earthRenderable.DoubletapAppearedEvent += EarthRenderable_DoubletapAppearedEvent;
         }
 
-        private void EarthRenderable_DoubletapAppearedEvent()
+        private async void EarthRenderable_DoubletapAppearedEvent()
         {
-            
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                this.WriteDebugMessage("Earth manipulation started:", Colors.LightGreen);
+            });
+
+            this.earthManipulationsStarted = true;
         }
 
-        private void EarthRenderable_TapAppearedEvent()
+        private async void EarthRenderable_TapAppearedEvent()
         {
-            
+            if (this.earthManipulationsStarted)
+            {
+                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    this.WriteDebugMessage("Earth manipulation completed:", Colors.LightGreen);
+                });
+            }
+
+            this.earthManipulationsStarted = false;
         }
 
         private async void EarthRenderable_StartManipulationsEvent()
         {
             await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
-                //this.WriteDebugMessage("Earth manipulation started:", Colors.Green);
                 this.sliderProgress.Visibility = Visibility.Visible;
                 this.sliderVolume.Visibility = Visibility.Visible;
             });
@@ -217,11 +229,6 @@ namespace EarthInBeatsPlayer
             this.timer.Start();
 
             var curTime = this.timer.ElapsedMilliseconds;
-
-            //await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-            //{
-            //    this.WriteDebugMessage("Earth manipulation completed:", Colors.Green);
-            //});
 
             while (curTime < CONTROLS_VISIBILITY_TIME)
             {

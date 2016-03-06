@@ -776,7 +776,6 @@ void EarthRendererNative::SetHorisontalRotationAngle(float angle) {
 	DirectX::XMStoreFloat4x4(&this->matrixRotation, matrixRotationTmp);
 }
 
-////////// CRASHES WHEN START!!!!
 void EarthRendererNative::SetVerticalRotationAngle(float angle) {
 	concurrency::critical_section::scoped_lock lk(this->externDataCs);
 	auto matrixRotationTmp = DirectX::XMLoadFloat4x4(&this->matrixRotation);

@@ -8,30 +8,73 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <SwapChainPanel x:Name="swapChainPanel" ManipulationDelta="swapChainPanel_ManipulationDelta" SizeChanged="swapChainPanel_SizeChanged"/>
+        <SwapChainPanel x:Name="swapChainPanel" 
+                        ManipulationDelta="swapChainPanel_ManipulationDelta" 
+                        SizeChanged="swapChainPanel_SizeChanged"/>
 
         <ScrollViewer Width="250" HorizontalAlignment="Left">
-            <RichTextBlock x:Name="DebugTextBlock"  TextWrapping="Wrap" TextAlignment="Left" Foreground="White" HorizontalAlignment="Left" Width="250" Margin="0,50,0,100"/>
+            <RichTextBlock x:Name="DebugTextBlock"  
+                           TextWrapping="Wrap" 
+                           TextAlignment="Left" 
+                           Foreground="White" 
+                           HorizontalAlignment="Left" 
+                           Width="250" 
+                           Margin="0,50,0,100"/>
         </ScrollViewer>
 
-        <Slider x:Name="sliderVolume" ValueChanged="Slider1_ValueChanged" VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="19,0,19,0" 
-                ManipulationMode="TranslateRailsX" ManipulationStarted="SliderVolume_ManipulationStarted" ManipulationCompleted="SliderVolume_ManipulationCompleted" Visibility="Collapsed"/>
-        <Slider x:Name="sliderProgress" PointerPressed="sliderProgress_PointerPressed" PointerReleased="sliderProgress_PointerReleased" VerticalAlignment="Bottom" 
-                HorizontalAlignment="Stretch" Margin="19,0,19,0" ValueChanged="sliderProgress_ValueChanged" ManipulationMode="All" ManipulationCompleted="sliderProgress_ManipulationCompleted" Visibility="Collapsed"/>
+        <Slider x:Name="sliderVolume" 
+                ValueChanged="Slider1_ValueChanged" 
+                VerticalAlignment="Top" 
+                HorizontalAlignment="Stretch" 
+                Margin="19,0,19,0" 
+                ManipulationMode="TranslateRailsX" ManipulationStarted="SliderVolume_ManipulationStarted" 
+                ManipulationCompleted="SliderVolume_ManipulationCompleted" 
+                Visibility="Collapsed"/>
+        <Slider x:Name="sliderProgress" 
+                PointerPressed="sliderProgress_PointerPressed" 
+                PointerReleased="sliderProgress_PointerReleased" 
+                VerticalAlignment="Bottom" 
+                HorizontalAlignment="Stretch" Margin="19,0,19,0" 
+                ValueChanged="sliderProgress_ValueChanged" 
+                ManipulationMode="All" 
+                ManipulationCompleted="sliderProgress_ManipulationCompleted" 
+                Visibility="Collapsed"/>
     </Grid>
 
     <Page.BottomAppBar>
         <!--<CommandBar Visibility="Visible" BorderBrush="White" IsOpen="True" IsSticky="True">-->
         <CommandBar>
-            <AppBarButton x:Name="Previous" Label="Previous" Icon="Previous" Click="Previous_Click"/>
-            <AppBarToggleButton x:Name="PlayPauseBtn" Label="Play/Pause" Icon="Play" Checked="PlayPauseBtn_Checked" Unchecked="PlayPauseBtn_Unchecked"/>
-            <AppBarButton x:Name="Stop" Label="Stop" Icon="Stop" Click="Stop_Click"/>
-            <AppBarButton x:Name="Next" Label="Next" Icon="Next" Click="Next_Click"/>
+            <AppBarButton x:Name="Previous" 
+                          Label="Previous" 
+                          Icon="Previous" 
+                          Click="Previous_Click"/>
+            <AppBarToggleButton x:Name="PlayPauseBtn"                                
+                                Label="Play/Pause" 
+                                Icon="Play" 
+                                Checked="PlayPauseBtn_Checked" 
+                                Unchecked="PlayPauseBtn_Unchecked"/>
+            <AppBarButton x:Name="Stop" 
+                          Label="Stop" 
+                          Icon="Stop" 
+                          Click="Stop_Click"/>
+            <AppBarButton x:Name="Next" 
+                          Label="Next" 
+                          Icon="Next" 
+                          Click="Next_Click"/>
 
             <CommandBar.SecondaryCommands>
-                <AppBarButton x:Name="Playlist" Label="Create playlist" Icon="MusicInfo" Click="Playlist_Click"/>
-                <AppBarButton x:Name="ClearPlaylist" Label="Clear playlist" Icon="Clear" Click="ClearPlaylist_Click"/>
-                <AppBarButton x:Name="Exit" Label="Exit" Icon="Cancel" Click="Exit_Click"/>
+                <AppBarButton x:Name="Playlist" 
+                              Label="Create playlist" 
+                              Icon="MusicInfo" 
+                              Click="Playlist_Click"/>
+                <AppBarButton x:Name="ClearPlaylist" 
+                              Label="Clear playlist" 
+                              Icon="Clear" 
+                              Click="ClearPlaylist_Click"/>
+                <AppBarButton x:Name="Exit" 
+                              Label="Exit" 
+                              Icon="Cancel" 
+                              Click="Exit_Click"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>

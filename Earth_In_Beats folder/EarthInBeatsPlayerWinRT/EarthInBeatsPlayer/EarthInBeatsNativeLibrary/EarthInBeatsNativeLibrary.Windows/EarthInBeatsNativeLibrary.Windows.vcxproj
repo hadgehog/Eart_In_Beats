@@ -27,7 +27,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NativeLibraries\assimp-win-rt-master\WinRT\Universal\assimp\assimp.Windows\assimp.Windows.vcxproj">
+    <ProjectReference Include="..\..\3rdParty\assimp-win-rt-master\WinRT\Universal\assimp\assimp.Windows\assimp.Windows.vcxproj">
       <Project>{657a2eba-90db-40c9-a6c3-1ef21c7fcd13}</Project>
     </ProjectReference>
   </ItemGroup>
@@ -77,6 +77,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <Import Project="..\EarthInBeatsNativeLibrary.Shared\EarthInBeatsNativeLibrary.Shared.vcxitems" Label="Shared" />
+  <ImportGroup Label="Shared" />
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -98,7 +99,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir)..\..\NativeLibraries\assimp-win-rt-master\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\3rdParty\assimp-win-rt-master\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <GenerateManifest>false</GenerateManifest>

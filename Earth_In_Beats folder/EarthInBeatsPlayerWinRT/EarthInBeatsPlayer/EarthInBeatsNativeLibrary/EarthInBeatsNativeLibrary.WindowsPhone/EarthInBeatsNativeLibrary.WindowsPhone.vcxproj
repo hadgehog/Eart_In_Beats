@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NativeLibraries\assimp-win-rt-master\WinRT\Universal\assimp\assimp.WindowsPhone\assimp.WindowsPhone.vcxproj">
+    <ProjectReference Include="..\..\3rdParty\assimp-win-rt-master\WinRT\Universal\assimp\assimp.WindowsPhone\assimp.WindowsPhone.vcxproj">
       <Project>{797e807c-6f4f-4d82-94a8-2bf112149463}</Project>
     </ProjectReference>
   </ItemGroup>
@@ -71,7 +71,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)..\..\NativeLibraries\assimp-win-rt-master\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\3rdParty\assimp-win-rt-master\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(ProjectDir)..\..\NativeLibraries\assimp-win-rt-master\include\;$(IncludePath)</IncludePath>

@@ -1,11 +1,8 @@
-2. заменить плей/паузу на одну кнопку
-5. add normal splash screen
+1. доделать манипул€ции
 6. add server part
 7. move to WP
-8. rename to 3rd party
 9. освещение
 10. рельеф
-
 
 netsh wlan start hostednetwork
 

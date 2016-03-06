@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EarthInBeatsPlayer", "EarthInBeatsPlayer", "{CCF85A1A-E398-452A-B3D8-CBA16D4A8C73}"
 EndProject
@@ -25,38 +25,38 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaDataDesktop", "MediaDa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaDataPhone", "MediaDataPhone\MediaDataPhone.csproj", "{E8D10C7F-60FD-48A9-8512-122259497DCA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NativeLibraries", "NativeLibraries", "{4AD5C49A-06FF-41FD-BD31-2F718F264254}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3rdParty", "3rdParty", "{4AD5C49A-06FF-41FD-BD31-2F718F264254}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assimp", "assimp", "{3929E5EF-1202-4719-BBC6-D1EFF79161F9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "zlib", "zlib", "{1DF13C98-E47E-44B0-92B5-8C535ADE615E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "assimp.Shared", "NativeLibraries\assimp-win-rt-master\WinRT\Universal\assimp\assimp.Shared\assimp.Shared.vcxitems", "{1C2D41C2-18A4-4798-883C-4BC411A4C5DC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "assimp.Windows", "3rdParty\assimp-win-rt-master\WinRT\Universal\assimp\assimp.Windows\assimp.Windows.vcxproj", "{657A2EBA-90DB-40C9-A6C3-1EF21C7FCD13}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "assimp.Windows", "NativeLibraries\assimp-win-rt-master\WinRT\Universal\assimp\assimp.Windows\assimp.Windows.vcxproj", "{657A2EBA-90DB-40C9-A6C3-1EF21C7FCD13}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "assimp.WindowsPhone", "3rdParty\assimp-win-rt-master\WinRT\Universal\assimp\assimp.WindowsPhone\assimp.WindowsPhone.vcxproj", "{797E807C-6F4F-4D82-94A8-2BF112149463}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "assimp.WindowsPhone", "NativeLibraries\assimp-win-rt-master\WinRT\Universal\assimp\assimp.WindowsPhone\assimp.WindowsPhone.vcxproj", "{797E807C-6F4F-4D82-94A8-2BF112149463}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "assimp.Shared", "3rdParty\assimp-win-rt-master\WinRT\Universal\assimp\assimp.Shared\assimp.Shared.vcxitems", "{1C2D41C2-18A4-4798-883C-4BC411A4C5DC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib.Shared", "NativeLibraries\assimp-win-rt-master\WinRT\Universal\zlib\zlib.Shared\zlib.Shared.vcxitems", "{D58C74EA-3A92-4161-81DC-618A7CBB1464}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib.Shared", "3rdParty\assimp-win-rt-master\WinRT\Universal\zlib\zlib.Shared\zlib.Shared.vcxitems", "{D58C74EA-3A92-4161-81DC-618A7CBB1464}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib.Windows", "NativeLibraries\assimp-win-rt-master\WinRT\Universal\zlib\zlib.Windows\zlib.Windows.vcxproj", "{601C0281-C53A-4B73-BD6D-87A2EC863B22}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib.Windows", "3rdParty\assimp-win-rt-master\WinRT\Universal\zlib\zlib.Windows\zlib.Windows.vcxproj", "{601C0281-C53A-4B73-BD6D-87A2EC863B22}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib.WindowsPhone", "NativeLibraries\assimp-win-rt-master\WinRT\Universal\zlib\zlib.WindowsPhone\zlib.WindowsPhone.vcxproj", "{79C87E45-1834-48D7-AD85-EFC898A75E9F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib.WindowsPhone", "3rdParty\assimp-win-rt-master\WinRT\Universal\zlib\zlib.WindowsPhone\zlib.WindowsPhone.vcxproj", "{79C87E45-1834-48D7-AD85-EFC898A75E9F}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		EarthInBeatsNativeLibrary\EarthInBeatsNativeLibrary.Shared\EarthInBeatsNativeLibrary.Shared.vcxitems*{1f352729-7f88-4c8c-987e-eda7b2d6cedd}*SharedItemsImports = 9
-		NativeLibraries\assimp-win-rt-master\WinRT\Universal\zlib\zlib.Shared\zlib.Shared.vcxitems*{d58c74ea-3a92-4161-81dc-618a7cbb1464}*SharedItemsImports = 9
+		3rdParty\assimp-win-rt-master\WinRT\Universal\zlib\zlib.Shared\zlib.Shared.vcxitems*{d58c74ea-3a92-4161-81dc-618a7cbb1464}*SharedItemsImports = 9
 		EarthInBeatsPlayer\EarthInBeatsPlayer.Shared\EarthInBeatsPlayer.Shared.projitems*{20a84f70-39f8-4b54-92d3-970c156768c7}*SharedItemsImports = 4
-		NativeLibraries\assimp-win-rt-master\WinRT\Universal\zlib\zlib.Shared\zlib.Shared.vcxitems*{79c87e45-1834-48d7-ad85-efc898a75e9f}*SharedItemsImports = 4
+		3rdParty\assimp-win-rt-master\WinRT\Universal\zlib\zlib.Shared\zlib.Shared.vcxitems*{79c87e45-1834-48d7-ad85-efc898a75e9f}*SharedItemsImports = 4
 		EarthInBeatsNativeLibrary\EarthInBeatsNativeLibrary.Shared\EarthInBeatsNativeLibrary.Shared.vcxitems*{6cac3efb-2410-445d-a0b2-ee8a637a78e3}*SharedItemsImports = 4
-		NativeLibraries\assimp-win-rt-master\WinRT\Universal\assimp\assimp.Shared\assimp.Shared.vcxitems*{657a2eba-90db-40c9-a6c3-1ef21c7fcd13}*SharedItemsImports = 4
-		NativeLibraries\assimp-win-rt-master\WinRT\Universal\zlib\zlib.Shared\zlib.Shared.vcxitems*{601c0281-c53a-4b73-bd6d-87a2ec863b22}*SharedItemsImports = 4
+		3rdParty\assimp-win-rt-master\WinRT\Universal\assimp\assimp.Shared\assimp.Shared.vcxitems*{657a2eba-90db-40c9-a6c3-1ef21c7fcd13}*SharedItemsImports = 4
+		3rdParty\assimp-win-rt-master\WinRT\Universal\zlib\zlib.Shared\zlib.Shared.vcxitems*{601c0281-c53a-4b73-bd6d-87a2ec863b22}*SharedItemsImports = 4
 		EarthInBeatsNativeLibrary\EarthInBeatsNativeLibrary.Shared\EarthInBeatsNativeLibrary.Shared.vcxitems*{bda6dc7a-6a2d-4938-8d88-e410c8c98ad7}*SharedItemsImports = 4
-		NativeLibraries\assimp-win-rt-master\WinRT\Universal\assimp\assimp.Shared\assimp.Shared.vcxitems*{797e807c-6f4f-4d82-94a8-2bf112149463}*SharedItemsImports = 4
+		3rdParty\assimp-win-rt-master\WinRT\Universal\assimp\assimp.Shared\assimp.Shared.vcxitems*{797e807c-6f4f-4d82-94a8-2bf112149463}*SharedItemsImports = 4
 		EarthInBeatsPlayer\EarthInBeatsPlayer.Shared\EarthInBeatsPlayer.Shared.projitems*{5053e58a-d7b7-4869-aec4-cfa3d6c6d48b}*SharedItemsImports = 13
 		EarthInBeatsPlayer\EarthInBeatsPlayer.Shared\EarthInBeatsPlayer.Shared.projitems*{952094a2-4eee-432c-8c42-975ef4ddad37}*SharedItemsImports = 4
-		NativeLibraries\assimp-win-rt-master\WinRT\Universal\assimp\assimp.Shared\assimp.Shared.vcxitems*{1c2d41c2-18a4-4798-883c-4bc411a4c5dc}*SharedItemsImports = 9
+		3rdParty\assimp-win-rt-master\WinRT\Universal\assimp\assimp.Shared\assimp.Shared.vcxitems*{1c2d41c2-18a4-4798-883c-4bc411a4c5dc}*SharedItemsImports = 9
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -328,9 +328,9 @@ Global
 		{E8D10C7F-60FD-48A9-8512-122259497DCA} = {A915C18C-EA2B-4D22-9280-95CF4FFD9301}
 		{3929E5EF-1202-4719-BBC6-D1EFF79161F9} = {4AD5C49A-06FF-41FD-BD31-2F718F264254}
 		{1DF13C98-E47E-44B0-92B5-8C535ADE615E} = {4AD5C49A-06FF-41FD-BD31-2F718F264254}
-		{1C2D41C2-18A4-4798-883C-4BC411A4C5DC} = {3929E5EF-1202-4719-BBC6-D1EFF79161F9}
 		{657A2EBA-90DB-40C9-A6C3-1EF21C7FCD13} = {3929E5EF-1202-4719-BBC6-D1EFF79161F9}
 		{797E807C-6F4F-4D82-94A8-2BF112149463} = {3929E5EF-1202-4719-BBC6-D1EFF79161F9}
+		{1C2D41C2-18A4-4798-883C-4BC411A4C5DC} = {3929E5EF-1202-4719-BBC6-D1EFF79161F9}
 		{D58C74EA-3A92-4161-81DC-618A7CBB1464} = {1DF13C98-E47E-44B0-92B5-8C535ADE615E}
 		{601C0281-C53A-4B73-BD6D-87A2EC863B22} = {1DF13C98-E47E-44B0-92B5-8C535ADE615E}
 		{79C87E45-1834-48D7-AD85-EFC898A75E9F} = {1DF13C98-E47E-44B0-92B5-8C535ADE615E}
