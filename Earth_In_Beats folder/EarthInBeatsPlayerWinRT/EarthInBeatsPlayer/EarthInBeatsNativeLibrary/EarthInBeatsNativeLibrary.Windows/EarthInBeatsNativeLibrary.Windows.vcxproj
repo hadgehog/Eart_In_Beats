@@ -103,7 +103,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <GenerateManifest>false</GenerateManifest>
-    <IncludePath>$(ProjectDir)..\..\NativeLibraries\assimp-win-rt-master\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\3rdParty\assimp-win-rt-master\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <GenerateManifest>false</GenerateManifest>

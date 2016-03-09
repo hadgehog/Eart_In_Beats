@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="327138fe-f3b4-470c-967a-7b7f3f799e57" Publisher="CN=Vladyslav" Version="1.0.0.0" />
+  <Identity Name="327138fe-f3b4-470c-967a-7b7f3f799e57" Publisher="CN=vladislav" Version="1.0.0.0" />
   <Properties>
     <DisplayName>EarthInBeatsPlayer.Windows</DisplayName>
     <PublisherDisplayName>Vladyslav</PublisherDisplayName>

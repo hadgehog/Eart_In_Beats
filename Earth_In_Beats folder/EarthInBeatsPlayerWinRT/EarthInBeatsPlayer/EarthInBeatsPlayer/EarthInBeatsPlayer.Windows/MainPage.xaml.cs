@@ -399,6 +399,7 @@ namespace EarthInBeatsPlayer
             }
 
             this.sliderProgress.Value = 0;
+            this.PlayPauseBtn.IsChecked = false;
         }
 
         private void Next_Click(object sender, RoutedEventArgs e)
@@ -617,7 +618,7 @@ namespace EarthInBeatsPlayer
                 this.PlayPauseBtn.Icon = new SymbolIcon(Symbol.Play);
             });
 
-            if (this.player != null)
+            if (this.player != null && this.isPlayingNow)
             {
                 this.earthRenderable.EarthRotationEnabled = false;
                 this.player.Pause();

@@ -28,6 +28,7 @@ EarthRendererNative::EarthRendererNative() :
 	this->tapCount = 0;
 	this->HORIZONTAL_ANGLE_LIMITER_TOP = 0.0f;
 	this->HORIZONTAL_ANGLE_LIMITER_BOTTOM = 0.0f;
+	this->songDuration = 0.0;
 }
 
 EarthRendererNative::~EarthRendererNative() {
@@ -834,7 +835,8 @@ void EarthRendererNative::ProcessMove(const DirectX::XMFLOAT2 &moveVec, const Di
 		float angleInDeg = DirectX::XMConvertToDegrees(angleBetweenVectors.m128_f32[0]);
 		auto swapDirection = DirectX::XMVectorSubtract(nextPoint, prevPointVec);
 
-		if (this->managingByEarthManipulations) {
+		// not works now
+		if (/*this->managingByEarthManipulations*/false) {
 			this->angleForRewinding -= swapDirection.m128_f32[0] * 100;
 			this->angleForVolumeChange -= swapDirection.m128_f32[1] * 100;
 
